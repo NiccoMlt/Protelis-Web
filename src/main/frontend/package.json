@@ -25,6 +25,7 @@
     "@types/react-router-dom": "^5.1.0",
     "@typescript-eslint/eslint-plugin": "^2.5.0",
     "@typescript-eslint/parser": "^2.5.0",
+    "codecov": "^3.6.1",
     "commitizen": "^4.0.3",
     "cz-conventional-changelog": "3.0.2",
     "eslint": "^6.5.1",
@@ -34,6 +35,7 @@
     "eslint-plugin-react": "^7.16.0",
     "eslint-plugin-react-hooks": "^1.7.0",
     "jest": "24.9.0",
+    "jest-junit": "^9.0.0",
     "react-test-renderer": "^16.11.0",
     "typescript": "3.6.4"
   },
@@ -42,8 +44,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./",
-    "test": "react-scripts test",
+    "test": "react-scripts test --env=jsdom",
+    "test:ci": "yarn test --bail --ci --coverage --reporters=default --reporters=jest-junit",
     "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache",
+    "codecov:upload": "yarn test:ci && codecov",
     "eject": "react-scripts eject"
   },
   "browserslist": {

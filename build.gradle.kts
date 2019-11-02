@@ -99,16 +99,18 @@ tasks {
     testLogging {
       events.addAll(listOf(TestLogEvent.PASSED, TestLogEvent.FAILED, TestLogEvent.SKIPPED))
     }
-    dependsOn(jest)
   }
 
   jacocoTestReport {
     reports {
-      xml.isEnabled = false
-      csv.isEnabled = false
+      xml.isEnabled = true
+      csv.isEnabled = true
       html.isEnabled = true
-      html.destination = file("$buildDir/reports/coverage")
     }
+  }
+
+  check {
+    dependsOn(jacocoTestReport)
   }
 
   jacocoTestCoverageVerification {
