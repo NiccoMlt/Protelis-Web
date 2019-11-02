@@ -16,8 +16,15 @@ class Greeter extends React.Component<any, GreeterState> {
   }
 
   private async getMessages() {
-    const messages: AxiosResponse<string> = await axios.get('/api/message', { responseType: 'text' });
-    this.setState({ message: messages.data });
+    let message: string = '';
+    try {
+      const messages: AxiosResponse<string> = await axios.get('/api/message', { responseType: 'text' });
+      message = messages.data;
+    } catch (error) {
+      message = 'Error message';
+    }
+
+    this.setState({ message });
   }
 
   render() {
