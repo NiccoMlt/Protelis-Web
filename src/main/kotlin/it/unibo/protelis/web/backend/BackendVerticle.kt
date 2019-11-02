@@ -1,4 +1,4 @@
-package io.vertx.howtos.react
+package it.unibo.protelis.web.react
 
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.handler.LoggerFormat

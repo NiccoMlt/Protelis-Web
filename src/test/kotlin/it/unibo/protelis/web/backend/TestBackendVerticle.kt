@@ -1,4 +1,4 @@
-package io.vertx.howtos.react
+package it.unibo.protelis.web.react
 
 import io.vertx.core.Vertx
 import io.vertx.junit5.VertxExtension
