@@ -61,7 +61,7 @@ node {
 }
 
 vertx {
-  mainVerticle = "io.vertx.howtos.MainVerticle"
+  mainVerticle = "it.unibo.protelis.web.MainVerticle"
   vertxVersion = Versions.io_vertx
 }
 

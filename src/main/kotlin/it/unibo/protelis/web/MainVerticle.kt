@@ -1,9 +1,9 @@
-package io.vertx.howtos
+package it.unibo.protelis.web
 
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Promise
 import io.vertx.core.logging.SLF4JLogDelegateFactory
-import io.vertx.howtos.react.BackendVerticle
+import it.unibo.protelis.web.backend.BackendVerticle
 
 class MainVerticle : AbstractVerticle() {
   companion object {

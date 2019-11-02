@@ -1,4 +1,4 @@
-package io.vertx.howtos
+package it.unibo.protelis.web
 
 import io.vertx.core.Vertx
 import io.vertx.junit5.VertxExtension

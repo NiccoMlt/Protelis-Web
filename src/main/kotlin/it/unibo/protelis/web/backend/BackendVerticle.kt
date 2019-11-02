@@ -1,4 +1,4 @@
-package it.unibo.protelis.web.react
+package it.unibo.protelis.web.backend
 
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.handler.LoggerFormat
@@ -19,11 +19,7 @@ class BackendVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle(
     val router: Router = Router.router(vertx)
     router.route().handler(LoggerHandler.create(LoggerFormat.SHORT))
     val apiRouter: Router = OpenAPI3RouterFactory
-      .createAwait(
-        vertx, this::class.java.classLoader.getResource("api.yaml")
-          ?.toString()
-          ?: throw NoSuchElementException()
-      )
+      .createAwait(vertx, "/api.yaml")
       .addHandlerByOperationId("getMessage") {
         it.response().end("Hello React from Vert.x!")
       }

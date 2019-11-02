@@ -1,1 +1,1 @@
-rootProject.name = "single-page-react-vertx-howto"
+rootProject.name = "protelis-on-web"
