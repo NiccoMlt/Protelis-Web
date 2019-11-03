@@ -11,10 +11,12 @@
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
     "jest-enzyme": "^7.1.2",
+    "konva": "^4.0.16",
     "monaco-editor": "^0.18.1",
     "prop-types": "^15.7.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
+    "react-konva": "^16.10.1-0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
     "typeface-roboto": "^0.0.75"
