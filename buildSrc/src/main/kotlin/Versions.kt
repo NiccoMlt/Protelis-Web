@@ -12,13 +12,15 @@ import kotlin.String
 object Versions {
   const val org_jetbrains_kotlin: String = "1.3.50"
 
+  const val org_jetbrains_dokka: String = "0.10.0"
+
   const val org_junit_jupiter: String = "5.5.2"
 
   const val io_vertx: String = "3.8.3"
 
   const val com_github_johnrengelman_shadow_gradle_plugin: String = "5.1.0"
 
-  const val org_jlleitschuh_gradle_ktlint_gradle_plugin: String = "9.0.0"
+  const val org_jlleitschuh_gradle_ktlint_gradle_plugin: String = "9.0.0" // available: "9.1.0"
 
   const val de_fayard_refreshversions_gradle_plugin: String = "0.7.0" // available: "0.8.1"
 
@@ -34,7 +36,7 @@ object Versions {
 
   const val kotlin_logging: String = "1.7.6"
 
-  const val slf4j_api: String = "1.7.28"
+  const val slf4j_api: String = "1.7.28" // available: "1.7.29"
 
   const val ktlint: String = "0.34.2" // available: "0.35.0"
 
@@ -43,5 +45,5 @@ object Versions {
    * See issue 19: How to update Gradle itself?
    * https://github.com/jmfayard/buildSrcVersions/issues/19
    */
-  const val gradleLatestVersion: String = "5.6.3"
+  const val gradleLatestVersion: String = "5.6.4"
 }

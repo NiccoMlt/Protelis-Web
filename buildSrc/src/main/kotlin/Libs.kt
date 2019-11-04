@@ -43,6 +43,12 @@ object Libs {
   const val kotlin_test_junit: String = "org.jetbrains.kotlin:kotlin-test-junit:" +
       Versions.org_jetbrains_kotlin
 
+  const val dokka_fatjar: String = "org.jetbrains.dokka:dokka-fatjar:" +
+      Versions.org_jetbrains_dokka
+
+  const val org_jetbrains_dokka_gradle_plugin: String =
+      "org.jetbrains.dokka:org.jetbrains.dokka.gradle.plugin:" + Versions.org_jetbrains_dokka
+
   /**
    * https://junit.org/junit5/
    */
