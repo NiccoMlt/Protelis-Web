@@ -22,7 +22,7 @@ REST APIs are documented with OpenAPI standard v3.1.
 ### Frontend
 
 Even if the [frontend sourceSet](./src/main/frontend) of root (backend) project is automatically built and linked by Gradle, 
-it is a full-fledged Typescript project built with Yarn and `create-react-app` scripts and can be opened separately as a VS Code project.
+it is a full-fledged Typescript project built with Yarn and `create-react-app` scripts and can be opened separately as a VS Code or WebStorm project.
 
 ## License and credits [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
