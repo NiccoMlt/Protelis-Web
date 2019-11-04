@@ -23,7 +23,7 @@ const ProtelisAppBar: React.FC = () => {
 
   return (
     <div className={classes.root}>
-      <AppBar color="inherit" position="static">
+      <AppBar position="static">
         <Toolbar>
           <img src={Logo} alt="logo" className={classes.logo} />
           <Typography variant="h6" className={classes.title}>
