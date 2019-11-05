@@ -1,15 +1,37 @@
 import React from 'react';
-import TreeView from '@material-ui/lab/TreeView';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import TreeView, { TreeViewProps } from '@material-ui/lab/TreeView';
+import {
+  DescriptionRounded, FolderOpenRounded, FolderRounded,
+} from '@material-ui/icons';
 import { TreeItem } from '@material-ui/lab';
+import { withStyles } from '@material-ui/styles';
+import { Theme, createStyles } from '@material-ui/core';
+import { fade } from '@material-ui/core/styles';
+import { TreeItemProps } from '@material-ui/lab/TreeItem';
 import { ProtelisFile } from '../model/File';
 
 /** The FileTree view component gets contained files from props. */
-type FileTreeViewProps = {
+type FileTreeViewProps = TreeViewProps & {
   /** The files to show */
   files: Array<ProtelisFile>
 };
+
+const StyledTreeItem = withStyles(
+  (theme: Theme) => createStyles({
+    iconContainer: {
+      '& .close': {
+        opacity: 0.3,
+      },
+    },
+    group: {
+      marginLeft: 12,
+      paddingLeft: 12,
+      borderLeft: `1px dashed ${fade(theme.palette.text.primary, 0.4)}`,
+    },
+  }),
+)(
+  (props: TreeItemProps) => <TreeItem {...props} />,
+);
 
 /**
  * The function generates a TreeItem from files and folders.
@@ -25,7 +47,7 @@ function fileToItem(
   if (Array.isArray(file.content)) {
     let nid: number = nodeId;
     return (
-      <TreeItem nodeId={`${nodeId}`} label={file.name}>
+      <StyledTreeItem nodeId={`${nodeId}`} label={file.name}>
         {
           file
             .content
@@ -35,10 +57,10 @@ function fileToItem(
               return jsx;
             })
         }
-      </TreeItem>
+      </StyledTreeItem>
     );
   }
-  return <TreeItem nodeId={`${nodeId}`} label={file.name} />;
+  return <StyledTreeItem nodeId={`${nodeId}`} label={file.name} />;
 }
 
 /**
@@ -46,11 +68,13 @@ function fileToItem(
  * @param props the files to show
  */
 const FileTreeView: React.FC<FileTreeViewProps> = (props: FileTreeViewProps) => {
-  const { files } = props;
+  const { files, ...treeViewProps } = props;
   return (
     <TreeView
-      defaultCollapseIcon={<ExpandMoreIcon />}
-      defaultExpandIcon={<ChevronRightIcon />}
+      defaultEndIcon={<DescriptionRounded />}
+      defaultCollapseIcon={<FolderOpenRounded />}
+      defaultExpandIcon={<FolderRounded />}
+      {...treeViewProps}
     >
       {files.map((f) => fileToItem(f))}
     </TreeView>

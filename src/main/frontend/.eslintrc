@@ -2,5 +2,15 @@
   "extends": [
     "react-app",
     "airbnb-typescript"
-  ]
+  ],
+  "rules": {
+    "react/jsx-props-no-spreading": [
+      "warn",
+      {
+        "html": "enforce",
+        "custom": "ignore",
+        "explicitSpread": "ignore"
+      }
+    ]
+  }
 }
