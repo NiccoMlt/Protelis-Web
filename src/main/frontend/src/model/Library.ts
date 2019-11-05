@@ -1,4 +1,4 @@
-import { ProtelisFile } from "./File";
+import { ProtelisFile } from './File';
 
 export default interface ProtelisLibrary {
   name: string
