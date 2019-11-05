@@ -272,7 +272,7 @@ paths:
       summary: Add new Protelis example with given name
       description: |
         The API creates a new example with a given name
-      operationId: addLib
+      operationId: addExample
       parameters:
         - in: path
           name: name
@@ -327,7 +327,7 @@ paths:
       summary: Add new Protelis example with given name
       description: |
         The API updates an existing example from the available ones, chosen by name
-      operationId: updateLib
+      operationId: updateExample
       parameters:
         - in: path
           name: name

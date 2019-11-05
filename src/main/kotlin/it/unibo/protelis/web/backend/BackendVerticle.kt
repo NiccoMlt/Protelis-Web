@@ -23,9 +23,7 @@ class BackendVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle(
     router.route().handler(LoggerHandler.create(LoggerFormat.SHORT))
     val apiRouter: Router = OpenAPI3RouterFactory
       .createAwait(vertx, "/openapi.yaml")
-      .addHandlerByOperationId("getMessage") {
-        it.response().end("Hello React from Vert.x!")
-      }
+      // TODO
       .router
     router.mountSubRouter("/api/", apiRouter)
     router.get().handler(StaticHandler.create())
