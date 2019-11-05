@@ -2,27 +2,59 @@ import React from 'react';
 import TreeView from '@material-ui/lab/TreeView';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import TreeItem from '@material-ui/lab/TreeItem';
+import { TreeItem } from '@material-ui/lab';
+import { ProtelisFile } from '../model/File';
 
-const FileTreeView: React.FC = () => (
-  <TreeView
-    defaultCollapseIcon={<ExpandMoreIcon />}
-    defaultExpandIcon={<ChevronRightIcon />}
-  >
-    <TreeItem nodeId="1" label="Applications">
-      <TreeItem nodeId="2" label="Calendar" />
-      <TreeItem nodeId="3" label="Chrome" />
-      <TreeItem nodeId="4" label="Webstorm" />
-    </TreeItem>
-    <TreeItem nodeId="5" label="Documents">
-      <TreeItem nodeId="6" label="Material-UI">
-        <TreeItem nodeId="7" label="src">
-          <TreeItem nodeId="8" label="index.js" />
-          <TreeItem nodeId="9" label="tree-view.js" />
-        </TreeItem>
+/** The FileTree view component gets contained files from props. */
+type FileTreeViewProps = {
+  /** The files to show */
+  files: Array<ProtelisFile>
+};
+
+/**
+ * The function generates a TreeItem from files and folders.
+ * @param file the file(s) to generate items from
+ * @param nodeId the id of the node to draw
+ *
+ * @return the TreeItem(s)
+ */
+function fileToItem(
+  file: ProtelisFile,
+  nodeId: number = 1,
+): JSX.Element {
+  if (Array.isArray(file.content)) {
+    let nid: number = nodeId;
+    return (
+      <TreeItem nodeId={`${nodeId}`} label={file.name}>
+        {
+          file
+            .content
+            .map((f: ProtelisFile) => {
+              const jsx = fileToItem(f, nid);
+              nid += 1;
+              return jsx;
+            })
+        }
       </TreeItem>
-    </TreeItem>
-  </TreeView>
-);
+    );
+  }
+  return <TreeItem nodeId={`${nodeId}`} label={file.name} />;
+}
+
+/**
+ * React Function Component that draws a TreeView for a file structure.
+ * @param props the files to show
+ */
+const FileTreeView: React.FC<FileTreeViewProps> = (props: FileTreeViewProps) => {
+  const { files } = props;
+  return (
+    <TreeView
+      defaultCollapseIcon={<ExpandMoreIcon />}
+      defaultExpandIcon={<ChevronRightIcon />}
+    >
+      {files.map((f) => fileToItem(f))}
+    </TreeView>
+  );
+};
 
 export default FileTreeView;

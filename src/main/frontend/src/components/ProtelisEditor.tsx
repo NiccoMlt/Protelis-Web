@@ -19,7 +19,15 @@ const ProtelisEditor: React.FC = () => {
       <Paper className={classes.root}>
         <Grid container spacing={2}>
           <Grid item xs={6} sm={6} md={6} lg={6}>
-            <FileTreeView />
+            <FileTreeView files={[
+              { name: 'Pippo', content: 'Pippo' },
+              {
+                name: 'Folder',
+                content: [
+                  { name: 'Foo', content: 'Foo' },
+                  { name: 'Bar', content: 'Bar' }],
+              }]}
+            />
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6}>
             <Editor
