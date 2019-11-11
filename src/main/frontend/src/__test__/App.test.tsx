@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { shallow } from 'enzyme';
 import Konva from 'konva';
-import App from '../components/App';
+import App from '../app/App';
 
 describe('App component', () => {
   it('renders without crashing inside shallow', () => {

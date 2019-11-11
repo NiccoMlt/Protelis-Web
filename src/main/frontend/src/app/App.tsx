@@ -5,10 +5,10 @@ import {
 } from '@material-ui/core';
 import { ThemeProvider, Theme } from '@material-ui/core/styles';
 
-import ProtelisAppBar from './ProtelisAppBar';
-import ProtelisEditor from './editor/ProtelisEditor';
+import ProtelisAppBar from '../components/ProtelisAppBar';
+import ProtelisEditor from '../features/editor/ProtelisEditor';
 import { protelisTheme } from '../styles/theme';
-import RenderCanvas from './RenderCanvas';
+import RenderCanvas from '../components/RenderCanvas';
 
 const App: React.FC = () => {
   const prefersDarkMode: boolean = useMediaQuery('(prefers-color-scheme: dark)');
