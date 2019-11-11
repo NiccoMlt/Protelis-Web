@@ -6,7 +6,7 @@ import {
 import { ThemeProvider, Theme } from '@material-ui/core/styles';
 
 import ProtelisAppBar from './ProtelisAppBar';
-import ProtelisEditor from './ProtelisEditor';
+import ProtelisEditor from './editor/ProtelisEditor';
 import { protelisTheme } from '../styles/theme';
 import RenderCanvas from './RenderCanvas';
 

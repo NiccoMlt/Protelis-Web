@@ -8,7 +8,7 @@ import { withStyles } from '@material-ui/styles';
 import { Theme, createStyles } from '@material-ui/core';
 import { fade } from '@material-ui/core/styles';
 import { TreeItemProps } from '@material-ui/lab/TreeItem';
-import { ProtelisFile } from '../model/File';
+import { ProtelisFile } from '../../model/File';
 
 /** The FileTree view component gets contained files from props. */
 type FileTreeViewProps = TreeViewProps & {
