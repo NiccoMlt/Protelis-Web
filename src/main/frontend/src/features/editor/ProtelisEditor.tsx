@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import Editor from '@monaco-editor/react';
 import Grid from '@material-ui/core/Grid';
 import FileTreeView from './FileTreeView';
+import { ProtelisFile } from '../../model/File';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
@@ -19,18 +20,18 @@ const ProtelisEditor: React.FC = () => {
       <Paper className={classes.root}>
         <Grid container spacing={2}>
           <Grid item xs={6} sm={6} md={6} lg={6}>
-            <FileTreeView files={[
+            <FileTreeView files={new Set<ProtelisFile>([
               {
                 name: 'Folder',
-                content: [
+                content: new Set<ProtelisFile>([
                   { name: 'Foo', content: 'Foo' },
                   { name: 'Bar', content: 'Bar' },
-                  { name: 'Empty', content: [] },
-                ],
+                  { name: 'Empty', content: new Set<ProtelisFile>() },
+                ]),
               },
-              { name: 'Empty', content: [] },
+              { name: 'Empty', content: new Set<ProtelisFile>([]) },
               { name: 'Pippo', content: 'Pippo' },
-            ]}
+            ])}
             />
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6}>

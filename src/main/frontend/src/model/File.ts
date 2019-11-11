@@ -1,6 +1,6 @@
 export interface ProtelisFolder extends ProtelisFile {
   name: string
-  content: Array<ProtelisFile>
+  content: Set<ProtelisFile>
 }
 
 export interface ProtelisSourceFile extends ProtelisFile {
@@ -10,5 +10,5 @@ export interface ProtelisSourceFile extends ProtelisFile {
 
 export interface ProtelisFile {
   name: string
-  content: string | Array<ProtelisFile>
+  content: string | Set<ProtelisFile>
 }

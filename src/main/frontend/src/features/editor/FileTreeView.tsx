@@ -13,7 +13,7 @@ import { ProtelisFile } from '../../model/File';
 /** The FileTree view component gets contained files from props. */
 type FileTreeViewProps = TreeViewProps & {
   /** The files to show */
-  files: Array<ProtelisFile>
+  files: Set<ProtelisFile>
 };
 
 const StyledTreeItem = withStyles(
@@ -47,7 +47,7 @@ function fileToItem(
   if (Array.isArray(file.content)) {
     let nid: number = nodeId;
     return (
-      <StyledTreeItem nodeId={`${nodeId}`} label={file.name}>
+      <StyledTreeItem nodeId={`${nodeId}`} label={file.name} key={`${file.name}-${nodeId}`}>
         {
           file
             .content
@@ -60,7 +60,7 @@ function fileToItem(
       </StyledTreeItem>
     );
   }
-  return <StyledTreeItem nodeId={`${nodeId}`} label={file.name} />;
+  return <StyledTreeItem nodeId={`${nodeId}`} label={file.name} key={`${file.name}-${nodeId}`} />;
 }
 
 /**
@@ -76,7 +76,7 @@ const FileTreeView: React.FC<FileTreeViewProps> = (props: FileTreeViewProps) => 
       defaultExpandIcon={<FolderRounded />}
       {...treeViewProps}
     >
-      {files.map((f) => fileToItem(f))}
+      {Array.from(files).map((f) => fileToItem(f))}
     </TreeView>
   );
 };
