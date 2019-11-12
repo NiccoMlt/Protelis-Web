@@ -11,6 +11,12 @@
         "custom": "ignore",
         "explicitSpread": "ignore"
       }
+    ],
+    "no-param-reassign": [
+      "warn",
+      {
+      "props": false
+      }
     ]
   }
 }

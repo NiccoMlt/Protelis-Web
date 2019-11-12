@@ -1,3 +1,5 @@
+// TODO: refactor folder from a different type to a part of the name
+
 export interface ProtelisFolder extends ProtelisFile {
   name: string
   content: Set<ProtelisFile>
