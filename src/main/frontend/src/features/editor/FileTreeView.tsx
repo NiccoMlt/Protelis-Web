@@ -35,10 +35,10 @@ const StyledTreeItem = withStyles(
 
 /**
  * The function generates a TreeItem from files and folders.
- * @param file the file(s) to generate items from
- * @param nodeId the id of the node to draw
+ * @param file - the file(s) to generate items from
+ * @param nodeId - the id of the node to draw
  *
- * @return the TreeItem(s)
+ * @returns the TreeItem(s)
  */
 function fileToItem(
   file: ProtelisFile,
@@ -65,7 +65,7 @@ function fileToItem(
 
 /**
  * React Function Component that draws a TreeView for a file structure.
- * @param props the files to show
+ * @param props - the files to show
  */
 const FileTreeView: React.FC<FileTreeViewProps> = (props: FileTreeViewProps) => {
   const { files, ...treeViewProps } = props;

@@ -1225,6 +1225,11 @@
     prop-types "^15.7.2"
     react-is "^16.8.6"
 
+"@microsoft/tsdoc@0.12.15":
+  version "0.12.15"
+  resolved "https://registry.yarnpkg.com/@microsoft/tsdoc/-/tsdoc-0.12.15.tgz#1e4d4d133e49f527e0fdeb01c50d3b5e6196c1b9"
+  integrity sha512-m5lmb/xFsWXyXZzWGps6HR+4itbmEBecr8ec/PO/N68mLgyAOo2TPgSKgz4DV6WHhrQxflWzReNpDA6DIupdxQ==
+
 "@monaco-editor/react@^2.1.1":
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/@monaco-editor/react/-/react-2.3.0.tgz#ef1e09c408bb3119e2dc0d369b132e82b2d3ade7"
@@ -4245,6 +4250,13 @@ eslint-plugin-react@^7.16.0:
     object.values "^1.1.0"
     prop-types "^15.7.2"
     resolve "^1.12.0"
+
+eslint-plugin-tsdoc@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-tsdoc/-/eslint-plugin-tsdoc-0.1.2.tgz#e66613cea8f44b3cc45a4ea407fd4c73b6165530"
+  integrity sha512-Idsdc5k42RS+/5VxmaCChNN0zrJTeRrcfpJrpu/uZpRheIUfYTkMlEckPI5jfiG/GQzmjCfy7wSZDIEqw4uWwQ==
+  dependencies:
+    "@microsoft/tsdoc" "0.12.15"
 
 eslint-scope@^4.0.3:
   version "4.0.3"

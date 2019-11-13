@@ -3,6 +3,9 @@
     "react-app",
     "airbnb-typescript"
   ],
+  "plugins": [
+    "tsdoc"
+  ],
   "rules": {
     "react/jsx-props-no-spreading": [
       "warn",
@@ -15,8 +18,9 @@
     "no-param-reassign": [
       "warn",
       {
-      "props": false
+        "props": false
       }
-    ]
+    ],
+    "tsdoc/syntax": "warn"
   }
 }
