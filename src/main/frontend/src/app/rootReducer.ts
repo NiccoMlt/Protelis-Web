@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux-starter-kit';
+import { combineReducers } from '@reduxjs/toolkit';
 
 const rootReducer = combineReducers({}); // TODO: we don't have any slices yet
 
