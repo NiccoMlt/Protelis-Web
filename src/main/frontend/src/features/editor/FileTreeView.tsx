@@ -1,14 +1,12 @@
 import React from 'react';
 import TreeView, { TreeViewProps } from '@material-ui/lab/TreeView';
 import {
-  DescriptionRounded, FolderOpenRounded, FolderRounded,
+  DescriptionRounded,
+  FolderOpenRounded,
+  FolderRounded,
 } from '@material-ui/icons';
-import { TreeItem } from '@material-ui/lab';
-import { withStyles } from '@material-ui/styles';
-import { Theme, createStyles } from '@material-ui/core';
-import { fade } from '@material-ui/core/styles';
-import { TreeItemProps } from '@material-ui/lab/TreeItem';
 import { ProtelisFile } from '../../model/File';
+import { FileTreeItem } from './FileTreeItem';
 
 /** The FileTree view component gets contained files from props. */
 type FileTreeViewProps = TreeViewProps & {
@@ -16,59 +14,44 @@ type FileTreeViewProps = TreeViewProps & {
   files: Set<ProtelisFile>
 };
 
-const StyledTreeItem = withStyles(
-  (theme: Theme) => createStyles({
-    iconContainer: {
-      '& .close': {
-        opacity: 0.3,
-      },
-    },
-    group: {
-      marginLeft: 12,
-      paddingLeft: 12,
-      borderLeft: `1px dashed ${fade(theme.palette.text.primary, 0.4)}`,
-    },
-  }),
-)(
-  (props: TreeItemProps) => <TreeItem {...props} />,
-);
-
-/**
- * The function generates a TreeItem from files and folders.
- * @param file - the file(s) to generate items from
- * @param nodeId - the id of the node to draw
- *
- * @returns the TreeItem(s)
- */
-function fileToItem(
-  file: ProtelisFile,
-  nodeId: number = 1,
-): JSX.Element {
-  if (Array.isArray(file.content)) {
-    let nid: number = nodeId;
-    return (
-      <StyledTreeItem nodeId={`${nodeId}`} label={file.name} key={`${file.name}-${nodeId}`}>
-        {
-          file
-            .content
-            .map((f: ProtelisFile) => {
-              const jsx = fileToItem(f, nid);
-              nid += 1;
-              return jsx;
-            })
-        }
-      </StyledTreeItem>
-    );
-  }
-  return <StyledTreeItem nodeId={`${nodeId}`} label={file.name} key={`${file.name}-${nodeId}`} />;
-}
-
 /**
  * React Function Component that draws a TreeView for a file structure.
- * @param props - the files to show
+ * @param props - includes the files to show and the standard TreeView props
  */
 const FileTreeView: React.FC<FileTreeViewProps> = (props: FileTreeViewProps) => {
   const { files, ...treeViewProps } = props;
+
+  /**
+   * The function generates a TreeItem from files and folders.
+   * @param file - the file(s) to generate items from
+   * @param nodeId - the id of the node to draw
+   *
+   * @returns the TreeItem(s)
+   */
+  function fileToItem(
+    file: ProtelisFile,
+    basePath: string = '',
+    nodeId: number = 0,
+  ): JSX.Element {
+    const newBasePath = `${basePath}/${file.name}`;
+    if (Array.isArray(file.content)) {
+      let nid: number = nodeId;
+      return (
+        <FileTreeItem filePath={newBasePath} nodeId={`${nodeId}`} label={file.name} key={`${file.name}-${nodeId}`}>
+          {
+            Array.from(file.content)
+              .map((f: ProtelisFile) => {
+                const jsx = fileToItem(f, newBasePath, nid);
+                nid += 1;
+                return jsx;
+              })
+          }
+        </FileTreeItem>
+      );
+    }
+    return <FileTreeItem filePath={newBasePath} nodeId={`${nodeId}`} label={file.name} key={`${newBasePath}-${nodeId}`} />;
+  }
+
   return (
     <TreeView
       defaultEndIcon={<DescriptionRounded />}
