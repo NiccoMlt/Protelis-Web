@@ -26,10 +26,19 @@ const editorSlice = createSlice({
     openFile(state, action: PayloadAction<ProtelisSourceFile>) {
       state.open = action.payload;
     },
-    // TODO: add actions after the model is refactored
+    closeFile(state, action: PayloadAction<ProtelisSourceFile>) {
+      if (state.open === action.payload) {
+        state.open = null;
+      }
+    },
   },
 });
 
-export const { openFile } = editorSlice.actions;
+/**
+ * @param openFile - action dispatched when a file is selected to be opened
+ * @param closeFile - action dispatched when a file is closed
+ */
+export const { openFile, closeFile } = editorSlice.actions;
 
+/** Reducer from the Redux slice of the editor. */
 export default editorSlice.reducer;
