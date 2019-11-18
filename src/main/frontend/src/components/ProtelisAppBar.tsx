@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
+/** This React function component models a TopAppBar that acts as a website nav bar. */
 const ProtelisAppBar: React.FC = () => {
   const classes = useStyles();
 
