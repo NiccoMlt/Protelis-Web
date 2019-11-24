@@ -23,7 +23,7 @@ export type ProtelisFile = ProtelisFolder | ProtelisSourceFile;
  * @returns the new root Set without the file to be removed
  */
 export function removeFileAtPath(fileSet: Set<ProtelisFile>, filePath: string): Set<ProtelisFile> {
-  const folders: string[] = filePath.split('/');
+  const folders: string[] = filePath.split('/').filter((s) => s.trim() !== '');
   if (folders.length < 1 /* || folders[0].trim.length === 0 */) {
     throw new Error('Invalid file path specified');
   } else if (folders.length === 1) {
@@ -60,7 +60,7 @@ export function renameFileAtPath(
   filePath: string,
   newName: string,
 ): Set<ProtelisFile> {
-  const folders: string[] = filePath.split('/');
+  const folders: string[] = filePath.split('/').filter((s) => s.trim() !== '');
   if (folders.length < 1 /* || folders[0].trim.length === 0 */) {
     throw new Error('Invalid file path specified');
   } else if (folders.length === 1) {

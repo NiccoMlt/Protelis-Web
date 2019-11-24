@@ -11,7 +11,7 @@ describe('File utils', () => {
     const set: Set<ProtelisFile> = new Set();
     set.add(dummyFile);
     set.add(dummyFolder);
-    const newSet: Set<ProtelisFile> = renameFileAtPath(set, dummyFile.name, newName);
+    const newSet: Set<ProtelisFile> = renameFileAtPath(set, `/${dummyFile.name}`, newName);
     expect(newSet.size).toEqual(set.size);
     expect(Array
       .from(newSet)
@@ -23,7 +23,7 @@ describe('File utils', () => {
     const set: Set<ProtelisFile> = new Set();
     set.add(dummyFile);
     set.add(dummyFolder);
-    const newSet: Set<ProtelisFile> = renameFileAtPath(set, dummyFolder.name, newName);
+    const newSet: Set<ProtelisFile> = renameFileAtPath(set, `/${dummyFolder.name}`, newName);
     expect(newSet.size).toEqual(set.size);
     expect(Array
       .from(newSet)
@@ -37,7 +37,7 @@ describe('File utils', () => {
     const set: Set<ProtelisFile> = new Set();
     set.add(dummyFile);
     set.add(dummyFolder);
-    const newSet: Set<ProtelisFile> = removeFileAtPath(set, dummyFile.name);
+    const newSet: Set<ProtelisFile> = removeFileAtPath(set, `/${dummyFile.name}`);
     expect(Array
       .from(newSet)
       .find((value) => value.name === dummyFile.name))
@@ -48,7 +48,7 @@ describe('File utils', () => {
     const set: Set<ProtelisFile> = new Set();
     set.add(dummyFile);
     set.add(dummyFolder);
-    const newSet: Set<ProtelisFile> = removeFileAtPath(set, dummyFolder.name);
+    const newSet: Set<ProtelisFile> = removeFileAtPath(set, `/${dummyFolder.name}`);
     expect(Array
       .from(newSet)
       .find((value) => value.name === dummyFolder.name))
@@ -64,7 +64,7 @@ describe('File utils', () => {
     const set: Set<ProtelisFile> = new Set();
     set.add(dummyFile);
     set.add(folder);
-    const newSet: Set<ProtelisFile> = renameFileAtPath(set, `${folderName}/${dummyFile.name}`, newName);
+    const newSet: Set<ProtelisFile> = renameFileAtPath(set, `/${folderName}/${dummyFile.name}`, newName);
     expect(newSet.size).toEqual(set.size);
     const newFolder: ProtelisFolder | undefined = Array
       .from(newSet)
@@ -85,7 +85,7 @@ describe('File utils', () => {
     const set: Set<ProtelisFile> = new Set();
     set.add(dummyFile);
     set.add(folder);
-    const newSet: Set<ProtelisFile> = renameFileAtPath(set, `${folderName}/${dummyFolder.name}`, newName);
+    const newSet: Set<ProtelisFile> = renameFileAtPath(set, `/${folderName}/${dummyFolder.name}`, newName);
     expect(newSet.size).toEqual(set.size);
     const newFolder: ProtelisFolder | undefined = Array
       .from(newSet)
@@ -106,7 +106,7 @@ describe('File utils', () => {
     const set: Set<ProtelisFile> = new Set();
     set.add(dummyFile);
     set.add(folder);
-    const newSet: Set<ProtelisFile> = removeFileAtPath(set, `${folderName}/${dummyFile.name}`);
+    const newSet: Set<ProtelisFile> = removeFileAtPath(set, `/${folderName}/${dummyFile.name}`);
     expect(newSet.size).toEqual(set.size);
     const newFolder: ProtelisFolder | undefined = Array
       .from(newSet)
@@ -127,7 +127,7 @@ describe('File utils', () => {
     const set: Set<ProtelisFile> = new Set();
     set.add(dummyFile);
     set.add(folder);
-    const newSet: Set<ProtelisFile> = removeFileAtPath(set, `${folderName}/${dummyFolder.name}`);
+    const newSet: Set<ProtelisFile> = removeFileAtPath(set, `/${folderName}/${dummyFolder.name}`);
     expect(newSet.size).toEqual(set.size);
     const newFolder: ProtelisFolder | undefined = Array
       .from(newSet)
@@ -148,7 +148,7 @@ describe('File utils', () => {
     const set: Set<ProtelisFile> = new Set();
     set.add(dummyFile);
     set.add(folder);
-    const notExistent = `${dummyFile.name}/${dummyFile.name}`;
+    const notExistent = `/${dummyFile.name}/${dummyFile.name}`;
     expect(() => removeFileAtPath(set, notExistent)).toThrow();
     expect(() => renameFileAtPath(set, notExistent, newName)).toThrow();
   });
