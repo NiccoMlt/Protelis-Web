@@ -16,7 +16,7 @@ export type ProtelisSourceFile = {
 export type ProtelisFile = ProtelisFolder | ProtelisSourceFile;
 
 /**
- * The function removes a file at a path (if present) from a Set of files and folders
+ * The function removes a file/folder at a path (if present) from a Set of files and folders
  * @param fileSet - the set of files and folders that acts as a root
  * @param filePath - the full path of the file to remove
  *
@@ -47,8 +47,18 @@ export function removeFileAtPath(fileSet: Set<ProtelisFile>, filePath: string): 
     }));
 }
 
+/**
+ * The function renames a file/folder at a path (if present) from a Set of files and folders
+ * @param fileSet - the set of files and folders that acts as a root
+ * @param filePath - the full path of the file to rename
+ * @param newName - the new name
+ *
+ * @returns the new root Set without the file to be renamed
+ */
 export function renameFileAtPath(
-  fileSet: Set<ProtelisFile>, filePath: string, newName: string,
+  fileSet: Set<ProtelisFile>,
+  filePath: string,
+  newName: string,
 ): Set<ProtelisFile> {
   const folders: string[] = filePath.split('/');
   if (folders.length < 1 /* || folders[0].trim.length === 0 */) {
