@@ -1,0 +1,32 @@
+@startuml "Use cases"
+
+title Protelis Web frontend use cases
+
+:User: as user
+
+:Newbie Protelis dev: as noob
+noob -up-|> user
+
+:Skilled Protelis dev: as pro
+pro -up-|> user
+
+rectangle {
+  (Edit examples) as edit
+  (Run examples) as run
+  (Write their own source code) as write
+  (Create multiple files) as create
+  (Upload source files) as upload
+  edit -[hidden]-> run
+  run -[hidden]-> write
+  write -[hidden]-> create
+  create -[hidden]-> upload
+}
+
+noob -left-> edit
+noob -left-> run
+
+pro -left-> write
+pro -left-> create
+pro -left-> upload
+
+@enduml
