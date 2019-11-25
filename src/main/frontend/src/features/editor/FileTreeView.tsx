@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TreeView, { TreeViewProps } from '@material-ui/lab/TreeView';
 import {
   DescriptionRounded,
   FolderOpenRounded,
   FolderRounded,
 } from '@material-ui/icons';
-import { ProtelisFile } from '../../model/File';
+import { ProtelisFile, removeFileAtPath } from '../../model/File';
 import { FileTreeItem } from './FileTreeItem';
 
 /** The FileTree view component gets contained files from props. */
@@ -20,6 +20,18 @@ type FileTreeViewProps = TreeViewProps & {
  */
 const FileTreeView: React.FC<FileTreeViewProps> = (props: FileTreeViewProps) => {
   const { files, ...treeViewProps } = props;
+
+  // TODO
+  const [filesState, setFiles] = useState(files);
+
+  // TODO
+  // function handleFileRename(fileSet: Set<ProtelisFile>, filePath: string): Set<ProtelisFile> {
+  //   setFiles(renameFileAtPath(filePath));
+  // }
+
+  function handleFileDelete(filePath: string): void {
+    setFiles(removeFileAtPath(filesState, filePath));
+  }
 
   /**
    * The function generates a TreeItem from files and folders.
@@ -37,9 +49,10 @@ const FileTreeView: React.FC<FileTreeViewProps> = (props: FileTreeViewProps) => 
     if (Array.isArray(file.content)) {
       let nid: number = nodeId;
       return (
-        <FileTreeItem filePath={newBasePath} nodeId={`${nodeId}`} label={file.name} key={`${file.name}-${nodeId}`}>
+        <FileTreeItem filePath={newBasePath} nodeId={`${nodeId}`} label={file.name} key={`${file.name}-${nodeId}`} onFileSelected={() => /* console.log('selected') */ {}} deleteFile={handleFileDelete} renameFile={() => /* console.log('rename') */ {}}>
           {
-            Array.from(file.content)
+            Array
+              .from(file.content)
               .map((f: ProtelisFile) => {
                 const jsx = fileToItem(f, newBasePath, nid);
                 nid += 1;
@@ -49,7 +62,7 @@ const FileTreeView: React.FC<FileTreeViewProps> = (props: FileTreeViewProps) => 
         </FileTreeItem>
       );
     }
-    return <FileTreeItem filePath={newBasePath} nodeId={`${nodeId}`} label={file.name} key={`${newBasePath}-${nodeId}`} />;
+    return <FileTreeItem filePath={newBasePath} nodeId={`${nodeId}`} label={file.name} key={`${newBasePath}-${nodeId}`} onFileSelected={() => /* console.log('selected') */ {}} deleteFile={handleFileDelete} renameFile={() => /* console.log('rename') */ {}} />;
   }
 
   return (
@@ -59,7 +72,7 @@ const FileTreeView: React.FC<FileTreeViewProps> = (props: FileTreeViewProps) => 
       defaultExpandIcon={<FolderRounded />}
       {...treeViewProps}
     >
-      {Array.from(files).map((f) => fileToItem(f))}
+      {Array.from(filesState).map((f) => fileToItem(f))}
     </TreeView>
   );
 };

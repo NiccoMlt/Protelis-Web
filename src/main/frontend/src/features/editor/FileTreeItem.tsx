@@ -1,7 +1,7 @@
 import React from 'react';
 import Menu from '@material-ui/core/Menu';
 import { withStyles } from '@material-ui/styles';
-import { Theme, createStyles } from '@material-ui/core';
+import { Theme, createStyles, ClickAwayListener } from '@material-ui/core';
 import { fade } from '@material-ui/core/styles';
 import TreeItem, { TreeItemProps } from '@material-ui/lab/TreeItem';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -17,10 +17,15 @@ const initialState: MenuPosition = {
   mouseY: null,
 };
 
+type HandleFile = (filePath: string) => void;
+
 /** The FileTreeItem view component gets contained file path from props. */
 type FileTreeItemProps = TreeItemProps & {
   /** The full path of the file in the item */
   filePath: string,
+  onFileSelected: HandleFile,
+  renameFile: HandleFile,
+  deleteFile: HandleFile
 };
 
 /** Wrap Material-UI TreeItem with CSS-in-JS style using an Higher-Order-Component. */
@@ -44,39 +49,49 @@ const StyledTreeItem = withStyles(
 export const FileTreeItem: React.FC<FileTreeItemProps> = (props: FileTreeItemProps) => {
   const [state, setState] = React.useState<MenuPosition>(initialState);
 
+  const {
+    filePath,
+    onFileSelected, // TODO
+    deleteFile, // TODO
+    renameFile, // TODO
+    ...treeItemProps
+  } = props;
+
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
     setState({
       mouseX: event.clientX - 2,
       mouseY: event.clientY - 4,
     });
+    onFileSelected(filePath);
   };
 
-  const { filePath, ...treeItemProps } = props;
-
-  const handleClose = () => {
-    console.log(`${filePath} clicked`);
+  const handleClose = (handleSelected: HandleFile) => {
+    handleSelected(filePath);
     setState(initialState);
   };
 
   return (
-    <div onContextMenu={handleClick} style={{ cursor: 'context-menu' }}>
-      <StyledTreeItem {...treeItemProps} />
-      <Menu
-        keepMounted
-        open={state.mouseY !== null}
-        onClose={handleClose}
-        anchorReference="anchorPosition"
-        anchorPosition={
-          state.mouseY !== null && state.mouseX !== null
-            ? { top: state.mouseY, left: state.mouseX }
-            : undefined
-        }
-      >
-        <MenuItem onClick={handleClose}>Rename</MenuItem>
-        <MenuItem onClick={handleClose}>Delete</MenuItem>
-      </Menu>
-    </div>
+    <ClickAwayListener onClickAway={() => setState(initialState)}>
+      <div onContextMenu={handleClick} style={{ cursor: 'context-menu' }}>
+        <StyledTreeItem {...treeItemProps} />
+        <Menu
+          keepMounted
+          open={state.mouseY !== null}
+          onClose={handleClose}
+          anchorReference="anchorPosition"
+          anchorPosition={
+            state.mouseY !== null && state.mouseX !== null
+              ? { top: state.mouseY, left: state.mouseX }
+              : undefined
+          }
+        >
+          {/* // TODO: change close action */}
+          <MenuItem onClick={() => handleClose(renameFile)}>Rename</MenuItem>
+          <MenuItem onClick={() => handleClose(deleteFile)}>Delete</MenuItem>
+        </Menu>
+      </div>
+    </ClickAwayListener>
   );
 };
 
