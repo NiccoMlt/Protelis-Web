@@ -20,4 +20,12 @@ the tool checks code compliance to an [Airbnb React/Javascript code style](https
 
 The frontend project is built and checked with the (root) backend project by Travis CI on latest NodeJS LTS version.
 
-<!-- TODO --> <!-- ## Patterns and Frameworks -->
+## Patterns and Frameworks
+
+The frontend application is written with React and wants to fit the best practices of the library.
+
+[![Facebook Flux data flow](https://raw.githubusercontent.com/facebook/flux/master/img/flux-diagram-white-background.png)](https://github.com/facebook/flux)
+
+The application adopts the Flux pattern to manage the state and makes use of Redux library to do that; it uses one single store split in slices.
+
+<!-- TODO --> <!-- ### Store -->
