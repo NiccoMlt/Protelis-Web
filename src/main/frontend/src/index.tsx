@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 import store from './app/store';
 
-const render = () => {
+const render = (): void => {
   /* eslint-disable-next-line global-require */ /* require needed for Hot-Module-Reload */
   const App = require('./app/App').default;
 

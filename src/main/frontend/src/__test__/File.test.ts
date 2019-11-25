@@ -5,7 +5,7 @@ import {
 describe('File utils', () => {
   const dummyFolder: ProtelisFolder = { name: 'folder', content: new Set() };
   const dummyFile: ProtelisSourceFile = { name: 'foo', content: 'bar' };
-  const newName: string = 'bar';
+  const newName = 'bar';
 
   it('can rename a top level file', () => {
     const set: Set<ProtelisFile> = new Set();
@@ -59,7 +59,7 @@ describe('File utils', () => {
     const folderSet: Set<ProtelisFile> = new Set();
     folderSet.add(dummyFile);
     folderSet.add(dummyFolder);
-    const folderName: string = 'Folder2';
+    const folderName = 'Folder2';
     const folder: ProtelisFolder = { name: folderName, content: folderSet };
     const set: Set<ProtelisFile> = new Set();
     set.add(dummyFile);
@@ -80,7 +80,7 @@ describe('File utils', () => {
     const folderSet: Set<ProtelisFile> = new Set();
     folderSet.add(dummyFile);
     folderSet.add(dummyFolder);
-    const folderName: string = 'Folder2';
+    const folderName = 'Folder2';
     const folder: ProtelisFolder = { name: folderName, content: folderSet };
     const set: Set<ProtelisFile> = new Set();
     set.add(dummyFile);
@@ -101,7 +101,7 @@ describe('File utils', () => {
     const folderSet: Set<ProtelisFile> = new Set();
     folderSet.add(dummyFile);
     folderSet.add(dummyFolder);
-    const folderName: string = 'Folder2';
+    const folderName = 'Folder2';
     const folder: ProtelisFolder = { name: folderName, content: folderSet };
     const set: Set<ProtelisFile> = new Set();
     set.add(dummyFile);
@@ -122,7 +122,7 @@ describe('File utils', () => {
     const folderSet: Set<ProtelisFile> = new Set();
     folderSet.add(dummyFile);
     folderSet.add(dummyFolder);
-    const folderName: string = 'Folder2';
+    const folderName = 'Folder2';
     const folder: ProtelisFolder = { name: folderName, content: folderSet };
     const set: Set<ProtelisFile> = new Set();
     set.add(dummyFile);
@@ -143,7 +143,7 @@ describe('File utils', () => {
     const folderSet: Set<ProtelisFile> = new Set();
     folderSet.add(dummyFile);
     folderSet.add(dummyFolder);
-    const folderName: string = 'Folder2';
+    const folderName = 'Folder2';
     const folder: ProtelisFolder = { name: folderName, content: folderSet };
     const set: Set<ProtelisFile> = new Set();
     set.add(dummyFile);

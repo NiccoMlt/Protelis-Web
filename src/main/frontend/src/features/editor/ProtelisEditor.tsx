@@ -24,8 +24,8 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 }));
 
 type ProtelisEditorState = {
-  files: Set<ProtelisSourceFile>
-  open: ProtelisSourceFile | null
+  files: Set<ProtelisSourceFile>;
+  open: ProtelisSourceFile | null;
 };
 
 const ProtelisEditor: React.FC = () => {
@@ -40,7 +40,7 @@ const ProtelisEditor: React.FC = () => {
 
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
-  const onDialogClose = (value: string | null) => {
+  function onDialogClose(value: string | null): void {
     setDialogOpen(false);
     if (value) {
       setState({
@@ -48,7 +48,7 @@ const ProtelisEditor: React.FC = () => {
         open,
       });
     }
-  };
+  }
 
   return (
     <Paper className={classes.root}>
@@ -80,7 +80,7 @@ const ProtelisEditor: React.FC = () => {
               variant="contained"
               color="primary"
               component="span"
-              onClick={() => { setDialogOpen(true); }}
+              onClick={(): void => { setDialogOpen(true); }}
             >
               Add
             </Button>

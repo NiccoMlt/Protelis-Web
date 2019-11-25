@@ -8,8 +8,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 /** Model the position of the mouse cursor to open context menu. */
 type MenuPosition = {
-  mouseX: null | number,
-  mouseY: null | number,
+  mouseX: null | number;
+  mouseY: null | number;
 };
 
 const initialState: MenuPosition = {
@@ -22,10 +22,10 @@ type HandleFile = (filePath: string) => void;
 /** The FileTreeItem view component gets contained file path from props. */
 type FileTreeItemProps = TreeItemProps & {
   /** The full path of the file in the item */
-  filePath: string,
-  onFileSelected: HandleFile,
-  renameFile: HandleFile,
-  deleteFile: HandleFile
+  filePath: string;
+  onFileSelected: HandleFile;
+  renameFile: HandleFile;
+  deleteFile: HandleFile;
 };
 
 /** Wrap Material-UI TreeItem with CSS-in-JS style using an Higher-Order-Component. */
@@ -57,22 +57,22 @@ export const FileTreeItem: React.FC<FileTreeItemProps> = (props: FileTreeItemPro
     ...treeItemProps
   } = props;
 
-  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+  function handleClick(event: React.MouseEvent<HTMLDivElement>): void {
     event.preventDefault();
     setState({
       mouseX: event.clientX - 2,
       mouseY: event.clientY - 4,
     });
     onFileSelected(filePath);
-  };
+  }
 
-  const handleClose = (handleSelected: HandleFile) => {
+  function handleClose(handleSelected: HandleFile): void {
     handleSelected(filePath);
     setState(initialState);
-  };
+  }
 
   return (
-    <ClickAwayListener onClickAway={() => setState(initialState)}>
+    <ClickAwayListener onClickAway={(): void => setState(initialState)}>
       <div onContextMenu={handleClick} style={{ cursor: 'context-menu' }}>
         <StyledTreeItem {...treeItemProps} />
         <Menu
@@ -87,8 +87,8 @@ export const FileTreeItem: React.FC<FileTreeItemProps> = (props: FileTreeItemPro
           }
         >
           {/* // TODO: change close action */}
-          <MenuItem onClick={() => handleClose(renameFile)}>Rename</MenuItem>
-          <MenuItem onClick={() => handleClose(deleteFile)}>Delete</MenuItem>
+          <MenuItem onClick={(): void => handleClose(renameFile)}>Rename</MenuItem>
+          <MenuItem onClick={(): void => handleClose(deleteFile)}>Delete</MenuItem>
         </Menu>
       </div>
     </ClickAwayListener>

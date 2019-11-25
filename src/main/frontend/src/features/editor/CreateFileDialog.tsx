@@ -5,8 +5,8 @@ import Dialog, { DialogProps } from '@material-ui/core/Dialog';
 import { DialogContent, TextField, DialogActions } from '@material-ui/core';
 
 type CreateFileProps = {
-  name: string
-  onDialogClose: (value: string | null) => void
+  name: string;
+  onDialogClose: (value: string | null) => void;
 };
 
 export type CreateFileDialogProps = CreateFileProps & DialogProps & { open: boolean };
@@ -20,19 +20,19 @@ export const CreateFileDialog: React.FC<CreateFileDialogProps> = (props: CreateF
 
   const validState: () => boolean = () => !!state && state.trim() !== '';
 
-  const accept = () => {
+  function accept(): void {
     onDialogClose(state);
     setState(name);
-  };
+  }
 
-  const close = () => {
+  function close(): void {
     onDialogClose(null);
     setState(name);
-  };
+  }
 
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  function handleNameChange(event: React.ChangeEvent<HTMLInputElement>): void {
     setState(event.target.value.trim());
-  };
+  }
 
   return (
     <Dialog onClose={close} aria-labelledby="create-file-dialog-title" open={open} {...dialogProps}>
@@ -52,7 +52,7 @@ export const CreateFileDialog: React.FC<CreateFileDialogProps> = (props: CreateF
       </DialogContent>
       <DialogActions>
         <Button onClick={close} color="primary">Cancel</Button>
-        <Button onClick={() => (validState() ? accept() : close())} color="primary" disabled={!validState()}>Create</Button>
+        <Button onClick={(): void => (validState() ? accept() : close())} color="primary" disabled={!validState()}>Create</Button>
       </DialogActions>
     </Dialog>
   );

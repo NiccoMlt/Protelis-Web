@@ -12,6 +12,7 @@ describe('App component', () => {
   });
 
   it('renders without crashing', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (Konva as any).isBrowser = false; // Needed by React default node environment
     // https://github.com/konvajs/react-konva/issues/270#issuecomment-431114761
     const div = document.createElement('div');

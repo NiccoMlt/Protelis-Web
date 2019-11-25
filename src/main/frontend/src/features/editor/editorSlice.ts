@@ -3,12 +3,12 @@ import { ProtelisFile, ProtelisSourceFile } from '../../model/File';
 
 /** This partial state is related to the TreeView of the editor block. */
 interface FileTreeState {
-  files: Set<ProtelisFile>
+  files: Set<ProtelisFile>;
 }
 
 /** This partial state is related to the TextArea of the editor block. */
 interface EditorState {
-  open: ProtelisSourceFile | null
+  open: ProtelisSourceFile | null;
 }
 
 /** State type of the Protelis editor block. */
@@ -23,10 +23,10 @@ const editorSlice = createSlice({
   name: 'editor',
   initialState,
   reducers: {
-    openFile(state, action: PayloadAction<ProtelisSourceFile>) {
+    openFile(state, action: PayloadAction<ProtelisSourceFile>): void {
       state.open = action.payload;
     },
-    closeFile(state, action: PayloadAction<ProtelisSourceFile>) {
+    closeFile(state, action: PayloadAction<ProtelisSourceFile>): void {
       if (state.open === action.payload) {
         state.open = null;
       }

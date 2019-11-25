@@ -11,7 +11,7 @@ import { FileTreeItem } from './FileTreeItem';
 /** The FileTree view component gets contained files from props. */
 type FileTreeViewProps = TreeViewProps & {
   /** The files to show */
-  files: Set<ProtelisFile>
+  files: Set<ProtelisFile>;
 };
 
 /**
@@ -42,14 +42,22 @@ const FileTreeView: React.FC<FileTreeViewProps> = (props: FileTreeViewProps) => 
    */
   function fileToItem(
     file: ProtelisFile,
-    basePath: string = '',
-    nodeId: number = 0,
+    basePath = '',
+    nodeId = 0,
   ): JSX.Element {
     const newBasePath = `${basePath}/${file.name}`;
     if (Array.isArray(file.content)) {
       let nid: number = nodeId;
       return (
-        <FileTreeItem filePath={newBasePath} nodeId={`${nodeId}`} label={file.name} key={`${file.name}-${nodeId}`} onFileSelected={() => /* console.log('selected') */ {}} deleteFile={handleFileDelete} renameFile={() => /* console.log('rename') */ {}}>
+        <FileTreeItem
+          filePath={newBasePath}
+          nodeId={`${nodeId}`}
+          label={file.name}
+          key={`${file.name}-${nodeId}`}
+          onFileSelected={(): void => /* console.log('selected') */ {}}
+          deleteFile={handleFileDelete}
+          renameFile={(): void => /* console.log('rename') */ {}}
+        >
           {
             Array
               .from(file.content)
@@ -62,7 +70,17 @@ const FileTreeView: React.FC<FileTreeViewProps> = (props: FileTreeViewProps) => 
         </FileTreeItem>
       );
     }
-    return <FileTreeItem filePath={newBasePath} nodeId={`${nodeId}`} label={file.name} key={`${newBasePath}-${nodeId}`} onFileSelected={() => /* console.log('selected') */ {}} deleteFile={handleFileDelete} renameFile={() => /* console.log('rename') */ {}} />;
+    return (
+      <FileTreeItem
+        filePath={newBasePath}
+        nodeId={`${nodeId}`}
+        label={file.name}
+        key={`${newBasePath}-${nodeId}`}
+        onFileSelected={(): void => /* console.log('selected') */ {}}
+        deleteFile={handleFileDelete}
+        renameFile={(): void => /* console.log('rename') */ {}}
+      />
+    );
   }
 
   return (
