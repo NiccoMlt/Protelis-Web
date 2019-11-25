@@ -1,11 +1,18 @@
 import {
-  ProtelisFile, renameFileAtPath, ProtelisFolder, ProtelisSourceFile, removeFileAtPath,
+  ProtelisFile, ProtelisFolder, ProtelisSourceFile,
+  renameFileAtPath, removeFileAtPath, getFileAtPath, getSourceFileAtPath, getFolderAtPath,
 } from '../model/File';
 
 describe('File utils', () => {
-  const dummyFolder: ProtelisFolder = { name: 'folder', content: new Set() };
-  const dummyFile: ProtelisSourceFile = { name: 'foo', content: 'bar' };
-  const newName = 'bar';
+  let dummyFolder: ProtelisFolder = { name: 'folder', content: new Set() };
+  let dummyFile: ProtelisSourceFile = { name: 'foo', content: 'bar' };
+  let newName = 'bar';
+
+  beforeEach(() => {
+    dummyFolder = { name: 'folder', content: new Set() };
+    dummyFile = { name: 'foo', content: 'bar' };
+    newName = 'bar';
+  });
 
   it('can rename a top level file', () => {
     const set: Set<ProtelisFile> = new Set();
@@ -137,6 +144,33 @@ describe('File utils', () => {
       .from((newFolder as ProtelisFolder).content)
       .find((value) => value.name === dummyFolder.name))
       .toBeUndefined();
+  });
+
+  it('can open a top-level file', () => {
+    const folderSet: Set<ProtelisFile> = new Set();
+    folderSet.add(dummyFolder);
+    folderSet.add(dummyFile);
+    expect(getSourceFileAtPath(folderSet, dummyFile.name)).toEqual(dummyFile);
+  });
+
+  it('can open a top-level folder', () => {
+    const folderSet: Set<ProtelisFile> = new Set();
+    folderSet.add(dummyFile);
+    const folder: ProtelisFolder = { name: dummyFolder.name, content: new Set([dummyFile]) };
+    folderSet.add(folder);
+    const result = getFolderAtPath(folderSet, folder.name);
+    expect(result).not.toEqual(dummyFolder);
+    expect(result.name).toEqual(folder.name);
+    expect(result.content).toEqual(folder.content);
+  });
+
+  it('can open a nested file', () => {
+    const folderSet: Set<ProtelisFile> = new Set();
+    folderSet.add(dummyFile);
+    const folder: ProtelisFolder = { name: dummyFolder.name, content: new Set([dummyFile]) };
+    folderSet.add(folder);
+    const result = getFileAtPath(folderSet, `/${folder.name}/${dummyFile.name}`);
+    expect(result).toEqual(dummyFile);
   });
 
   it('fails in case of invalid name', () => {
