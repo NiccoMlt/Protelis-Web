@@ -62,6 +62,7 @@ const ProtelisEditor: React.FC = () => {
                 className={classes.input}
                 id="contained-button-file"
                 type="file"
+                disabled
               />
               <Button
                 variant="contained"
