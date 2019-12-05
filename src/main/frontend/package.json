@@ -2,6 +2,14 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "Niccolò Maltoni",
+    "email": "niccolo.maltoni@studio.unibo.it",
+    "url": "https://github.com/NiccoMlt"
+  },
+  "homepage": "https://github.com/NiccoMlt/Protelis-Web",
+  "repository": "https://github.com/NiccoMlt/Protelis-Web/tree/master/src/main/frontend",
+  "license": "GPL-3.0-only",
   "dependencies": {
     "@material-ui/core": "^4.7.1",
     "@material-ui/icons": "^4.5.1",
