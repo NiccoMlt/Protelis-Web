@@ -88,10 +88,18 @@ export function renameFileAtPath(
     }));
 }
 
+/**
+ * Search a file in the set at a given path.
+ *
+ * @param fileSet - the set of files and folders that acts as a root
+ * @param filePath - the full path of the file to search
+ *
+ * @returns the file, if any
+ */
 export function getFileAtPath(
   fileSet: Set<ProtelisFile>,
   filePath: string,
-): ProtelisFile {
+): ProtelisFile | never {
   const folders: string[] = filePath.split('/').filter((s) => s.trim() !== '');
   if (folders.length < 1 /* || folders[0].trim.length === 0 */) {
     throw new Error('Invalid file path specified');
@@ -109,10 +117,18 @@ export function getFileAtPath(
   }
 }
 
+/**
+ * Search a source file in the set at a given path.
+ *
+ * @param fileSet - the set of files and folders that acts as a root
+ * @param filePath - the full path of the file to search
+ *
+ * @returns the source file, if exists and is not a folder
+ */
 export function getSourceFileAtPath(
   fileSet: Set<ProtelisFile>,
   filePath: string,
-): ProtelisSourceFile {
+): ProtelisSourceFile | never {
   const file = getFileAtPath(fileSet, filePath);
   if (typeof file.content === 'string') {
     return file as ProtelisSourceFile;
@@ -120,6 +136,14 @@ export function getSourceFileAtPath(
   throw new Error('Not a source file');
 }
 
+/**
+ * Search a folder in the set at a given path.
+ *
+ * @param fileSet - the set of files and folders that acts as a root
+ * @param filePath - the full path of the folder to search
+ *
+ * @returns the folder, if exists and is not a source file
+ */
 export function getFolderAtPath(
   fileSet: Set<ProtelisFile>,
   filePath: string,
