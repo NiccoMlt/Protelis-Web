@@ -173,6 +173,18 @@ describe('File utils', () => {
     expect(result).toEqual(dummyFile);
   });
 
+  it('can open a nested folder', () => {
+    const folderSet: Set<ProtelisFile> = new Set();
+    folderSet.add(dummyFile);
+    const folder: ProtelisFolder = {
+      name: dummyFolder.name,
+      content: new Set([dummyFile, dummyFolder]),
+    };
+    folderSet.add(folder);
+    const result = getFolderAtPath(folderSet, `/${folder.name}/${dummyFolder.name}`);
+    expect(result).toEqual(dummyFolder);
+  });
+
   it('fails in case of invalid name', () => {
     const folderSet: Set<ProtelisFile> = new Set();
     folderSet.add(dummyFile);
