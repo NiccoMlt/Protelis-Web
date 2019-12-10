@@ -5,14 +5,14 @@ language: shell
 
 env:
   global:
+    - JDK="adopt@1.8"
     - BACKEND_BUILD_DIR=$TRAVIS_BUILD_DIR
     - FRONTEND_BUILD_DIR=$TRAVIS_BUILD_DIR/src/main/frontend
     - GRAVIS="https://raw.githubusercontent.com/DanySK/Gravis-CI/master/"
 
 jobs:
   include:
-    - language: java
-      jdk: openjdk8
+    - language: shell
       before_cache:
         - curl "${GRAVIS}.clean_gradle_cache.sh" --output .clean_gradle_cache.sh
         - bash .clean_gradle_cache.sh
@@ -22,6 +22,8 @@ jobs:
           - $HOME/.gradle/caches/
           - $HOME/.gradle/wrapper/
       before_install:
+        - curl "${GRAVIS}.install-jdk-travis.sh" --output ~/.install-jdk-travis.sh
+        - source ~/.install-jdk-travis.sh
         - cd $BACKEND_BUILD_DIR
         - chmod +x gradlew
       install:
