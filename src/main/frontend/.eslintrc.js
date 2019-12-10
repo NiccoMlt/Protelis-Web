@@ -22,6 +22,12 @@ module.exports = {
         "explicitSpread": "ignore"
       }
     ],
+    "@typescript-eslint/explicit-function-return-type": [
+      "warn",
+      {
+        allowExpressions: true,
+      }
+    ],
     "no-param-reassign": [
       "warn",
       {
