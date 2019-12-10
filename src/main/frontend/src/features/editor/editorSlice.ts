@@ -3,7 +3,7 @@ import { ProtelisFile, ProtelisSourceFile } from '../../model/File';
 
 /** This partial state is related to the TreeView of the editor block. */
 interface FileTreeState {
-  files: Set<ProtelisFile>;
+  files: ProtelisFile[];
 }
 
 /** This partial state is related to the TextArea of the editor block. */
@@ -14,10 +14,7 @@ interface EditorState {
 /** State type of the Protelis editor block. */
 type EditorBlockState = FileTreeState & EditorState;
 
-const initialState: EditorBlockState = {
-  files: new Set(),
-  open: null,
-};
+const initialState: EditorBlockState = { files: [], open: null };
 
 const editorSlice = createSlice({
   name: 'editor',
