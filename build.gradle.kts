@@ -2,6 +2,7 @@
 
 import com.moowork.gradle.node.yarn.YarnTask
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -14,10 +15,12 @@ plugins {
   jacoco
   id("com.github.johnrengelman.shadow") version Versions.com_github_johnrengelman_shadow_gradle_plugin
   id("io.vertx.vertx-plugin") version Versions.io_vertx_vertx_plugin_gradle_plugin
+  id("org.jetbrains.dokka") version Versions.org_jetbrains_dokka
 }
 
 repositories {
   mavenCentral()
+  jcenter()
 }
 
 dependencies {
@@ -41,6 +44,8 @@ dependencies {
   testImplementation(kotlin("test-junit"))
   testRuntimeOnly(Libs.junit_jupiter_engine)
   testImplementation(Libs.junit_jupiter_api)
+
+  dokkaRuntime(Libs.dokka_fatjar)
 }
 
 java {
@@ -121,5 +126,10 @@ tasks {
         }
       }
     }
+  }
+
+  "dokka"(DokkaTask::class) {
+    outputFormat = "html"
+    outputDirectory = "$rootDir/docs"
   }
 }

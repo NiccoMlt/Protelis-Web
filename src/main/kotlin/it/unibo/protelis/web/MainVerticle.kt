@@ -5,6 +5,12 @@ import io.vertx.core.Promise
 import io.vertx.core.logging.SLF4JLogDelegateFactory
 import it.unibo.protelis.web.backend.BackendVerticle
 
+/**
+ * Entrypoint Verticle, launched by [Vert.x Launcher][io.vertx.core.Launcher];
+ * it deploys all other verticles to start the application up.
+ *
+ * It also automatically sets logger delegate for [SLF4J][io.vertx.core.logging.SLF4JLogDelegate].
+ */
 class MainVerticle : AbstractVerticle() {
   companion object {
     private const val LOGGER_DELEGATE_FACTORY_PROPERTY = "vertx.logger-delegate-factory-class-name"

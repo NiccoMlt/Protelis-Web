@@ -17,5 +17,7 @@
   "eslint.autoFixOnSave": true,
   "eslint.codeAction.showDocumentation": {
     "enable": true
-  }
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "travis.pro": true
 }

@@ -9,6 +9,9 @@ import io.vertx.kotlin.coroutines.CoroutineVerticle
 import io.vertx.kotlin.ext.web.api.contract.openapi3.OpenAPI3RouterFactory
 import mu.KotlinLogging
 
+/**
+ * This verticle serves the React.JS application and implement OpenAPI contract for REST APIs.
+ */
 class BackendVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle() {
 
   companion object {
@@ -20,9 +23,7 @@ class BackendVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle(
     router.route().handler(LoggerHandler.create(LoggerFormat.SHORT))
     val apiRouter: Router = OpenAPI3RouterFactory
       .createAwait(vertx, "/openapi.yaml")
-      .addHandlerByOperationId("getMessage") {
-        it.response().end("Hello React from Vert.x!")
-      }
+      // TODO
       .router
     router.mountSubRouter("/api/", apiRouter)
     router.get().handler(StaticHandler.create())
