@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Editor from '@monaco-editor/react';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { LibraryAddRounded, CloudUpload } from '@material-ui/icons';
+import { useSelector, useDispatch } from 'react-redux';
+import { Dispatch } from 'redux';
+import { PayloadAction } from '@reduxjs/toolkit';
+import { ProtelisSourceFile, ProtelisFile } from '../../model/File';
+import { RootState } from '../../app/rootReducer';
+import { addFile } from './editorSlice';
 import FileTreeView from './FileTreeView';
-import { ProtelisSourceFile } from '../../model/File';
-import { CreateFileDialog } from './CreateFileDialog';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
@@ -23,32 +27,16 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
-type ProtelisEditorState = {
-  files: Set<ProtelisSourceFile>;
-  open: ProtelisSourceFile | null;
-};
-
 const ProtelisEditor: React.FC = () => {
   const classes = useStyles();
 
-  const [{ files, open }, setState] = useState<ProtelisEditorState>(
-    {
-      files: new Set<ProtelisSourceFile>(),
-      open: null,
-    },
+  const files: ProtelisFile[] = useSelector<RootState, ProtelisFile[]>(
+    (state) => state.editor.files,
   );
-
-  const [dialogOpen, setDialogOpen] = React.useState(false);
-
-  function onDialogClose(value: string | null): void {
-    setDialogOpen(false);
-    if (value) {
-      setState({
-        files: files.add({ name: value, content: '' }),
-        open,
-      });
-    }
-  }
+  const open: ProtelisSourceFile | null = useSelector<RootState, ProtelisSourceFile | null>(
+    (state) => state.editor.open,
+  );
+  const dispatch: Dispatch = useDispatch();
 
   return (
     <Paper className={classes.root}>
@@ -72,7 +60,7 @@ const ProtelisEditor: React.FC = () => {
                 startIcon={<CloudUpload />}
                 disabled
               >
-                  Upload
+                Upload
               </Button>
             </label>
             <Button
@@ -81,11 +69,10 @@ const ProtelisEditor: React.FC = () => {
               variant="contained"
               color="primary"
               component="span"
-              onClick={(): void => { setDialogOpen(true); }}
+              onClick={(): PayloadAction<ProtelisSourceFile> => dispatch(/* TODO: open dialog */ addFile({ name: 'new.pt', content: '' }))}
             >
               Add
             </Button>
-            <CreateFileDialog name="new.pt" open={dialogOpen} onDialogClose={onDialogClose} />
           </div>
         </Grid>
         <Grid item xs={6} sm={6} md={6} lg={6}>
