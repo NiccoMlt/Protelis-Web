@@ -69,7 +69,7 @@ const ProtelisEditor: React.FC = () => {
               variant="contained"
               color="primary"
               component="span"
-              onClick={(): PayloadAction<ProtelisSourceFile> => dispatch(/* TODO: open dialog */ addFile({ name: 'new.pt', content: '' }))}
+              onClick={(): PayloadAction<ProtelisSourceFile> => dispatch(/* TODO: open dialog */ addFile({ name: 'new.pt', content: 'Hello world' }))}
             >
               Add
             </Button>

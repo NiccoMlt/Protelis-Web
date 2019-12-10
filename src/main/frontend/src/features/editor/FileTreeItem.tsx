@@ -3,6 +3,12 @@ import { withStyles } from '@material-ui/styles';
 import { Theme, createStyles } from '@material-ui/core';
 import { fade } from '@material-ui/core/styles';
 import TreeItem, { TreeItemProps } from '@material-ui/lab/TreeItem';
+import { useDispatch, useSelector } from 'react-redux';
+import { openFile } from './editorSlice';
+import { RootState } from '../../app/rootReducer';
+import {
+  ProtelisSourceFile, ProtelisFile, getFileAtPath, isSourceFile,
+} from '../../model/File';
 
 /** The FileTreeItem view component gets contained file path from props. */
 type FileTreeItemProps = TreeItemProps & {
@@ -34,14 +40,26 @@ export const FileTreeItem: React.FC<FileTreeItemProps> = (props: FileTreeItemPro
     ...treeItemProps
   } = props;
 
-  function handleClick(event: React.MouseEvent<HTMLDivElement>): void {
+  const file: ProtelisFile = useSelector<RootState, ProtelisFile>(
+    (state) => getFileAtPath(state.editor.files, filePath),
+  );
+  const dispatch = useDispatch();
+
+  function handleRightClick(event: React.MouseEvent<HTMLDivElement>): void {
     event.preventDefault();
     // TODO
   }
 
+  function handleLeftClick(): void {
+    dispatch(openFile(file as ProtelisSourceFile));
+  }
+
   return (
-    <div onContextMenu={handleClick} style={{ cursor: 'context-menu' }}>
-      <StyledTreeItem {...treeItemProps} />
+    <div onContextMenu={handleRightClick} style={{ cursor: 'context-menu' }}>
+      <StyledTreeItem
+        onClick={() => (isSourceFile(file) ? handleLeftClick() : false)}
+        {...treeItemProps}
+      />
     </div>
   );
 };
