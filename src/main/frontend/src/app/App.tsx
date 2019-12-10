@@ -42,10 +42,10 @@ const App: React.FC = () => {
         <ProtelisAppBar />
         <Router>
           <Grid container spacing={2} className={classes.root}>
-            <Grid item xs={6} sm={6} md={6} lg={6}>
+            <Grid item xs>
               <ProtelisEditor />
             </Grid>
-            <Grid item xs={6} sm={6} md={6} lg={6}>
+            <Grid item xs>
               <Paper>
                 <RenderCanvas />
               </Paper>

@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
     padding: theme.spacing(3, 2),
     flexGrow: 1,
-    height: '100%',
+    height: '85vh',
   },
   button: {
     margin: theme.spacing(1),
@@ -41,7 +41,7 @@ const ProtelisEditor: React.FC = () => {
   return (
     <Paper className={classes.root}>
       <Grid container spacing={2} alignItems="stretch">
-        <Grid item xs={6} sm={6} md={6} lg={6}>
+        <Grid item xs>
           <FileTreeView files={files} />
           <div>
             <label htmlFor="contained-button-file">
@@ -75,11 +75,12 @@ const ProtelisEditor: React.FC = () => {
             </Button>
           </div>
         </Grid>
-        <Grid item xs={6} sm={6} md={6} lg={6}>
+        <Grid item xs>
           <Editor
             language="java"
             theme="dark"
             value={open ? open.content : null}
+            height="80vh"
             options={{
               automaticLayout: true,
               minimap: { enabled: false },
