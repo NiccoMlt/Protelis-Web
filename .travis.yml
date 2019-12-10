@@ -7,14 +7,15 @@ env:
   global:
     - BACKEND_BUILD_DIR=$TRAVIS_BUILD_DIR
     - FRONTEND_BUILD_DIR=$TRAVIS_BUILD_DIR/src/main/frontend
+    - GRAVIS="https://raw.githubusercontent.com/DanySK/Gravis-CI/master/"
 
 jobs:
   include:
     - language: java
       jdk: openjdk8
       before_cache:
-        - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-        - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+        - curl "${GRAVIS}.clean_gradle_cache.sh" --output .clean_gradle_cache.sh
+        - bash .clean_gradle_cache.sh
       cache:
         yarn: true
         directories:
