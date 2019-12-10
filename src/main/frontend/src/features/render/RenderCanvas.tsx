@@ -2,7 +2,7 @@ import { Layer, Stage, Star } from 'react-konva';
 import React from 'react';
 
 const RenderCanvas: React.FC = () => (
-  <Stage width={window.innerWidth * 0.5} height={window.innerHeight * 0.5}>
+  <Stage width={window.innerWidth * 0.4} height={window.innerHeight * 0.85}>
     <Layer>
       <Star
         key={0}
