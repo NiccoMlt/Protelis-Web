@@ -118,6 +118,28 @@ export function getFileAtPath(
 }
 
 /**
+ * Check if a file is a folder.
+ *
+ * @param file - the file to check
+ *
+ * @returns true if it's a folder, false otherwise
+ */
+export function isFolder(file: ProtelisFile): boolean {
+  return Array.isArray(file.content);
+}
+
+/**
+ * Check if a file is a text file.
+ *
+ * @param file - the file to check
+ *
+ * @returns true if it's a text file, false otherwise
+ */
+export function isSourceFile(file: ProtelisFile): boolean {
+  return typeof file.content === 'string';
+}
+
+/**
  * Search a source file in the set at a given path.
  *
  * @param fileSet - the set of files and folders that acts as a root
@@ -130,7 +152,7 @@ export function getSourceFileAtPath(
   filePath: string,
 ): ProtelisSourceFile | never {
   const file = getFileAtPath(fileSet, filePath);
-  if (typeof file.content === 'string') {
+  if (isSourceFile(file)) {
     return file as ProtelisSourceFile;
   }
   throw new Error('Not a source file');
@@ -149,10 +171,18 @@ export function getFolderAtPath(
   filePath: string,
 ): ProtelisFolder {
   const file = getFileAtPath(fileSet, filePath);
-  if (typeof file.content !== 'string') {
+  if (isFolder(file)) {
     return file as ProtelisFolder;
   }
   throw new Error('Not a folder');
 }
 
-export default { removeFileAtPath, renameFileAtPath, getFileAtPath };
+export default {
+  removeFileAtPath,
+  renameFileAtPath,
+  getFileAtPath,
+  getSourceFileAtPath,
+  getFolderAtPath,
+  isSourceFile,
+  isFolder,
+};
