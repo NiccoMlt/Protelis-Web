@@ -20,6 +20,11 @@ const editorSlice = createSlice({
   name: 'editor',
   initialState,
   reducers: {
+    addFile(state, action: PayloadAction<ProtelisSourceFile>): void {
+      const { files } = state;
+      files.push(action.payload);
+      state.files = files;
+    },
     openFile(state, action: PayloadAction<ProtelisSourceFile>): void {
       state.open = action.payload;
     },
@@ -32,10 +37,11 @@ const editorSlice = createSlice({
 });
 
 /**
+ * @param addFile - action dispatched when a file is added
  * @param openFile - action dispatched when a file is selected to be opened
  * @param closeFile - action dispatched when a file is closed
  */
-export const { openFile, closeFile } = editorSlice.actions;
+export const { addFile, openFile, closeFile } = editorSlice.actions;
 
 /** Reducer from the Redux slice of the editor. */
 export default editorSlice.reducer;
