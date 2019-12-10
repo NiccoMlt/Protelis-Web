@@ -29,9 +29,10 @@ const editorSlice = createSlice({
       state.open = action.payload;
     },
     closeFile(state, action: PayloadAction<ProtelisSourceFile>): void {
-      if (state.open === action.payload) {
+      if (state.open?.name === action.payload.name) {
         state.open = null;
       }
+      // TODO should save content?
     },
   },
 });
