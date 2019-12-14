@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import Editor from '@monaco-editor/react';
+import { ControlledEditor } from '@monaco-editor/react';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { LibraryAddRounded, CloudUpload } from '@material-ui/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { Dispatch } from 'redux';
-import { PayloadAction } from '@reduxjs/toolkit';
-import { ProtelisSourceFile, ProtelisFile } from '../../model/File';
+import {
+  ProtelisSourceFile, ProtelisFile, getSourceFileAtPath,
+} from '../../model/File';
 import { RootState } from '../../app/rootReducer';
-import { addFile } from './editorSlice';
+import { addFile, editFile, closeFile } from './editorSlice';
 import FileTreeView from './FileTreeView';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -33,10 +35,20 @@ const ProtelisEditor: React.FC = () => {
   const files: ProtelisFile[] = useSelector<RootState, ProtelisFile[]>(
     (state) => state.editor.files,
   );
+  const path: string | null = useSelector<RootState, string | null>((state) => state.editor.open);
   const open: ProtelisSourceFile | null = useSelector<RootState, ProtelisSourceFile | null>(
-    (state) => state.editor.open,
+    (state) => (state.editor.open
+      ? getSourceFileAtPath(state.editor.files, state.editor.open)
+      : null
+    ),
   );
   const dispatch: Dispatch = useDispatch();
+
+  const [value, setValue] = useState(open?.content);
+
+  function handleShowValue(): void {
+    if (path && value) dispatch(editFile({ path, content: value }));
+  }
 
   return (
     <Paper className={classes.root}>
@@ -69,23 +81,47 @@ const ProtelisEditor: React.FC = () => {
               variant="contained"
               color="primary"
               component="span"
-              onClick={(): PayloadAction<ProtelisSourceFile> => dispatch(/* TODO: open dialog */ addFile({ name: 'new.pt', content: 'Hello world' }))}
+              onClick={() => dispatch(/* TODO: open dialog */ addFile({ name: 'new.pt', content: 'Hello world' }))}
             >
               Add
             </Button>
           </div>
         </Grid>
         <Grid item xs>
-          <Editor
+          <ControlledEditor
+            height="77vh" // By default, it fully fits with its parent
             language="java"
-            theme="dark"
-            value={open ? open.content : null}
-            height="80vh"
+            loading={<CircularProgress color="primary" /> as unknown as React.FC} // TODO: wrong typings by library
+            onChange={(_, newValue) => setValue(newValue)}
             options={{
               automaticLayout: true,
+              lineNumbers: 'on',
               minimap: { enabled: false },
+              readOnly: (!open),
             }}
+            theme="dark"
+            value={open ? value : null}
           />
+          <div>
+            <Button
+              variant="contained"
+              component="span"
+              color="primary"
+              onClick={handleShowValue}
+              disabled={!open}
+            >
+              Save
+            </Button>
+            <Button
+              variant="contained"
+              component="span"
+              color="primary"
+              onClick={() => dispatch(closeFile(path))}
+              disabled={!open}
+            >
+              Close
+            </Button>
+          </div>
         </Grid>
       </Grid>
     </Paper>
