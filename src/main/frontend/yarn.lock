@@ -1276,10 +1276,10 @@
   resolved "https://registry.yarnpkg.com/@microsoft/tsdoc/-/tsdoc-0.12.16.tgz#13869988581fddbdfdbcb92e26edc955fc6e00ca"
   integrity sha512-SX8JNEVy6U5+56aQnQB8A2XK+WSF//b0kBa6KqxE48pcccqVuIu1ePAR/EWd1cQB6zWv26QIY5uv/++qm+Z3Mw==
 
-"@monaco-editor/react@^2.1.1":
-  version "2.3.5"
-  resolved "https://registry.yarnpkg.com/@monaco-editor/react/-/react-2.3.5.tgz#77270e0f8bacefffef0007d2de4b2ab9f78b1970"
-  integrity sha512-L0mvM4ToGUUY77qEJ0ovpVy0TtC9cVT971b5xGqc69eMFDNBZKhjebAGVZvK0cAFiUd+6m2Vc1xW3yB44IJDcQ==
+"@monaco-editor/react@^2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@monaco-editor/react/-/react-2.4.0.tgz#f08be581bed6549367f07893ca9bd21ba8bfbf20"
+  integrity sha512-agiV2Y8HD1lrgQuQXkcyEvjf4FN33/VvYnj5x5OMu5O8S/Gs2lUhyr4wT5qQH5eh4Qp0qK7o79il/jEMEQs3uQ==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
