@@ -1,13 +1,11 @@
 /** Models a folder. */
 export type ProtelisFolder = {
-  // path: string | null,
   name: string;
   content: ProtelisFile[];
 };
 
 /** Models a file. */
 export type ProtelisSourceFile = {
-  // path: string | null,
   name: string;
   content: string;
 };
@@ -16,17 +14,31 @@ export type ProtelisSourceFile = {
 export type ProtelisFile = ProtelisFolder | ProtelisSourceFile;
 
 /**
- * The function removes a file/folder at a path (if present) from a Set of files and folders
+ * Validate full path string and split in subsequent folder names.
+ *
+ * In result array, top folder is first element and the file is last.
+ *
+ * @param filePath - the path to validate and split
+ * @returns the folders, if valid
+ */
+function resolveFoldersFromPath(filePath: string): string[] | never {
+  const folders = filePath.split('/').filter((s) => s.trim() !== '');
+  if (folders.length < 1 /* || folders[0].trim.length === 0 */) {
+    throw new Error('Invalid file path specified');
+  }
+  return folders;
+}
+
+/**
+ * The function removes a file/folder at a path (if present) from a Set of files and folders.
+ *
  * @param fileSet - the set of files and folders that acts as a root
  * @param filePath - the full path of the file to remove
  *
  * @returns the new root Set without the file to be removed
  */
 export function removeFileAtPath(fileSet: ProtelisFile[], filePath: string): ProtelisFile[] {
-  const folders: string[] = filePath.split('/').filter((s) => s.trim() !== '');
-  if (folders.length < 1 /* || folders[0].trim.length === 0 */) {
-    throw new Error('Invalid file path specified');
-  }
+  const folders: string[] = resolveFoldersFromPath(filePath);
 
   if (folders.length === 1) {
     return fileSet.filter((file) => file.name !== folders[0]);
@@ -47,31 +59,28 @@ export function removeFileAtPath(fileSet: ProtelisFile[], filePath: string): Pro
 }
 
 /**
- * The function renames a file/folder at a path (if present) from a Set of files and folders
+ * The function renames a file/folder at a path (if present) from a Set of files and folders.
+ *
  * @param fileSet - the set of files and folders that acts as a root
  * @param filePath - the full path of the file to rename
  * @param newName - the new name
  *
- * @returns the new root Set without the file to be renamed
+ * @returns the new root Set with the desired file renamed
  */
 export function renameFileAtPath(
   fileSet: ProtelisFile[],
   filePath: string,
   newName: string,
 ): ProtelisFile[] {
-  const folders: string[] = filePath.split('/').filter((s) => s.trim() !== '');
-  if (folders.length < 1 /* || folders[0].trim.length === 0 */) {
-    throw new Error('Invalid file path specified');
-  }
+  const folders: string[] = resolveFoldersFromPath(filePath);
 
   if (folders.length === 1) {
-    const fileList = fileSet.map((file: ProtelisFile) => {
+    return fileSet.map((file: ProtelisFile) => {
       if (file.name === folders[0]) {
         file.name = newName;
       }
       return file;
     });
-    return fileList;
   }
 
   const [folder, ...rest] = folders;
@@ -81,6 +90,45 @@ export function renameFileAtPath(
         throw new Error('Not a folder');
       } else {
         return { name: file.name, content: renameFileAtPath(file.content, rest.join('/'), newName) };
+      }
+    } else {
+      return file;
+    }
+  });
+}
+
+/**
+ * The function changes a source file content at a path (if present).
+ *
+ * @param fileSet - the set of files and folders that acts as a root
+ * @param filePath - the full path of the file to rename
+ * @param newContent - the updated content
+ *
+ * @returns the root Set of files
+ */
+export function editFileAtPath(
+  fileSet: ProtelisFile[],
+  filePath: string,
+  newContent: string,
+): ProtelisFile[] {
+  const folders: string[] = resolveFoldersFromPath(filePath);
+
+  if (folders.length === 1) {
+    return fileSet.map((file: ProtelisFile) => {
+      if (file.name === folders[0]) {
+        file.content = newContent;
+      }
+      return file;
+    });
+  }
+
+  const [folder, ...rest] = folders;
+  return fileSet.map((file) => {
+    if (file.name === folder) {
+      if (typeof file.content === 'string') {
+        throw new Error('Not a folder');
+      } else {
+        return { name: file.name, content: editFileAtPath(file.content, rest.join('/'), newContent) };
       }
     } else {
       return file;
@@ -176,13 +224,3 @@ export function getFolderAtPath(
   }
   throw new Error('Not a folder');
 }
-
-export default {
-  removeFileAtPath,
-  renameFileAtPath,
-  getFileAtPath,
-  getSourceFileAtPath,
-  getFolderAtPath,
-  isSourceFile,
-  isFolder,
-};

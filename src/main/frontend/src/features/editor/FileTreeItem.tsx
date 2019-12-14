@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { openFile } from './editorSlice';
 import { RootState } from '../../app/rootReducer';
 import {
-  ProtelisSourceFile, ProtelisFile, getFileAtPath, isSourceFile,
+  ProtelisFile, getFileAtPath, isSourceFile,
 } from '../../model/File';
 
 /** The FileTreeItem view component gets contained file path from props. */
@@ -35,10 +35,7 @@ const StyledTreeItem = withStyles(
 );
 
 export const FileTreeItem: React.FC<FileTreeItemProps> = (props: FileTreeItemProps) => {
-  const {
-    filePath,
-    ...treeItemProps
-  } = props;
+  const { filePath, ...treeItemProps } = props;
 
   const file: ProtelisFile = useSelector<RootState, ProtelisFile>(
     (state) => getFileAtPath(state.editor.files, filePath),
@@ -51,7 +48,7 @@ export const FileTreeItem: React.FC<FileTreeItemProps> = (props: FileTreeItemPro
   }
 
   function handleLeftClick(): void {
-    dispatch(openFile(file as ProtelisSourceFile));
+    dispatch(openFile(filePath));
   }
 
   return (
