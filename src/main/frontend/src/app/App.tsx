@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
+/** Main app component. */
 const App: React.FC = () => {
   const prefersDarkMode: boolean = useMediaQuery('(prefers-color-scheme: dark)');
 

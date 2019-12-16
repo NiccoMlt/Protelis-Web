@@ -33,6 +33,7 @@ const StyledTreeItem = withStyles(
   (props: TreeItemProps) => <TreeItem {...props} />,
 );
 
+/** TreeView item for a file. */
 export const FileTreeItem: React.FC<FileTreeItemProps> = (props: FileTreeItemProps) => {
   const { filePath, ...treeItemProps } = props;
 

@@ -9,6 +9,7 @@ import { ProtelisSourceFile } from '../model/File';
 import { editFile } from '../features/editor/editorSlice';
 import { getSourceFileAtPath } from '../utils/fileUtils';
 
+/** VS Code / Monaco Editor wrapper component. */
 export const PtMonacoEditor: React.FC = () => {
   const path: string | null = useSelector<RootState, string | null>((state) => state.editor.open);
 

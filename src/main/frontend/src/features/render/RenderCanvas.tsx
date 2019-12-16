@@ -1,7 +1,9 @@
 import { Layer, Stage, Star } from 'react-konva';
 import React from 'react';
 
+/** Konva canvas wrapper. */
 const RenderCanvas: React.FC = () => (
+  // TODO
   <Stage width={window.innerWidth * 0.4} height={window.innerHeight * 0.85}>
     <Layer>
       <Star
