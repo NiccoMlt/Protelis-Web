@@ -27,7 +27,7 @@ const App: React.FC = () => {
     () => createMuiTheme({
       palette: {
         type: prefersDarkMode ? 'dark' : 'light',
-        primary: protelisTheme.palette.primary,
+        ...protelisTheme.palette,
       },
     }),
     [prefersDarkMode],
