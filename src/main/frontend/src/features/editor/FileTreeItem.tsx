@@ -6,9 +6,7 @@ import TreeItem, { TreeItemProps } from '@material-ui/lab/TreeItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { openFile } from './editorSlice';
 import { RootState } from '../../app/rootReducer';
-import {
-  ProtelisFile, getFileAtPath, isSourceFile,
-} from '../../model/File';
+import { ProtelisFile, getFileAtPath, isSourceFile } from '../../model/File';
 
 /** The FileTreeItem view component gets contained file path from props. */
 type FileTreeItemProps = TreeItemProps & {
@@ -37,7 +35,7 @@ const StyledTreeItem = withStyles(
 export const FileTreeItem: React.FC<FileTreeItemProps> = (props: FileTreeItemProps) => {
   const { filePath, ...treeItemProps } = props;
 
-  const file: ProtelisFile = useSelector<RootState, ProtelisFile>(
+  const file: ProtelisFile | undefined = useSelector<RootState, ProtelisFile | undefined>(
     (state) => getFileAtPath(state.editor.files, filePath),
   );
   const dispatch = useDispatch();
@@ -54,7 +52,7 @@ export const FileTreeItem: React.FC<FileTreeItemProps> = (props: FileTreeItemPro
   return (
     <div onContextMenu={handleRightClick} style={{ cursor: 'context-menu' }}>
       <StyledTreeItem
-        onClick={() => (isSourceFile(file) ? handleLeftClick() : false)}
+        onClick={() => (file && isSourceFile(file) ? handleLeftClick() : false)}
         {...treeItemProps}
       />
     </div>

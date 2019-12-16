@@ -147,7 +147,7 @@ export function editFileAtPath(
 export function getFileAtPath(
   fileSet: ProtelisFile[],
   filePath: string,
-): ProtelisFile | never {
+): ProtelisFile | undefined | never {
   const folders: string[] = filePath.split('/').filter((s) => s.trim() !== '');
   if (folders.length < 1 /* || folders[0].trim.length === 0 */) {
     throw new Error('Invalid file path specified');
@@ -161,7 +161,7 @@ export function getFileAtPath(
         return file;
       }
     }
-    throw new Error('No file found at path specified');
+    return undefined;
   }
 }
 
@@ -200,7 +200,7 @@ export function getSourceFileAtPath(
   filePath: string,
 ): ProtelisSourceFile | never {
   const file = getFileAtPath(fileSet, filePath);
-  if (isSourceFile(file)) {
+  if (file && isSourceFile(file)) {
     return file as ProtelisSourceFile;
   }
   throw new Error('Not a source file');
@@ -219,7 +219,7 @@ export function getFolderAtPath(
   filePath: string,
 ): ProtelisFolder {
   const file = getFileAtPath(fileSet, filePath);
-  if (isFolder(file)) {
+  if (file && isFolder(file)) {
     return file as ProtelisFolder;
   }
   throw new Error('Not a folder');
