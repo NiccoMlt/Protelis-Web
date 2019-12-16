@@ -3,8 +3,8 @@ import {
   isSourceFile,
   ProtelisFile,
   ProtelisFolder,
-  ProtelisSourceFile
-} from "../model/File";
+  ProtelisSourceFile,
+} from '../model/File';
 
 /**
  * Validate full path string and split in subsequent folder names.
@@ -15,12 +15,12 @@ import {
  * @returns the folders, if valid
  */
 function resolveFoldersFromPath(filePath: string): string[] | never {
-    const folders = filePath.split('/')
-        .filter((s) => s.trim() !== '');
-    if (folders.length < 1 /* || folders[0].trim.length === 0 */) {
-        throw new Error('Invalid file path specified');
-    }
-    return folders;
+  const folders = filePath.split('/')
+    .filter((s) => s.trim() !== '');
+  if (folders.length < 1 /* || folders[0].trim.length === 0 */) {
+    throw new Error('Invalid file path specified');
+  }
+  return folders;
 }
 
 /**
@@ -32,27 +32,27 @@ function resolveFoldersFromPath(filePath: string): string[] | never {
  * @returns the new root Set without the file to be removed
  */
 export function removeFileAtPath(fileSet: ProtelisFile[], filePath: string): ProtelisFile[] {
-    const folders: string[] = resolveFoldersFromPath(filePath);
+  const folders: string[] = resolveFoldersFromPath(filePath);
 
-    if (folders.length === 1) {
-        return fileSet.filter((file) => file.name !== folders[0]);
+  if (folders.length === 1) {
+    return fileSet.filter((file) => file.name !== folders[0]);
+  }
+
+  const [folder, ...rest] = folders;
+  return fileSet.map((file) => {
+    if (file.name === folder) {
+      if (typeof file.content === 'string') {
+        throw new Error('Not a folder');
+      } else {
+        return {
+          name: file.name,
+          content: removeFileAtPath(file.content, rest.join('/')),
+        };
+      }
+    } else {
+      return file;
     }
-
-    const [folder, ...rest] = folders;
-    return fileSet.map((file) => {
-        if (file.name === folder) {
-            if (typeof file.content === 'string') {
-                throw new Error('Not a folder');
-            } else {
-                return {
-                    name: file.name,
-                    content: removeFileAtPath(file.content, rest.join('/'))
-                };
-            }
-        } else {
-            return file;
-        }
-    });
+  });
 }
 
 /**
@@ -65,36 +65,36 @@ export function removeFileAtPath(fileSet: ProtelisFile[], filePath: string): Pro
  * @returns the new root Set with the desired file renamed
  */
 export function renameFileAtPath(
-    fileSet: ProtelisFile[],
-    filePath: string,
-    newName: string,
+  fileSet: ProtelisFile[],
+  filePath: string,
+  newName: string,
 ): ProtelisFile[] {
-    const folders: string[] = resolveFoldersFromPath(filePath);
+  const folders: string[] = resolveFoldersFromPath(filePath);
 
-    if (folders.length === 1) {
-        return fileSet.map((file: ProtelisFile) => {
-            if (file.name === folders[0]) {
-                file.name = newName;
-            }
-            return file;
-        });
-    }
-
-    const [folder, ...rest] = folders;
-    return fileSet.map((file) => {
-        if (file.name === folder) {
-            if (typeof file.content === 'string') {
-                throw new Error('Not a folder');
-            } else {
-                return {
-                    name: file.name,
-                    content: renameFileAtPath(file.content, rest.join('/'), newName)
-                };
-            }
-        } else {
-            return file;
-        }
+  if (folders.length === 1) {
+    return fileSet.map((file: ProtelisFile) => {
+      if (file.name === folders[0]) {
+        file.name = newName;
+      }
+      return file;
     });
+  }
+
+  const [folder, ...rest] = folders;
+  return fileSet.map((file) => {
+    if (file.name === folder) {
+      if (typeof file.content === 'string') {
+        throw new Error('Not a folder');
+      } else {
+        return {
+          name: file.name,
+          content: renameFileAtPath(file.content, rest.join('/'), newName),
+        };
+      }
+    } else {
+      return file;
+    }
+  });
 }
 
 /**
@@ -107,36 +107,36 @@ export function renameFileAtPath(
  * @returns the root Set of files
  */
 export function editFileAtPath(
-    fileSet: ProtelisFile[],
-    filePath: string,
-    newContent: string,
+  fileSet: ProtelisFile[],
+  filePath: string,
+  newContent: string,
 ): ProtelisFile[] {
-    const folders: string[] = resolveFoldersFromPath(filePath);
+  const folders: string[] = resolveFoldersFromPath(filePath);
 
-    if (folders.length === 1) {
-        return fileSet.map((file: ProtelisFile) => {
-            if (file.name === folders[0]) {
-                file.content = newContent;
-            }
-            return file;
-        });
-    }
-
-    const [folder, ...rest] = folders;
-    return fileSet.map((file) => {
-        if (file.name === folder) {
-            if (typeof file.content === 'string') {
-                throw new Error('Not a folder');
-            } else {
-                return {
-                    name: file.name,
-                    content: editFileAtPath(file.content, rest.join('/'), newContent)
-                };
-            }
-        } else {
-            return file;
-        }
+  if (folders.length === 1) {
+    return fileSet.map((file: ProtelisFile) => {
+      if (file.name === folders[0]) {
+        file.content = newContent;
+      }
+      return file;
     });
+  }
+
+  const [folder, ...rest] = folders;
+  return fileSet.map((file) => {
+    if (file.name === folder) {
+      if (typeof file.content === 'string') {
+        throw new Error('Not a folder');
+      } else {
+        return {
+          name: file.name,
+          content: editFileAtPath(file.content, rest.join('/'), newContent),
+        };
+      }
+    } else {
+      return file;
+    }
+  });
 }
 
 /**
@@ -148,26 +148,26 @@ export function editFileAtPath(
  * @returns the file, if any
  */
 export function getFileAtPath(
-    fileSet: ProtelisFile[],
-    filePath: string,
+  fileSet: ProtelisFile[],
+  filePath: string,
 ): ProtelisFile | undefined | never {
-    const folders: string[] = filePath.split('/')
-        .filter((s) => s.trim() !== '');
-    if (folders.length < 1 /* || folders[0].trim.length === 0 */) {
-        throw new Error('Invalid file path specified');
-    } else {
-        const [folder, ...rest] = folders;
-        const file: ProtelisFile | undefined = fileSet.find((f) => f.name === folder);
-        if (file) {
-            if (folders.length > 1 && !(typeof file.content === 'string')) {
-                return getFileAtPath((file as ProtelisFolder).content, rest.join('/'));
-            }
-            if (folders.length === 1) {
-                return file;
-            }
-        }
-        return undefined;
+  const folders: string[] = filePath.split('/')
+    .filter((s) => s.trim() !== '');
+  if (folders.length < 1 /* || folders[0].trim.length === 0 */) {
+    throw new Error('Invalid file path specified');
+  } else {
+    const [folder, ...rest] = folders;
+    const file: ProtelisFile | undefined = fileSet.find((f) => f.name === folder);
+    if (file) {
+      if (folders.length > 1 && !(typeof file.content === 'string')) {
+        return getFileAtPath((file as ProtelisFolder).content, rest.join('/'));
+      }
+      if (folders.length === 1) {
+        return file;
+      }
     }
+    return undefined;
+  }
 }
 
 /**
@@ -179,14 +179,14 @@ export function getFileAtPath(
  * @returns the source file, if exists and is not a folder
  */
 export function getSourceFileAtPath(
-    fileSet: ProtelisFile[],
-    filePath: string,
+  fileSet: ProtelisFile[],
+  filePath: string,
 ): ProtelisSourceFile | never {
-    const file = getFileAtPath(fileSet, filePath);
-    if (file && isSourceFile(file)) {
-        return file as ProtelisSourceFile;
-    }
-    throw new Error('Not a source file');
+  const file = getFileAtPath(fileSet, filePath);
+  if (file && isSourceFile(file)) {
+    return file as ProtelisSourceFile;
+  }
+  throw new Error('Not a source file');
 }
 
 /**
@@ -198,12 +198,12 @@ export function getSourceFileAtPath(
  * @returns the folder, if exists and is not a source file
  */
 export function getFolderAtPath(
-    fileSet: ProtelisFile[],
-    filePath: string,
+  fileSet: ProtelisFile[],
+  filePath: string,
 ): ProtelisFolder {
-    const file = getFileAtPath(fileSet, filePath);
-    if (file && isFolder(file)) {
-        return file as ProtelisFolder;
-    }
-    throw new Error('Not a folder');
+  const file = getFileAtPath(fileSet, filePath);
+  if (file && isFolder(file)) {
+    return file as ProtelisFolder;
+  }
+  throw new Error('Not a folder');
 }

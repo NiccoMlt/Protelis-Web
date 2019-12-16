@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { openFile } from './editorSlice';
 import { RootState } from '../../app/rootReducer';
 import { ProtelisFile, isSourceFile } from '../../model/File';
-import { getFileAtPath } from "../../utils/fileUtils";
+import { getFileAtPath } from '../../utils/fileUtils';
 
 /** The FileTreeItem view component gets contained file path from props. */
 type FileTreeItemProps = TreeItemProps & {

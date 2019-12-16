@@ -10,7 +10,7 @@ import { RootState } from '../../app/rootReducer';
 import FileTreeView from './FileTreeView';
 import { PtMonacoEditor } from '../../components/PtMonacoEditor';
 import { AddDialogButton } from '../../components/AddDialogButton';
-import { getFileAtPath } from "../../utils/fileUtils";
+import { getFileAtPath } from '../../utils/fileUtils';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {

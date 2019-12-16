@@ -7,7 +7,7 @@ import { Dispatch } from 'redux';
 import { RootState } from '../app/rootReducer';
 import { ProtelisSourceFile } from '../model/File';
 import { closeFile, editFile } from '../features/editor/editorSlice';
-import { getSourceFileAtPath } from "../utils/fileUtils";
+import { getSourceFileAtPath } from '../utils/fileUtils';
 
 export const PtMonacoEditor: React.FC = () => {
   const path: string | null = useSelector<RootState, string | null>((state) => state.editor.open);

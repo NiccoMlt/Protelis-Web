@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProtelisFile, ProtelisSourceFile } from '../../model/File';
-import { editFileAtPath } from "../../utils/fileUtils";
+import { editFileAtPath } from '../../utils/fileUtils';
 
 /** This partial state is related to the TreeView of the editor block. */
 interface FileTreeState {
