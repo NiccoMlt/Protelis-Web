@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import { Dispatch } from 'redux';
 import { RootState } from '../app/rootReducer';
 import { ProtelisSourceFile } from '../model/File';
-import { closeFile, editFile } from '../features/editor/editorSlice';
+import { editFile } from '../features/editor/editorSlice';
 import { getSourceFileAtPath } from '../utils/fileUtils';
 
 export const PtMonacoEditor: React.FC = () => {
