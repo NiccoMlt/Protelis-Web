@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
+/** Container component that wraps TreeView and Editor. */
 const EditorContainer: React.FC = () => {
   const classes = useStyles();
 

@@ -1,12 +1,16 @@
 /** Models a folder. */
 export type ProtelisFolder = {
+  /** The folder name. */
   name: string;
+  /** The files contained in the folder. */
   content: ProtelisFile[];
 };
 
 /** Models a file. */
 export type ProtelisSourceFile = {
+  /** The file name. */
   name: string;
+  /** The source code contained in the file. */
   content: string;
 };
 
