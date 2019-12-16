@@ -14,6 +14,7 @@ module.exports = {
     "tsdoc"
   ],
   rules: {
+    "react/prop-types": "off",
     "react/jsx-props-no-spreading": [
       "warn",
       {
