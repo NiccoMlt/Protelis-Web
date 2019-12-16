@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { ControlledEditor } from '@monaco-editor/react';
@@ -21,7 +21,10 @@ export const PtMonacoEditor: React.FC = () => {
 
   const dispatch: Dispatch = useDispatch();
 
-  const [value, setValue] = useState(open?.content);
+  const [value, setValue] = useState<string | undefined>(open?.content);
+
+  // If component updates because of Redux, refresh content if file is open
+  useEffect(() => setValue(open?.content), [open]);
 
   function handleShowValue(): void {
     if (path && value) dispatch(editFile({ path, content: value }));
@@ -52,15 +55,6 @@ export const PtMonacoEditor: React.FC = () => {
           disabled={!open}
         >
           Save
-        </Button>
-        <Button
-          variant="contained"
-          component="span"
-          color="primary"
-          onClick={() => dispatch(closeFile(path))}
-          disabled={!open}
-        >
-          Close
         </Button>
       </div>
     </>

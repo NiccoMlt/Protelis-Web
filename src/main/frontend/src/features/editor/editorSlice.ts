@@ -30,10 +30,7 @@ const editorSlice = createSlice({
       state.open = action.payload;
     },
     closeFile(state, action: PayloadAction<string | null>): void {
-      if (state.open === action.payload) {
-        state.open = null;
-      }
-      // TODO should save content?
+      if (state.open === action.payload) state.open = null;
     },
     editFile(state, action: PayloadAction<{path: string; content: string}>) {
       state.files = editFileAtPath(state.files, action.payload.path, action.payload.content);
