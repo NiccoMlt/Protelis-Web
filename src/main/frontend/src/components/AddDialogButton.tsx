@@ -78,7 +78,7 @@ export const AddDialogButton: React.FC<AddDialogButtonProps> = (props: AddDialog
     if (name) {
       if (validator(name)) {
         setOpen(false);
-        dispatch(/* TODO: open dialog */ addFile({ name, content: '' }));
+        dispatch(/* TODO: open dialog */ addFile({ name, content: 'hello world' }));
       } else {
         setError(`The file ${name} already exists`);
       }
