@@ -24,6 +24,7 @@ const FileTreeView: React.FC<FileTreeViewProps> = (props: FileTreeViewProps) => 
   /**
    * The function generates a TreeItem from files and folders.
    * @param file - the file(s) to generate items from
+   * @param basePath - the file tree base path
    * @param nodeId - the id of the node to draw
    *
    * @returns the TreeItem(s)
