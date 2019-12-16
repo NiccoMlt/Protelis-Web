@@ -5,11 +5,12 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { CloudUpload, LibraryAddRounded } from '@material-ui/icons';
 import { useSelector } from 'react-redux';
-import { getFileAtPath, ProtelisFile } from '../../model/File';
+import { ProtelisFile } from '../../model/File';
 import { RootState } from '../../app/rootReducer';
 import FileTreeView from './FileTreeView';
 import { PtMonacoEditor } from '../../components/PtMonacoEditor';
 import { AddDialogButton } from '../../components/AddDialogButton';
+import { getFileAtPath } from "../../utils/fileUtils";
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {

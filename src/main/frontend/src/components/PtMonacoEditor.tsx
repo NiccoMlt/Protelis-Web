@@ -5,8 +5,9 @@ import { ControlledEditor } from '@monaco-editor/react';
 import Button from '@material-ui/core/Button';
 import { Dispatch } from 'redux';
 import { RootState } from '../app/rootReducer';
-import { getSourceFileAtPath, ProtelisSourceFile } from '../model/File';
+import { ProtelisSourceFile } from '../model/File';
 import { closeFile, editFile } from '../features/editor/editorSlice';
+import { getSourceFileAtPath } from "../utils/fileUtils";
 
 export const PtMonacoEditor: React.FC = () => {
   const path: string | null = useSelector<RootState, string | null>((state) => state.editor.open);
