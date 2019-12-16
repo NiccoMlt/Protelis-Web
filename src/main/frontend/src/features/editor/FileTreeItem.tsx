@@ -6,7 +6,8 @@ import TreeItem, { TreeItemProps } from '@material-ui/lab/TreeItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { openFile } from './editorSlice';
 import { RootState } from '../../app/rootReducer';
-import { ProtelisFile, getFileAtPath, isSourceFile } from '../../model/File';
+import { ProtelisFile, isSourceFile } from '../../model/File';
+import { getFileAtPath } from "../../utils/fileUtils";
 
 /** The FileTreeItem view component gets contained file path from props. */
 type FileTreeItemProps = TreeItemProps & {

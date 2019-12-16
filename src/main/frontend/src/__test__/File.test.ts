@@ -1,7 +1,15 @@
 import {
-  ProtelisFile, ProtelisFolder, ProtelisSourceFile,
-  renameFileAtPath, removeFileAtPath, getFileAtPath, getSourceFileAtPath, getFolderAtPath,
+  isFolder,
+  ProtelisFile,
+  ProtelisFolder,
+  ProtelisSourceFile,
 } from '../model/File';
+import {
+  getFileAtPath,
+  getFolderAtPath,
+  getSourceFileAtPath, removeFileAtPath,
+  renameFileAtPath,
+} from '../utils/fileUtils';
 
 describe('File utils', () => {
   let dummyFolder: ProtelisFolder = { name: 'folder', content: [] };
@@ -33,7 +41,7 @@ describe('File utils', () => {
     expect(newSet.length).toEqual(set.length);
     expect(newSet
       .find((value) => value.name === newName
-        && typeof value !== 'string'
+        && isFolder(value)
         && (value as ProtelisFolder).content.length === dummyFolder.content.length))
       .toBeDefined();
   });
@@ -70,7 +78,7 @@ describe('File utils', () => {
     const newSet: ProtelisFile[] = renameFileAtPath(set, `/${folderName}/${dummyFile.name}`, newName);
     expect(newSet.length).toEqual(set.length);
     const newFolder: ProtelisFolder | undefined = newSet
-      .find((value) => value.name === folderName && typeof value !== 'string') as ProtelisFolder | undefined;
+      .find((value) => value.name === folderName && isFolder(value)) as ProtelisFolder | undefined;
     expect(newFolder).toBeDefined();
     expect((newFolder as ProtelisFolder).content
       .find((value) => value.name === newName))
@@ -89,7 +97,7 @@ describe('File utils', () => {
     const newSet: ProtelisFile[] = renameFileAtPath(set, `/${folderName}/${dummyFolder.name}`, newName);
     expect(newSet.length).toEqual(set.length);
     const newFolder: ProtelisFolder | undefined = newSet
-      .find((value) => value.name === folderName && typeof value !== 'string') as ProtelisFolder | undefined;
+      .find((value) => value.name === folderName && isFolder(value)) as ProtelisFolder | undefined;
     expect(newFolder).toBeDefined();
     expect((newFolder as ProtelisFolder).content
       .find((value) => value.name === newName))
@@ -108,7 +116,7 @@ describe('File utils', () => {
     const newSet: ProtelisFile[] = removeFileAtPath(set, `/${folderName}/${dummyFile.name}`);
     expect(newSet.length).toEqual(set.length);
     const newFolder: ProtelisFolder | undefined = newSet
-      .find((value) => value.name === folderName && typeof value !== 'string') as ProtelisFolder | undefined;
+      .find((value) => value.name === folderName && isFolder(value)) as ProtelisFolder | undefined;
     expect(newFolder).toBeDefined();
     expect((newFolder as ProtelisFolder).content
       .find((value) => value.name === dummyFile.name))
@@ -127,7 +135,7 @@ describe('File utils', () => {
     const newSet: ProtelisFile[] = removeFileAtPath(set, `/${folderName}/${dummyFolder.name}`);
     expect(newSet.length).toEqual(set.length);
     const newFolder: ProtelisFolder | undefined = newSet
-      .find((value) => value.name === folderName && typeof value !== 'string') as ProtelisFolder | undefined;
+      .find((value) => value.name === folderName && isFolder(value)) as ProtelisFolder | undefined;
     expect(newFolder).toBeDefined();
     expect((newFolder as ProtelisFolder).content
       .find((value) => value.name === dummyFolder.name))
