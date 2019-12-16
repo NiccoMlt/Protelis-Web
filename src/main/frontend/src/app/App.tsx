@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core/styles';
 
 import ProtelisAppBar from '../components/ProtelisAppBar';
-import ProtelisEditor from '../features/editor/ProtelisEditor';
+import EditorContainer from '../features/editor/EditorContainer';
 import { protelisTheme } from '../styles/theme';
 import RenderCanvas from '../features/render/RenderCanvas';
 
@@ -43,7 +43,7 @@ const App: React.FC = () => {
         <Router>
           <Grid container spacing={2} className={classes.root}>
             <Grid item xs>
-              <ProtelisEditor />
+              <EditorContainer />
             </Grid>
             <Grid item xs>
               <Paper>
