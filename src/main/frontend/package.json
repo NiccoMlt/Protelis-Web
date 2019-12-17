@@ -7,7 +7,7 @@
     "email": "niccolo.maltoni@studio.unibo.it",
     "url": "https://github.com/NiccoMlt"
   },
-  "homepage": "https://github.com/NiccoMlt/Protelis-Web",
+  "homepage": "https://protelis-web.herokuapp.com/",
   "repository": "https://github.com/NiccoMlt/Protelis-Web/tree/master/src/main/frontend",
   "license": "GPL-3.0-only",
   "dependencies": {
