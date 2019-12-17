@@ -20,7 +20,7 @@ object Versions {
 
   const val com_github_johnrengelman_shadow_gradle_plugin: String = "5.2.0"
 
-  const val org_jlleitschuh_gradle_ktlint_gradle_plugin: String = "9.0.0" // available: "9.1.0"
+  const val org_jlleitschuh_gradle_ktlint_gradle_plugin: String = "9.1.1"
 
   const val com_github_node_gradle_node_gradle_plugin: String = "2.2.0"
 
@@ -38,7 +38,7 @@ object Versions {
 
   const val slf4j_api: String = "1.7.28" // available: "1.7.29"
 
-  const val ktlint: String = "0.34.2" // available: "0.35.0"
+  const val ktlint: String = "0.36.0"
 
   /**
    * Current version: "5.6.3"
