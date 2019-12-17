@@ -57,12 +57,15 @@ application {
   mainClassName = "io.vertx.core.Launcher"
 }
 
+val frontend: String = "src/main/frontend/"
+val frontendOut: String = "$frontend/build"
+
 node {
   version = Versions.node_version
   npmVersion = Versions.npm_version
   yarnVersion = Versions.yarn_version
   download = true
-  nodeModulesDir = File("src/main/frontend")
+  nodeModulesDir = File(frontend)
 }
 
 vertx {
@@ -80,11 +83,22 @@ tasks {
 
   val buildFrontend by creating(YarnTask::class) {
     args = listOf("build")
+    inputs.files(
+      "$frontend/package.json", // React package configuration
+      "$frontend/yarn.lock", // dependencies lockfile
+      "$frontend/tsconfig.json" // TypeScript config
+    )
+    inputs.dir("$frontend/src") // React sources
+    inputs.dir(
+      fileTree("$frontend/node_modules") // Node modules ...
+        .exclude(".cache") // ... ignoring cache
+    )
+    outputs.dir(frontendOut)
     dependsOn("yarn")
   }
 
   val copyToWebRoot by creating(Copy::class) {
-    from("src/main/frontend/build")
+    from(frontendOut)
     destinationDir = File("$buildDir/classes/kotlin/main/webroot")
     dependsOn(buildFrontend)
   }
@@ -131,5 +145,14 @@ tasks {
   "dokka"(DokkaTask::class) {
     outputFormat = "html"
     outputDirectory = "$rootDir/docs"
+  }
+
+  // task used by Heroku to build executable Jar
+  register("stage") {
+    dependsOn(listOf(clean, build, shadowJar))
+  }
+
+  build {
+    mustRunAfter(clean)
   }
 }
