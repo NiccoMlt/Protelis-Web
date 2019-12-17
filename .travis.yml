@@ -47,3 +47,13 @@ jobs:
         - yarn test:ci
       after_success:
         - yarn codecov:upload
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: eWBQpD5v1zVbPgwjF8z0YW/dWn44C+BPBGijow59thnjmUwSBrV1dVZU+GUp4VQeYYB8q+2iBtUyYyUKiNRfeuk4IcN+hf7hXuGhHgffW4eXLi6nuWNmy9/SDgOmMUiezFE2tOMX0nbHAv9X/n75s0wtECoGrWRMmur4A1q6jF5LE/v+DxvzWVvmzNwDuFy3Y170zGc4bi1L/OiN0L6Vs0Qq8EEblQIzf6l1TTh4qnl7GvAU4Y4xat4e4Nfa8edZ2tQGFJnCENIsbN6ZSlMyGVEEtxSGnB41S/vxrUlMvFD8RanSDkrcwBSiuL9+hsf339ScXYvkIpylmfT7RHqS5BceOBQmuwsDF0M0Jhd5FaHnWrZHsscJIOjSmz6BFGSzbXGn8bUAhMfuB8gtAhHrKRWacSyvfSwbrHbxoZ+poXjEFhMomJ2apiwmYVYxPA5j5rHVKpFEtMEn2VjVkOclTR5a4X6yci1M+4lDW1/Fov8k3dADo4fZLuwRUKqlWdkPcaNHg32K1txapZ5MpJZzZJ0gDIFXYhs6mdxFbsQiLyYbINPIRJQnXGuJeGijCLc/1fffEDjHesUPGxZ4+I9yPQMYV26E/udwIqdnfd8m/iKvobTJMZaVcrht5MvylKAwZaoAI6J1xBrDM7FWk3+U69Fw64NVJrf19Kyxi9SkPmg=
+  app:
+    master: protelis-web
+    develop: protelis-web-develop
+  skip_cleanup: true
+  strategy: api
