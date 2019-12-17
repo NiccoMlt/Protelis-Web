@@ -16,9 +16,9 @@ object Versions {
 
   const val org_junit_jupiter: String = "5.5.2"
 
-  const val io_vertx: String = "3.8.3"
+  const val io_vertx: String = "3.8.4"
 
-  const val com_github_johnrengelman_shadow_gradle_plugin: String = "5.1.0"
+  const val com_github_johnrengelman_shadow_gradle_plugin: String = "5.2.0"
 
   const val org_jlleitschuh_gradle_ktlint_gradle_plugin: String = "9.0.0" // available: "9.1.0"
 
@@ -30,7 +30,7 @@ object Versions {
 
   const val org_jetbrains_kotlin_jvm_gradle_plugin: String = "1.3.50"
 
-  const val io_vertx_vertx_plugin_gradle_plugin: String = "0.9.0"
+  const val io_vertx_vertx_plugin_gradle_plugin: String = "1.0.1"
 
   const val logback_classic: String = "1.2.3"
 
