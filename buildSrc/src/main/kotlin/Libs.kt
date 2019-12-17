@@ -86,6 +86,10 @@ object Libs {
       "org.jlleitschuh.gradle.ktlint:org.jlleitschuh.gradle.ktlint.gradle.plugin:" +
       Versions.org_jlleitschuh_gradle_ktlint_gradle_plugin
 
+  const val com_github_node_gradle_node_gradle_plugin: String =
+      "com.github.node-gradle.node:com.github.node-gradle.node.gradle.plugin:" +
+      Versions.com_github_node_gradle_node_gradle_plugin
+
   const val de_fayard_refreshversions_gradle_plugin: String =
       "de.fayard.refreshVersions:de.fayard.refreshVersions.gradle.plugin:" +
       Versions.de_fayard_refreshversions_gradle_plugin
@@ -101,9 +105,6 @@ object Libs {
   const val io_vertx_vertx_plugin_gradle_plugin: String =
       "io.vertx.vertx-plugin:io.vertx.vertx-plugin.gradle.plugin:" +
       Versions.io_vertx_vertx_plugin_gradle_plugin
-
-  const val com_moowork_node_gradle_plugin: String =
-      "com.moowork.node:com.moowork.node.gradle.plugin:" + Versions.com_moowork_node_gradle_plugin
 
   /**
    * http://logback.qos.ch
