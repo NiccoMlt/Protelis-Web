@@ -24,7 +24,7 @@ object Versions {
 
   const val com_github_node_gradle_node_gradle_plugin: String = "2.2.0"
 
-  const val de_fayard_refreshversions_gradle_plugin: String = "0.7.0" // available: "0.8.1"
+  const val de_fayard_refreshversions_gradle_plugin: String = "0.7.0" // available: "0.8.6"
 
   const val org_jetbrains_kotlin_kapt_gradle_plugin: String = "1.3.61"
 
@@ -34,9 +34,9 @@ object Versions {
 
   const val logback_classic: String = "1.2.3"
 
-  const val kotlin_logging: String = "1.7.6"
+  const val kotlin_logging: String = "1.7.8"
 
-  const val slf4j_api: String = "1.7.28" // available: "1.7.29"
+  const val slf4j_api: String = "1.7.30"
 
   const val ktlint: String = "0.36.0"
 
