@@ -22,6 +22,8 @@ object Versions {
 
   const val org_jlleitschuh_gradle_ktlint_gradle_plugin: String = "9.0.0" // available: "9.1.0"
 
+  const val com_github_node_gradle_node_gradle_plugin: String = "2.2.0"
+
   const val de_fayard_refreshversions_gradle_plugin: String = "0.7.0" // available: "0.8.1"
 
   const val org_jetbrains_kotlin_kapt_gradle_plugin: String = "1.3.50"
@@ -29,8 +31,6 @@ object Versions {
   const val org_jetbrains_kotlin_jvm_gradle_plugin: String = "1.3.50"
 
   const val io_vertx_vertx_plugin_gradle_plugin: String = "0.9.0"
-
-  const val com_moowork_node_gradle_plugin: String = "1.3.1"
 
   const val logback_classic: String = "1.2.3"
 

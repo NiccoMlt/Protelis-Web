@@ -10,7 +10,7 @@ plugins {
   kotlin("kapt") version Versions.org_jetbrains_kotlin_jvm_gradle_plugin
   application
   id("org.jlleitschuh.gradle.ktlint") version Versions.org_jlleitschuh_gradle_ktlint_gradle_plugin
-  id("com.moowork.node") version Versions.com_moowork_node_gradle_plugin
+  id("com.github.node-gradle.node") version Versions.com_github_node_gradle_node_gradle_plugin
   id("de.fayard.refreshVersions") version Versions.de_fayard_refreshversions_gradle_plugin
   jacoco
   id("com.github.johnrengelman.shadow") version Versions.com_github_johnrengelman_shadow_gradle_plugin
