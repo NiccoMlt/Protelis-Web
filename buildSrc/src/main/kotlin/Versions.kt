@@ -10,7 +10,7 @@ import kotlin.String
  * YOU are responsible for updating manually the dependency version.
  */
 object Versions {
-  const val org_jetbrains_kotlin: String = "1.3.50"
+  const val org_jetbrains_kotlin: String = "1.3.61"
 
   const val org_jetbrains_dokka: String = "0.10.0"
 
@@ -26,9 +26,9 @@ object Versions {
 
   const val de_fayard_refreshversions_gradle_plugin: String = "0.7.0" // available: "0.8.1"
 
-  const val org_jetbrains_kotlin_kapt_gradle_plugin: String = "1.3.50"
+  const val org_jetbrains_kotlin_kapt_gradle_plugin: String = "1.3.61"
 
-  const val org_jetbrains_kotlin_jvm_gradle_plugin: String = "1.3.50"
+  const val org_jetbrains_kotlin_jvm_gradle_plugin: String = "1.3.61"
 
   const val io_vertx_vertx_plugin_gradle_plugin: String = "1.0.1"
 
