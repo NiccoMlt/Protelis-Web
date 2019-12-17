@@ -55,5 +55,4 @@ deploy:
   app:
     master: protelis-web
     develop: protelis-web-develop
-  skip_cleanup: true
   strategy: api
