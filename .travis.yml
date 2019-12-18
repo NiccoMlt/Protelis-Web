@@ -10,9 +10,15 @@ env:
     - FRONTEND_BUILD_DIR=$TRAVIS_BUILD_DIR/src/main/frontend
     - GRAVIS="https://raw.githubusercontent.com/DanySK/Gravis-CI/master/"
 
+stages:
+  - test
+  - deploy
+
 jobs:
   include:
-    - language: shell
+    - name: "Backend build"
+      stage: test
+      language: shell
       before_cache:
         - curl "${GRAVIS}.clean_gradle_cache.sh" --output .clean_gradle_cache.sh
         - bash .clean_gradle_cache.sh
@@ -33,7 +39,9 @@ jobs:
         - ./gradlew check
       after_success:
         - bash <(curl -s https://codecov.io/bash)
-    - language: node_js
+    - name: "Frontend build"
+      stage: test
+      language: node_js
       node_js: lts/*
       cache:
         yarn: true
@@ -47,12 +55,36 @@ jobs:
         - yarn test:ci
       after_success:
         - yarn codecov:upload
-
-deploy:
-  provider: heroku
-  api_key:
-    secure: eWBQpD5v1zVbPgwjF8z0YW/dWn44C+BPBGijow59thnjmUwSBrV1dVZU+GUp4VQeYYB8q+2iBtUyYyUKiNRfeuk4IcN+hf7hXuGhHgffW4eXLi6nuWNmy9/SDgOmMUiezFE2tOMX0nbHAv9X/n75s0wtECoGrWRMmur4A1q6jF5LE/v+DxvzWVvmzNwDuFy3Y170zGc4bi1L/OiN0L6Vs0Qq8EEblQIzf6l1TTh4qnl7GvAU4Y4xat4e4Nfa8edZ2tQGFJnCENIsbN6ZSlMyGVEEtxSGnB41S/vxrUlMvFD8RanSDkrcwBSiuL9+hsf339ScXYvkIpylmfT7RHqS5BceOBQmuwsDF0M0Jhd5FaHnWrZHsscJIOjSmz6BFGSzbXGn8bUAhMfuB8gtAhHrKRWacSyvfSwbrHbxoZ+poXjEFhMomJ2apiwmYVYxPA5j5rHVKpFEtMEn2VjVkOclTR5a4X6yci1M+4lDW1/Fov8k3dADo4fZLuwRUKqlWdkPcaNHg32K1txapZ5MpJZzZJ0gDIFXYhs6mdxFbsQiLyYbINPIRJQnXGuJeGijCLc/1fffEDjHesUPGxZ4+I9yPQMYV26E/udwIqdnfd8m/iKvobTJMZaVcrht5MvylKAwZaoAI6J1xBrDM7FWk3+U69Fw64NVJrf19Kyxi9SkPmg=
-  app:
-    master: protelis-web
-    develop: protelis-web-develop
-  strategy: api
+    - name: "Deploy OpenAPI Redoc"
+      stage: deploy
+      language: node_js
+      install: yarn global add redoc-cli
+      script: redoc-cli bundle ./src/main/resources/openapi.yaml
+      after_script:
+        - mkdir openapi
+        - mv ./redoc-static.html ./openapi/index.html
+      deploy:
+        - provider: surge
+          project: ./openapi/
+          domain: protelis-web-api.surge.sh
+          cleanup: false
+          on:
+            branch: master
+        - provider: surge
+          project: ./openapi/
+          domain: protelis-web-api-develop.surge.sh
+          cleanup: false
+          on:
+            branch: develop
+    - name: "Deploy on Heroku"
+      stage: deploy
+      language: shell
+      script: skip
+      deploy:
+        provider: heroku
+        api_key:
+          secure: eWBQpD5v1zVbPgwjF8z0YW/dWn44C+BPBGijow59thnjmUwSBrV1dVZU+GUp4VQeYYB8q+2iBtUyYyUKiNRfeuk4IcN+hf7hXuGhHgffW4eXLi6nuWNmy9/SDgOmMUiezFE2tOMX0nbHAv9X/n75s0wtECoGrWRMmur4A1q6jF5LE/v+DxvzWVvmzNwDuFy3Y170zGc4bi1L/OiN0L6Vs0Qq8EEblQIzf6l1TTh4qnl7GvAU4Y4xat4e4Nfa8edZ2tQGFJnCENIsbN6ZSlMyGVEEtxSGnB41S/vxrUlMvFD8RanSDkrcwBSiuL9+hsf339ScXYvkIpylmfT7RHqS5BceOBQmuwsDF0M0Jhd5FaHnWrZHsscJIOjSmz6BFGSzbXGn8bUAhMfuB8gtAhHrKRWacSyvfSwbrHbxoZ+poXjEFhMomJ2apiwmYVYxPA5j5rHVKpFEtMEn2VjVkOclTR5a4X6yci1M+4lDW1/Fov8k3dADo4fZLuwRUKqlWdkPcaNHg32K1txapZ5MpJZzZJ0gDIFXYhs6mdxFbsQiLyYbINPIRJQnXGuJeGijCLc/1fffEDjHesUPGxZ4+I9yPQMYV26E/udwIqdnfd8m/iKvobTJMZaVcrht5MvylKAwZaoAI6J1xBrDM7FWk3+U69Fw64NVJrf19Kyxi9SkPmg=
+        app:
+          master: protelis-web
+          develop: protelis-web-develop
+        strategy: api
