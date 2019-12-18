@@ -31,10 +31,10 @@ The project is deployed using the awesome [`dpl` tool](https://github.com/travis
 
 In particular, CI pipeline does the following deployments:
 
-  - Master branch code is deployed on Heroku at https://protelis-web.herokuapp.com
-  - Develop branch code is deployed on Heroku at https://protelis-web-develop.herokuapp.com
-  - Master branch Redoc OpenAPI 3 documentation is deployed on Surge.sh at https://protelis-web-api.surge.sh
-  - Develop branch Redoc OpenAPI 3 documentation is deployed on Surge.sh at https://protelis-web-api-develop.surge.sh
+- Master branch code is deployed on Heroku at <https://protelis-web.herokuapp.com>
+- Develop branch code is deployed on Heroku at <https://protelis-web-develop.herokuapp.com>
+- Master branch Redoc OpenAPI 3 documentation is deployed on Surge.sh at <https://protelis-web-api.surge.sh>
+- Develop branch Redoc OpenAPI 3 documentation is deployed on Surge.sh at <https://protelis-web-api-develop.surge.sh>
 
 ## License and credits [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
