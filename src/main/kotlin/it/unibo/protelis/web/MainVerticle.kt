@@ -24,7 +24,9 @@ class MainVerticle : AbstractVerticle() {
       )
     }
 
-    vertx.deployVerticle(BackendVerticle()) {
+    val port: Int? = System.getenv()["PORT"]?.toIntOrNull()
+
+    vertx.deployVerticle(if (port !== null) BackendVerticle(port) else BackendVerticle()) {
       if (it.succeeded()) {
         startPromise.complete()
       } else {
