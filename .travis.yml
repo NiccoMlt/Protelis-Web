@@ -58,9 +58,10 @@ jobs:
     - name: "Deploy OpenAPI Redoc"
       stage: deploy
       language: node_js
-      install: yarn global add redoc-cli
-      script: redoc-cli bundle ./src/main/resources/openapi.yaml
-      after_script:
+      node_js: node
+      install: skip
+      script: npx redoc-cli bundle ./src/main/resources/openapi.yaml
+      before_deploy:
         - mkdir openapi
         - mv ./redoc-static.html ./openapi/index.html
       deploy:
