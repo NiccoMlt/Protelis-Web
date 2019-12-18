@@ -15,6 +15,10 @@ info:
 servers:
   - url: "http://localhost:8080/api"
     description: Local executed server
+  - url: "https://protelis-web.herokuapp.com/api"
+    description: Master branch server on Heroku
+  - url: "https://protelis-web-develop.herokuapp.com/api"
+    description: Develop branch server on Heroku
 
 tags:
   - name: protelis
