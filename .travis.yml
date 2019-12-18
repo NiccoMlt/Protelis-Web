@@ -58,21 +58,26 @@ jobs:
     - name: "Deploy OpenAPI Redoc"
       stage: deploy
       language: node_js
-      install: yarn global add redoc-cli
-      script: redoc-cli bundle ./src/main/resources/openapi.yaml
-      after_script:
+      node_js: node
+      install: skip
+      script: npx redoc-cli bundle ./src/main/resources/openapi.yaml
+      before_deploy:
         - mkdir openapi
         - mv ./redoc-static.html ./openapi/index.html
+        - pwd
+        - ls -al
       deploy:
         - provider: surge
-          project: ./openapi/
+          project: ./openapi
           domain: protelis-web-api.surge.sh
+          edge: true
           cleanup: false
           on:
             branch: master
         - provider: surge
-          project: ./openapi/
+          project: ./openapi
           domain: protelis-web-api-develop.surge.sh
+          edge: true
           cleanup: false
           on:
             branch: develop
