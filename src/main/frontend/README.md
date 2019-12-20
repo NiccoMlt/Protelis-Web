@@ -3,7 +3,7 @@
 
 ## Use cases
 
-[![UML diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/NiccoMlt/Protelis-Web/feature/redux/docs/src/use-cases.puml)](../../../docs/src/use-cases.puml)
+[![UML diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/NiccoMlt/Protelis-Web/develop/docs/src/use-cases.puml)](../../../docs/src/use-cases.puml)
 
 ## Code quality & CI
 
