@@ -8,6 +8,24 @@ import kotlin.String
  */
 object Libs {
   /**
+   * http://github.com/FasterXML/jackson
+   */
+  const val jackson_annotations: String = "com.fasterxml.jackson.core:jackson-annotations:" +
+      Versions.com_fasterxml_jackson_core
+
+  /**
+   * https://github.com/FasterXML/jackson-core
+   */
+  const val jackson_core: String = "com.fasterxml.jackson.core:jackson-core:" +
+      Versions.com_fasterxml_jackson_core
+
+  /**
+   * http://github.com/FasterXML/jackson
+   */
+  const val jackson_databind: String = "com.fasterxml.jackson.core:jackson-databind:" +
+      Versions.com_fasterxml_jackson_core
+
+  /**
    * https://kotlinlang.org/
    */
   const val kotlin_annotation_processing_gradle: String =
@@ -50,6 +68,36 @@ object Libs {
       "org.jetbrains.dokka:org.jetbrains.dokka.gradle.plugin:" + Versions.org_jetbrains_dokka
 
   /**
+   * https://github.com/DanySK/alchemist-engine
+   */
+  const val alchemist_engine: String = "it.unibo.alchemist:alchemist-engine:" +
+      Versions.it_unibo_alchemist
+
+  /**
+   * https://github.com/DanySK/alchemist-incarnation-protelis
+   */
+  const val alchemist_incarnation_protelis: String =
+      "it.unibo.alchemist:alchemist-incarnation-protelis:" + Versions.it_unibo_alchemist
+
+  /**
+   * https://github.com/DanySK/alchemist-interfaces
+   */
+  const val alchemist_interfaces: String = "it.unibo.alchemist:alchemist-interfaces:" +
+      Versions.it_unibo_alchemist
+
+  /**
+   * https://github.com/DanySK/alchemist-loading
+   */
+  const val alchemist_loading: String = "it.unibo.alchemist:alchemist-loading:" +
+      Versions.it_unibo_alchemist
+
+  /**
+   * https://github.com/DanySK/alchemist-time
+   */
+  const val alchemist_time: String = "it.unibo.alchemist:alchemist-time:" +
+      Versions.it_unibo_alchemist
+
+  /**
    * https://junit.org/junit5/
    */
   const val junit_jupiter_api: String = "org.junit.jupiter:junit-jupiter-api:" +
@@ -77,6 +125,17 @@ object Libs {
   const val vertx_web: String = "io.vertx:vertx-web:" + Versions.io_vertx
 
   const val vertx_web_api_contract: String = "io.vertx:vertx-web-api-contract:" + Versions.io_vertx
+
+  /**
+   * http://logback.qos.ch
+   */
+  const val ch_qos_logback_logback_classic: String = "ch.qos.logback:logback-classic:" +
+      Versions.ch_qos_logback_logback_classic
+
+  /**
+   * http://www.slf4j.org
+   */
+  const val org_slf4j_slf4j_api: String = "org.slf4j:slf4j-api:" + Versions.org_slf4j_slf4j_api
 
   const val com_github_johnrengelman_shadow_gradle_plugin: String =
       "com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:" +
@@ -107,20 +166,10 @@ object Libs {
       Versions.io_vertx_vertx_plugin_gradle_plugin
 
   /**
-   * http://logback.qos.ch
+   * https://github.com/FasterXML/jackson-module-kotlin
    */
-  const val logback_classic: String = "ch.qos.logback:logback-classic:" + Versions.logback_classic
-
-  /**
-   * https://github.com/MicroUtils/kotlin-logging
-   */
-  const val kotlin_logging: String = "io.github.microutils:kotlin-logging:" +
-      Versions.kotlin_logging
-
-  /**
-   * http://www.slf4j.org
-   */
-  const val slf4j_api: String = "org.slf4j:slf4j-api:" + Versions.slf4j_api
+  const val jackson_module_kotlin: String = "com.fasterxml.jackson.module:jackson-module-kotlin:" +
+      Versions.jackson_module_kotlin
 
   /**
    * https://github.com/pinterest/ktlint

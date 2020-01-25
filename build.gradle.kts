@@ -26,17 +26,23 @@ repositories {
 dependencies {
   implementation(kotlin("stdlib-jdk8"))
   implementation(kotlin("reflect"))
-  implementation(Libs.slf4j_api)
-  implementation(Libs.logback_classic)
-  implementation(Libs.kotlin_logging)
+  implementation(Libs.org_slf4j_slf4j_api)
+  implementation(Libs.ch_qos_logback_logback_classic)
+  implementation(Libs.jackson_core) // also included by vertx, enforce common version
+  implementation(Libs.jackson_databind) // also included by vertx, enforce common version
+  implementation(Libs.jackson_annotations) // also included by vertx, enforce common version
+  implementation(Libs.jackson_module_kotlin) // kotlin helper
   implementation(Libs.vertx_core)
   implementation(Libs.vertx_lang_kotlin)
   implementation(Libs.vertx_lang_kotlin_coroutines)
   implementation(Libs.vertx_web)
   implementation(Libs.vertx_web_api_contract)
-//  implementation("io.reactivex.rxjava2:rxkotlin:${Versions.rxkotlin}")
-//  implementation("io.reactivex.rxjava2:rxjava:${Versions.rxjava}")
-//  implementation("io.vertx:vertx-rx-java2:${Versions.io_vertx}")
+
+  implementation(Libs.alchemist_interfaces)
+  implementation(Libs.alchemist_engine)
+  implementation(Libs.alchemist_incarnation_protelis)
+  implementation(Libs.alchemist_time)
+  implementation(Libs.alchemist_loading)
 
   testImplementation(Libs.vertx_unit)
   testImplementation(Libs.vertx_junit5)
@@ -107,7 +113,7 @@ tasks {
     dependsOn(copyToWebRoot)
   }
 
-  val jest by creating(YarnTask::class) {
+  create<YarnTask>("jest") {
     setEnvironment(mapOf("CI" to "true"))
     args = listOf("test")
     dependsOn("yarn")
@@ -147,12 +153,16 @@ tasks {
     outputDirectory = "$rootDir/docs"
   }
 
-  // task used by Heroku to build executable Jar
+  /** task used by Heroku to build executable Jar */
   register("stage") {
     dependsOn(listOf(clean, build, shadowJar))
   }
 
   build {
     mustRunAfter(clean)
+  }
+
+  shadowJar {
+    isZip64 = true
   }
 }
