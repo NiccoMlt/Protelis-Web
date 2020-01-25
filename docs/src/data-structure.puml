@@ -1,0 +1,27 @@
+@startuml "Data format"
+
+interface DataEnclosure {
+  + time
+  + data
+}
+
+interface Data {
+  + dataType
+  + dataValue
+}
+
+DataEnclosure ..> Data
+
+abstract class WellKnownData
+
+WellKnownData --|> Data
+
+class NodePosition
+
+NodePosition --|> WellKnownData
+
+class NodeConcentration
+
+NodeConcentration --|> WellKnownData
+
+@enduml
