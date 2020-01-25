@@ -1,0 +1,32 @@
+@startuml "Simulation data flow"
+
+actor "Web GUI" as react
+
+== Protelis code development ==
+
+... Code development is done client-side on frontend ...
+
+== when Protelis code is ready ==
+
+' box "Backend server" {
+  participant "Backend Verticle" as openapi
+  participant "Simulation Verticle" as alchemist
+' }
+
+react --> openapi++: PUT Protelis code
+openapi --> alchemist++: initialize simulation
+openapi --> react--: send socket endpoint
+
+react --> alchemist: connect to simulation
+
+loop execution
+  |||
+  alchemist --> react: output
+  |||
+  react --> alchemist: GUI interactions with simulation
+  |||
+end
+
+alchemist --> react--: terminate simulation
+
+@enduml

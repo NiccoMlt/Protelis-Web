@@ -1,0 +1,96 @@
+@startuml engine
+
+skinparam linetype ortho
+
+package it.unibo.alchemist.boundary.interfaces {
+  interface OutputMonitor <T concentration type\nP position type> << from Alchemist >> {
+    + initialized(env)
+    + stepDone(env, reaction, time, step)
+    + finished(env, time, step)
+  }
+}
+
+package io.vertx {
+  package io.vertx.core {
+    interface Verticle {
+      + init()
+      + start()
+      + stop()
+    }
+  }
+
+  package io.vertx.kotlin.coroutines {
+    abstract class CoroutineVerticle
+  }
+
+  Verticle <|-- CoroutineVerticle
+
+  package io.vertx.core.eventbus {
+    interface EventBus
+  }
+}
+
+package it.unibo.protelis.web.execution {
+  package it.unibo.protelis.web.execution.simulated {
+    abstract class ProtelisOutputMonitor <T concentration type\nP position type> {
+      # updateMessageGenerator(env): ProtelisUpdateMessage
+    }
+
+    ProtelisObserver <|-- ProtelisOutputMonitor
+    OutputMonitor <|-- ProtelisOutputMonitor
+
+    class ProtelisUpdateAdapter <T concentration type\nP position type>
+
+    ProtelisOutputMonitor <|-- ProtelisUpdateAdapter
+
+    class SimulatedProtelisEngine {
+      - alchemistEngine
+    }
+
+    ProtelisEngine <|-- SimulatedProtelisEngine
+  }
+
+  interface ProtelisEngine {
+    + setup(sourceCode, observer)
+    + start()
+    + stop()
+  }
+
+  interface ProtelisObserver {
+    + initialized(updateMessage)
+    + stepDone(updateMessage)
+    + finished(updateMessage)
+  }
+
+  ProtelisEngine o-- ProtelisObserver
+
+  class ProtelisUpdateMessage {
+    + nodes: List<ProtelisNode>
+  }
+
+  ProtelisObserver --> ProtelisUpdateMessage
+
+  class ProtelisNode {
+    + id: string
+    + coordinates: Pair<Number, Number>
+  }
+
+  ProtelisUpdateMessage *-- ProtelisNode
+
+  class AlchemistVerticle {
+    - engine: ProtelisEngine?
+  }
+
+  CoroutineVerticle <|-- AlchemistVerticle
+
+  AlchemistVerticle o-- SimulatedProtelisEngine
+
+  class EventBusProtelisObserver {
+    - eb: EventBus
+  }
+
+  ProtelisObserver <|-- EventBusProtelisObserver
+  EventBusProtelisObserver o-- EventBus
+}
+
+@enduml
