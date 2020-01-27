@@ -42,12 +42,12 @@ object Versions {
 
   const val jackson_module_kotlin: String = "2.10.2"
 
-  const val ktlint: String = "0.36.0"
+  const val ktlint: String = "0.35.0" // available: "0.36.0"
 
   /**
    * Current version: "6.0.1"
    * See issue 19: How to update Gradle itself?
    * https://github.com/jmfayard/buildSrcVersions/issues/19
    */
-  const val gradleLatestVersion: String = "6.0.1"
+  const val gradleLatestVersion: String = "6.1.1"
 }

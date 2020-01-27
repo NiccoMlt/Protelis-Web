@@ -44,9 +44,10 @@ dependencies {
   implementation(Libs.alchemist_time)
   implementation(Libs.alchemist_loading)
 
-  testImplementation(Libs.vertx_unit)
+  // testImplementation(Libs.vertx_unit)
   testImplementation(Libs.vertx_junit5)
-  testImplementation(kotlin("test"))
+  testImplementation(Libs.vertx_junit5_web_client)
+  // testImplementation(kotlin("test"))
   testImplementation(kotlin("test-junit"))
   testRuntimeOnly(Libs.junit_jupiter_engine)
   testImplementation(Libs.junit_jupiter_api)

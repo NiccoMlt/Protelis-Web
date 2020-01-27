@@ -113,6 +113,9 @@ object Libs {
 
   const val vertx_junit5: String = "io.vertx:vertx-junit5:" + Versions.io_vertx
 
+  const val vertx_junit5_web_client: String = "io.vertx:vertx-junit5-web-client:" +
+      Versions.io_vertx
+
   const val vertx_lang_kotlin: String = "io.vertx:vertx-lang-kotlin:" + Versions.io_vertx
 
   const val vertx_lang_kotlin_coroutines: String = "io.vertx:vertx-lang-kotlin-coroutines:" +
