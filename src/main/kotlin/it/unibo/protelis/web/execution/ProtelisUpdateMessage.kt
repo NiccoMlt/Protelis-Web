@@ -5,6 +5,6 @@ package it.unibo.protelis.web.execution
  * It propagates infos about the nodes.
  */
 data class ProtelisUpdateMessage(
-  /** A list of all the Nodes in the Protelis environment*/
+  /** A list of all the Nodes in the Protelis environment. */
   val nodes: List<ProtelisNode>
 )

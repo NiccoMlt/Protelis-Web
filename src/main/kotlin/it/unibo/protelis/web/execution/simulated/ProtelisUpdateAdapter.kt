@@ -24,22 +24,24 @@ class ProtelisUpdateAdapter<T, P : Position<out P>>(
   override fun finished(update: ProtelisUpdateMessage) = observer.finished(update)
 
   override fun updateMessageGenerator(env: Environment<T, P>): ProtelisUpdateMessage = envToUpdateMsg(env)
-}
 
-/**
- * Transformer function that extracts from an [Alchemist Environment][Environment] the [ProtelisNode] infos.
- *
- * @param T the Concentration Type
- * @param P the [Position] Type
- * @param env the environment to gather information from
- *
- * @return a Protelis update message
- */
-fun <T, P : Position<out P>> envToUpdateMsg(env: Environment<T, P>): ProtelisUpdateMessage = ProtelisUpdateMessage(
-  env
-    .nodes
-    .map { it.id.toString() to env.getPosition(it) }
-    .map { it.first to (it.second.cartesianCoordinates[0] to it.second.cartesianCoordinates[1]) }
-    .map { ProtelisNode(it.first, it.second) }
-    .toList()
-)
+  companion object {
+    /**
+     * Transformer function that extracts from an [Alchemist Environment][Environment] the [ProtelisNode] infos.
+     *
+     * @param T the Concentration Type
+     * @param P the [Position] Type
+     * @param env the environment to gather information from
+     *
+     * @return a Protelis update message
+     */
+    fun <T, P : Position<out P>> envToUpdateMsg(env: Environment<T, P>): ProtelisUpdateMessage = ProtelisUpdateMessage(
+      env
+        .nodes
+        .map { it.id.toString() to env.getPosition(it) }
+        .map { it.first to (it.second.cartesianCoordinates[0] to it.second.cartesianCoordinates[1]) }
+        .map { ProtelisNode(it.first, it.second) }
+        .toList()
+    )
+  }
+}

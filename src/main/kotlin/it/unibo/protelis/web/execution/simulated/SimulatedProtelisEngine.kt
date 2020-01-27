@@ -36,7 +36,7 @@ class SimulatedProtelisEngine() : ProtelisEngine {
 
   private fun setupSimulation() {
     val loader: Loader = YamlLoader(this.javaClass.classLoader.getResourceAsStream("simulation.yml"))
-    alchemistEngine = Engine(
+    alchemistEngine = Engine<Any /* TODO */, Euclidean2DPosition>(
       loader.getDefault(),
       Long.MAX_VALUE,
       DoubleTime(Double.POSITIVE_INFINITY)
