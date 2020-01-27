@@ -30,11 +30,19 @@ class AlchemistVerticle : CoroutineVerticle() {
   }
 
   companion object {
-    const val BASE_ADDRESS = "protelis.web.exec"
-    const val INITIALIZED_SUFFIX = "init"
-    const val STEP_DONE_SUFFIX = "step"
-    const val FINISHED_SUFFIX = "end"
-    const val SETUP_SUFFIX = "setup"
+    private const val BASE_ADDRESS = "protelis.web.exec"
+
+    private const val INITIALIZED_SUFFIX = "init"
+    fun initializedAddress(addressId: String): String = "$BASE_ADDRESS.$addressId.$INITIALIZED_SUFFIX"
+
+    private const val STEP_DONE_SUFFIX = "step"
+    fun stepDoneAddress(addressId: String): String = "$BASE_ADDRESS.$addressId.$STEP_DONE_SUFFIX"
+
+    private const val FINISHED_SUFFIX = "end"
+    fun finishedAddress(addressId: String): String = "$BASE_ADDRESS.$addressId.$FINISHED_SUFFIX"
+
+    private const val SETUP_SUFFIX = "setup"
+    fun setupAddress(): String = "$BASE_ADDRESS.$SETUP_SUFFIX"
 
     /**
      * Generate a unique address for a specific execution.
