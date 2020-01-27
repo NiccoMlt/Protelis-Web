@@ -17,6 +17,10 @@ package io.vertx {
       + start()
       + stop()
     }
+
+    package io.vertx.core.eventbus {
+      interface EventBus
+    }
   }
 
   package io.vertx.kotlin.coroutines {
@@ -24,10 +28,6 @@ package io.vertx {
   }
 
   Verticle <|-- CoroutineVerticle
-
-  package io.vertx.core.eventbus {
-    interface EventBus
-  }
 }
 
 package it.unibo.protelis.web.execution {
