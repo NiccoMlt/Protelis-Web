@@ -79,7 +79,7 @@ class SimulatedProtelisEngine() : CoroutineProtelisEngine() {
           .filterKeys { it.name == "_to_exec" }
           .forEach { (mol, _) ->
             node.setConcentration(mol, sourceCode)
-            logger.debug("Injecting Protelis code to molecule \"$mol\" of node \"${node.id}\"")
+            logger.trace("Injecting Protelis code to molecule \"$mol\" of node \"${node.id}\"")
           }
       }
       ?: throw IllegalStateException("Can't set code to non-existent simulation")
