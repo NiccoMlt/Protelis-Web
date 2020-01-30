@@ -26,12 +26,21 @@ repositories {
 dependencies {
   implementation(kotlin("stdlib-jdk8"))
   implementation(kotlin("reflect"))
-  implementation(Libs.org_slf4j_slf4j_api)
-  implementation(Libs.ch_qos_logback_logback_classic)
+  implementation(Libs.kotlinx_coroutines_core)
+  implementation(Libs.kotlinx_coroutines_jdk8)
+  implementation(Libs.kotlinx_io)
+  implementation(Libs.kotlinx_io_jvm)
+  implementation(Libs.kotlinx_coroutines_io)
+
+  implementation(Libs.slf4j_api)
+  implementation(Libs.logback_classic)
+
   implementation(Libs.jackson_core) // also included by vertx, enforce common version
   implementation(Libs.jackson_databind) // also included by vertx, enforce common version
   implementation(Libs.jackson_annotations) // also included by vertx, enforce common version
+  implementation(Libs.jackson_dataformat_yaml) // yaml helper
   implementation(Libs.jackson_module_kotlin) // kotlin helper
+
   implementation(Libs.vertx_core)
   implementation(Libs.vertx_lang_kotlin)
   implementation(Libs.vertx_lang_kotlin_coroutines)
@@ -44,10 +53,9 @@ dependencies {
   implementation(Libs.alchemist_time)
   implementation(Libs.alchemist_loading)
 
-  // testImplementation(Libs.vertx_unit)
   testImplementation(Libs.vertx_junit5)
   testImplementation(Libs.vertx_junit5_web_client)
-  // testImplementation(kotlin("test"))
+  testImplementation(kotlin("test"))
   testImplementation(kotlin("test-junit"))
   testRuntimeOnly(Libs.junit_jupiter_engine)
   testImplementation(Libs.junit_jupiter_api)
@@ -83,7 +91,7 @@ vertx {
 tasks {
   withType(KotlinCompile::class).all {
     kotlinOptions {
-      allWarningsAsErrors = true
+      allWarningsAsErrors = false // TODO
       jvmTarget = Versions.jdk_version
     }
   }
