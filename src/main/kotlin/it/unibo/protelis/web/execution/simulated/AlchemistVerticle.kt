@@ -19,13 +19,15 @@ class AlchemistVerticle : CoroutineVerticle() {
   }
 
   override suspend fun start() {
-    eb.consumer<String>("$BASE_ADDRESS.$SETUP_SUFFIX") {
+    eb.consumer<String>("$BASE_ADDRESS.$SETUP_SUFFIX") { msg ->
       val id = addressIdGen()
-      val source = it.body() // TODO
-      engines += id to SimulatedProtelisEngine(source, EventBusProtelisObserver(eb, id))
-      // TODO: should split initialization from source receive ?
-      // TODO: do something else ?
-      engines[id]?.start()
+      val source = msg.body()
+      val sim = SimulatedProtelisEngine()
+      engines += id to sim
+      msg.reply(id)
+      sim
+        .setup(source, EventBusProtelisObserver(eb, id))
+        .thenCompose { sim.start() }
     }
   }
 
