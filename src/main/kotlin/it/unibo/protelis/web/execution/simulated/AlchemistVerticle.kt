@@ -4,13 +4,13 @@ import io.vertx.core.Context
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.EventBus
 import io.vertx.kotlin.coroutines.CoroutineVerticle
+import it.unibo.protelis.web.execution.CoroutineProtelisEngine
 import it.unibo.protelis.web.execution.EventBusProtelisObserver
-import it.unibo.protelis.web.execution.ProtelisEngine
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class AlchemistVerticle : CoroutineVerticle() {
-  private val engines: MutableMap<String, ProtelisEngine> = mutableMapOf()
+  private val engines: MutableMap<String, CoroutineProtelisEngine> = mutableMapOf()
   private lateinit var eb: EventBus
 
   override fun init(vertx: Vertx, context: Context) {
@@ -56,6 +56,6 @@ class AlchemistVerticle : CoroutineVerticle() {
      * @return the (hopefully) unique address for an execution
      */
     fun addressIdGen(address: String = "alchemist"): String =
-      "${LocalDateTime.now().format(DateTimeFormatter.ISO_INSTANT)}@$address"
+      "${LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)}@$address"
   }
 }
