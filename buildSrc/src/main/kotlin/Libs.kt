@@ -26,6 +26,18 @@ object Libs {
       Versions.com_fasterxml_jackson_core
 
   /**
+   * https://github.com/Kotlin/kotlinx-io
+   */
+  const val kotlinx_io: String = "org.jetbrains.kotlinx:kotlinx-io:" +
+      Versions.org_jetbrains_kotlinx
+
+  /**
+   * https://github.com/Kotlin/kotlinx-io
+   */
+  const val kotlinx_io_jvm: String = "org.jetbrains.kotlinx:kotlinx-io-jvm:" +
+      Versions.org_jetbrains_kotlinx
+
+  /**
    * https://kotlinlang.org/
    */
   const val kotlin_annotation_processing_gradle: String =
@@ -123,22 +135,9 @@ object Libs {
 
   const val vertx_stack_depchain: String = "io.vertx:vertx-stack-depchain:" + Versions.io_vertx
 
-  const val vertx_unit: String = "io.vertx:vertx-unit:" + Versions.io_vertx
-
   const val vertx_web: String = "io.vertx:vertx-web:" + Versions.io_vertx
 
   const val vertx_web_api_contract: String = "io.vertx:vertx-web-api-contract:" + Versions.io_vertx
-
-  /**
-   * http://logback.qos.ch
-   */
-  const val ch_qos_logback_logback_classic: String = "ch.qos.logback:logback-classic:" +
-      Versions.ch_qos_logback_logback_classic
-
-  /**
-   * http://www.slf4j.org
-   */
-  const val org_slf4j_slf4j_api: String = "org.slf4j:slf4j-api:" + Versions.org_slf4j_slf4j_api
 
   const val com_github_johnrengelman_shadow_gradle_plugin: String =
       "com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:" +
@@ -169,10 +168,44 @@ object Libs {
       Versions.io_vertx_vertx_plugin_gradle_plugin
 
   /**
+   * https://github.com/FasterXML/jackson-dataformats-text
+   */
+  const val jackson_dataformat_yaml: String =
+      "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:" + Versions.jackson_dataformat_yaml
+
+  /**
+   * https://github.com/Kotlin/kotlinx.coroutines
+   */
+  const val kotlinx_coroutines_core: String = "org.jetbrains.kotlinx:kotlinx-coroutines-core:" +
+      Versions.kotlinx_coroutines_core
+
+  /**
+   * https://github.com/Kotlin/kotlinx.coroutines
+   */
+  const val kotlinx_coroutines_jdk8: String = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:" +
+      Versions.kotlinx_coroutines_jdk8
+
+  /**
    * https://github.com/FasterXML/jackson-module-kotlin
    */
   const val jackson_module_kotlin: String = "com.fasterxml.jackson.module:jackson-module-kotlin:" +
       Versions.jackson_module_kotlin
+
+  /**
+   * https://github.com/Kotlin/kotlinx.coroutines
+   */
+  const val kotlinx_coroutines_io: String = "org.jetbrains.kotlinx:kotlinx-coroutines-io:" +
+      Versions.kotlinx_coroutines_io
+
+  /**
+   * http://logback.qos.ch
+   */
+  const val logback_classic: String = "ch.qos.logback:logback-classic:" + Versions.logback_classic
+
+  /**
+   * http://www.slf4j.org
+   */
+  const val slf4j_api: String = "org.slf4j:slf4j-api:" + Versions.slf4j_api
 
   /**
    * https://github.com/pinterest/ktlint
