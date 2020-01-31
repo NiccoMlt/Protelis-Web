@@ -4,6 +4,8 @@ import io.vertx.core.eventbus.EventBus
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.finishedAddress
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.initializedAddress
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.stepDoneAddress
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 /**
  * This observer implementation adapts Protelis Events to publish on [Vert.x Event Bus][EventBus].
@@ -15,15 +17,20 @@ class EventBusProtelisObserver(
   private val eb: EventBus,
   private val addressId: String
 ) : ProtelisObserver {
+  private val logger: Logger = LoggerFactory.getLogger(this::class.java)
+
   override fun initialized(update: ProtelisUpdateMessage) {
+    logger.debug("Handle init update: $update")
     eb.publish(initializedAddress(addressId), update)
   }
 
   override fun stepDone(update: ProtelisUpdateMessage) {
+    logger.debug("Handle step update: $update")
     eb.publish(stepDoneAddress(addressId), update)
   }
 
   override fun finished(update: ProtelisUpdateMessage) {
+    logger.debug("Handle end update: $update")
     eb.publish(finishedAddress(addressId), update)
   }
 }

@@ -3,6 +3,8 @@ package it.unibo.protelis.web.execution.simulated
 import io.vertx.core.Context
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.EventBus
+import io.vertx.core.logging.Logger
+import io.vertx.core.logging.LoggerFactory
 import io.vertx.kotlin.coroutines.CoroutineVerticle
 import it.unibo.protelis.web.execution.CoroutineProtelisEngine
 import it.unibo.protelis.web.execution.EventBusProtelisObserver
@@ -10,6 +12,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class AlchemistVerticle : CoroutineVerticle() {
+  private val logger: Logger = LoggerFactory.getLogger(this::class.java)
   private val engines: MutableMap<String, CoroutineProtelisEngine> = mutableMapOf()
   private lateinit var eb: EventBus
 
@@ -28,6 +31,7 @@ class AlchemistVerticle : CoroutineVerticle() {
       sim
         .setup(source, EventBusProtelisObserver(eb, id))
         .thenCompose { sim.start() }
+        .thenRun { logger.info("Simulation $id started") }
     }
   }
 
@@ -49,7 +53,7 @@ class AlchemistVerticle : CoroutineVerticle() {
     /**
      * Generate a unique address for a specific execution.
      *
-     * It generates a string in form "<ISO instant>@<address>".
+     * It generates a string in form "<ISO date-time>@<address>".
      *
      * Address can be anything (IP, name, etc.) and defaults to "alchemist".
      *
