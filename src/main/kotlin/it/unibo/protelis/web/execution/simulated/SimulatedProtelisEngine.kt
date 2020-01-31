@@ -12,6 +12,7 @@ import it.unibo.protelis.web.execution.ProtelisObserver
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.future.asCompletableFuture
 import kotlinx.coroutines.launch
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -27,7 +28,7 @@ class SimulatedProtelisEngine() : CoroutineProtelisEngine() {
   }
 
   constructor(sourceCode: String, monitor: ProtelisObserver) : this() {
-    GlobalScope.launch { setupAwait(sourceCode, monitor) }
+    GlobalScope.launch { setupAwait(sourceCode, monitor) }.asCompletableFuture().join()
   }
 
   override suspend fun setupAwait(sourceCode: String, monitor: ProtelisObserver) {
@@ -35,15 +36,19 @@ class SimulatedProtelisEngine() : CoroutineProtelisEngine() {
     val sim = setupSimulationAsync().await()
     alchemistEngine.set(sim)
     setCode(sourceCode)
-    alchemistEngine.get()?.addOutputMonitor(ProtelisUpdateAdapter(monitor))
-    alchemistEngine.get()?.awaitFor(Status.READY) ?: throw IllegalStateException("Simulation was not set up correctly")
+    alchemistEngine.get()
+      ?.addOutputMonitor(ProtelisUpdateAdapter(monitor))
+      ?: throw IllegalStateException("Simulation was not set up correctly")
+    alchemistEngine.get()
+      ?.awaitFor(Status.INIT)
+      ?: throw IllegalStateException("Simulation was not set up correctly")
     logger.debug("Simulation Engine set up correctly")
   }
 
   override suspend fun startAwait() {
     checkNotNull(alchemistEngine.get())
     alchemistEngine.get()?.play()
-    alchemistEngine.get()?.awaitFor(Status.RUNNING)
+    alchemistEngine.get()?.awaitFor(Status.READY) // TODO: should I wait RUNNING instead?
     logger.debug("Simulation started")
   }
 
@@ -58,7 +63,7 @@ class SimulatedProtelisEngine() : CoroutineProtelisEngine() {
   /**
    * Asynchronously build a new simulation from a loader of YAML files.
    */
-  private fun setupSimulationAsync(): Deferred<Engine<Any, Euclidean2DPosition>> = GlobalScope.async {
+  private fun setupSimulationAsync(): Deferred<Engine<Any /* TODO */, Euclidean2DPosition>> = GlobalScope.async {
     val loader = YamlLoader(this.javaClass.classLoader.getResourceAsStream("simulation.yml"))
     loader.getDefault<Any /* TODO */, Euclidean2DPosition>()
     Engine<Any /* TODO */, Euclidean2DPosition>(
@@ -86,12 +91,22 @@ class SimulatedProtelisEngine() : CoroutineProtelisEngine() {
   }
 }
 
+fun <T, P : Position<out P>> Simulation<T, P>.waitForAndCheck(
+  s: Status,
+  timeout: Long = 0,
+  timeUnit: TimeUnit = TimeUnit.MILLISECONDS
+): Status {
+  val actual = waitFor(s, timeout, timeUnit)
+  check(actual == s) { "Status is $actual instead of expected $s" }
+  return actual
+}
+
 /**
  * Asynchronous wait for the simulation to reach the selected [Status].
  *
  * @param s The [Status] the simulation must reach before returning from this method
  * @param timeout The maximum lapse of time the caller wants to wait before being resumed (0 means "no limit")
- * @param timeunit The [TimeUnit] used to define "timeout"
+ * @param timeUnit The [TimeUnit] used to define "timeout"
  *
  * @return the [Deferred] [Status] of the Simulation at the end of the wait
  *
@@ -100,15 +115,15 @@ class SimulatedProtelisEngine() : CoroutineProtelisEngine() {
 fun <T, P : Position<out P>> Simulation<T, P>.waitForAsync(
   s: Status,
   timeout: Long = 0,
-  timeunit: TimeUnit = TimeUnit.MILLISECONDS
-): Deferred<Status> = GlobalScope.async { waitFor(s, timeout, timeunit) }
+  timeUnit: TimeUnit = TimeUnit.MILLISECONDS
+): Deferred<Status> = GlobalScope.async { waitForAndCheck(s, timeout, timeUnit) }
 
 /**
  * Suspended function that waits for the simulation to reach the selected [Status].
  *
  * @param s The [Status] the simulation must reach before returning from this method
  * @param timeout The maximum lapse of time the caller wants to wait before being resumed (0 means "no limit")
- * @param timeunit The [TimeUnit] used to define "timeout"
+ * @param timeUnit The [TimeUnit] used to define "timeout"
  *
  * @return the [Status] of the Simulation at the end of the wait
  *
@@ -117,5 +132,5 @@ fun <T, P : Position<out P>> Simulation<T, P>.waitForAsync(
 suspend fun <T, P : Position<out P>> Simulation<T, P>.awaitFor(
   s: Status,
   timeout: Long = 0,
-  timeunit: TimeUnit = TimeUnit.MILLISECONDS
-): Status = waitForAsync(s, timeout, timeunit).await()
+  timeUnit: TimeUnit = TimeUnit.MILLISECONDS
+): Status = waitForAsync(s, timeout, timeUnit).await()
