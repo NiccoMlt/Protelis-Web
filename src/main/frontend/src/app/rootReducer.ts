@@ -1,9 +1,10 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import editorReducer from '../features/editor/editorSlice';
+import execReducer from '../features/render/execSlice';
 
 const rootReducer = combineReducers({
   editor: editorReducer,
-  // TODO
+  exec: execReducer,
 });
 
 /** Root Redux store types. */
