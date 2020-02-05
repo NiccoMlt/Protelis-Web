@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Action, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface NodePosition {
   id: string;
@@ -32,6 +32,12 @@ const execSlice = createSlice({
   name: 'exec',
   initialState,
   reducers: {
+    ebConnected(state): void {
+      state.connection = 'open';
+    },
+    ebDisconnected(state): void {
+      state.connection = 'closed';
+    },
     changeStatus(state, action: PayloadAction<EventBusStatus>): void {
       state.connection = action.payload;
     },
@@ -64,6 +70,8 @@ export const {
   drawEnd,
   drawInit,
   drawStep,
+  ebConnected,
+  ebDisconnected
 } = execSlice.actions;
 
 export default execSlice.reducer;

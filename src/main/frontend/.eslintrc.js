@@ -35,6 +35,19 @@ module.exports = {
         "props": false
       }
     ],
-    "tsdoc/syntax": "warn"
+    "tsdoc/syntax": "warn",
+    "max-len": [
+      "error",
+      {
+        "code": 120,
+        "tabWidth": 4
+      }
+    ],
+    "no-console": [
+      "error",
+      {
+        allow: ["warn", "error"]
+      }
+    ]
   }
-}
+};
