@@ -1,13 +1,16 @@
 import { Layer, Stage, Star } from 'react-konva';
 import React from 'react';
-import { useSelector } from 'react-redux';
-import EventBusConnector from './EventBusConnector';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button } from '@material-ui/core';
 import { RootState } from '../../app/rootReducer';
 import { EventBusStatus } from './execSlice';
+import { ebConnect } from '../../utils/EventBusMiddleware';
 
 /** Konva canvas wrapper. */
 const RenderCanvas: React.FC = () => {
   const connectionStatus = useSelector<RootState, EventBusStatus>((state) => state.exec.connection);
+  const dispatch = useDispatch();
+
 
   return (
     <>
@@ -16,7 +19,7 @@ const RenderCanvas: React.FC = () => {
         {' '}
         {connectionStatus}
       </h1>
-      <EventBusConnector />
+      <Button onClick={() => dispatch(ebConnect({ host: 'http://localhost:8080/eventbus' }))}>Connect</Button>
       <Stage width={window.innerWidth * 0.4} height={window.innerHeight * 0.85}>
         <Layer>
           <Star
