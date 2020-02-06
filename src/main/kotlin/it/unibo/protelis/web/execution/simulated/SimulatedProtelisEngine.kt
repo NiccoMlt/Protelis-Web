@@ -42,6 +42,7 @@ class SimulatedProtelisEngine() : CoroutineProtelisEngine() {
     alchemistEngine.get()
       ?.awaitFor(Status.INIT)
       ?: throw IllegalStateException("Simulation was not set up correctly")
+    GlobalScope.launch { sim.run() }
     logger.debug("Simulation Engine set up correctly")
   }
 
@@ -91,10 +92,22 @@ class SimulatedProtelisEngine() : CoroutineProtelisEngine() {
   }
 }
 
+/**
+ * Wait for the simulation to reach the selected [Status] and check if it actually reached it.
+ *
+ * @param s The [Status] the simulation must reach before returning from this method
+ * @param timeout The maximum lapse of time the caller wants to wait before being resumed
+ * @param timeUnit The [TimeUnit] used to define "timeout"
+ *
+ * @return the [Status] of the Simulation at the end of the wait
+ *
+ * @throws InterruptedException if the wait somehow crashes
+ * @throws IllegalStateException if the actual status at the end of the wait does not match with the expected status
+ */
 fun <T, P : Position<out P>> Simulation<T, P>.waitForAndCheck(
   s: Status,
-  timeout: Long = 0,
-  timeUnit: TimeUnit = TimeUnit.MILLISECONDS
+  timeout: Long = 10,
+  timeUnit: TimeUnit = TimeUnit.DAYS
 ): Status {
   val actual = waitFor(s, timeout, timeUnit)
   check(actual == s) { "Status is $actual instead of expected $s" }
@@ -105,32 +118,34 @@ fun <T, P : Position<out P>> Simulation<T, P>.waitForAndCheck(
  * Asynchronous wait for the simulation to reach the selected [Status].
  *
  * @param s The [Status] the simulation must reach before returning from this method
- * @param timeout The maximum lapse of time the caller wants to wait before being resumed (0 means "no limit")
+ * @param timeout The maximum lapse of time the caller wants to wait before being resumed
  * @param timeUnit The [TimeUnit] used to define "timeout"
  *
  * @return the [Deferred] [Status] of the Simulation at the end of the wait
  *
- * @throws InterruptedException if the wait somehow crashes or if time runs out
+ * @throws InterruptedException if the wait somehow crashes
+ * @throws IllegalStateException if the actual status at the end of the wait does not match with the expected status
  */
 fun <T, P : Position<out P>> Simulation<T, P>.waitForAsync(
   s: Status,
-  timeout: Long = 0,
-  timeUnit: TimeUnit = TimeUnit.MILLISECONDS
+  timeout: Long = 10,
+  timeUnit: TimeUnit = TimeUnit.DAYS
 ): Deferred<Status> = GlobalScope.async { waitForAndCheck(s, timeout, timeUnit) }
 
 /**
  * Suspended function that waits for the simulation to reach the selected [Status].
  *
  * @param s The [Status] the simulation must reach before returning from this method
- * @param timeout The maximum lapse of time the caller wants to wait before being resumed (0 means "no limit")
+ * @param timeout The maximum lapse of time the caller wants to wait before being resumed
  * @param timeUnit The [TimeUnit] used to define "timeout"
  *
  * @return the [Status] of the Simulation at the end of the wait
  *
- * @throws InterruptedException if the wait somehow crashes or if time runs out
+ * @throws InterruptedException if the wait somehow crashes
+ * @throws IllegalStateException if the actual status at the end of the wait does not match with the expected status
  */
 suspend fun <T, P : Position<out P>> Simulation<T, P>.awaitFor(
   s: Status,
-  timeout: Long = 0,
-  timeUnit: TimeUnit = TimeUnit.MILLISECONDS
+  timeout: Long = 10,
+  timeUnit: TimeUnit = TimeUnit.DAYS
 ): Status = waitForAsync(s, timeout, timeUnit).await()

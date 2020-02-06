@@ -1,6 +1,12 @@
 package it.unibo.protelis.web.execution
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import io.vertx.core.eventbus.EventBus
+import io.vertx.core.json.JsonObject
+import io.vertx.core.json.JsonObject.mapFrom
+import io.vertx.ext.web.impl.Utils
+import io.vertx.kotlin.core.json.json
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.finishedAddress
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.initializedAddress
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.stepDoneAddress
@@ -21,16 +27,16 @@ class EventBusProtelisObserver(
 
   override fun initialized(update: ProtelisUpdateMessage) {
     logger.debug("Handle init update: $update")
-    eb.publish(initializedAddress(addressId), update)
+    eb.publish(initializedAddress(addressId), mapFrom(update))
   }
 
   override fun stepDone(update: ProtelisUpdateMessage) {
     logger.debug("Handle step update: $update")
-    eb.publish(stepDoneAddress(addressId), update)
+    eb.publish(stepDoneAddress(addressId), mapFrom(update))
   }
 
   override fun finished(update: ProtelisUpdateMessage) {
     logger.debug("Handle end update: $update")
-    eb.publish(finishedAddress(addressId), update)
+    eb.publish(finishedAddress(addressId), mapFrom(update))
   }
 }

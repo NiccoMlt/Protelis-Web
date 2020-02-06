@@ -22,7 +22,7 @@ class AlchemistVerticle : CoroutineVerticle() {
   }
 
   override suspend fun start() {
-    eb.consumer<String>("$BASE_ADDRESS.$SETUP_SUFFIX") { msg ->
+    eb.consumer<String>(setupAddress()) { msg ->
       val id = addressIdGen()
       val source = msg.body()
       val sim = SimulatedProtelisEngine()
@@ -37,15 +37,19 @@ class AlchemistVerticle : CoroutineVerticle() {
 
   companion object {
     private const val BASE_ADDRESS = "protelis.web.exec"
+    private const val ID_REGEX = """\S+"""
 
     private const val INITIALIZED_SUFFIX = "init"
     fun initializedAddress(addressId: String): String = "$BASE_ADDRESS.$addressId.$INITIALIZED_SUFFIX"
+    @JvmField val initializedAddressRegex: Regex = initializedAddress(ID_REGEX).replace(".", """\.""").toRegex()
 
     private const val STEP_DONE_SUFFIX = "step"
     fun stepDoneAddress(addressId: String): String = "$BASE_ADDRESS.$addressId.$STEP_DONE_SUFFIX"
-
+    @JvmField val stepDoneAddressRegex: Regex = stepDoneAddress(ID_REGEX).replace(".", """\.""").toRegex()
     private const val FINISHED_SUFFIX = "end"
+
     fun finishedAddress(addressId: String): String = "$BASE_ADDRESS.$addressId.$FINISHED_SUFFIX"
+    @JvmField val finishedAddressRegex: Regex = finishedAddress(ID_REGEX).replace(".", """\.""").toRegex()
 
     private const val SETUP_SUFFIX = "setup"
     fun setupAddress(): String = "$BASE_ADDRESS.$SETUP_SUFFIX"
