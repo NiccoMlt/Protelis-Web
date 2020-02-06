@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */ // needed to use on*() EventBus methods
 import {
   Action,
   Dispatch,
@@ -7,7 +8,7 @@ import {
 import EventBus, { EventBus as IEventBus } from 'vertx3-eventbus-client';
 import { createAction } from '@reduxjs/toolkit';
 import { RootState } from '../app/rootReducer';
-import { EventBusOptions } from './EventBusOptions';
+import { EventBusMessage, EventBusOptions } from './EventBusOptions';
 import { ebConnected, ebDisconnected } from '../features/render/execSlice';
 
 /** Action types that will be handled by the EventBus middleware. */
@@ -41,38 +42,12 @@ const ebSend = createAction<EventBusPayload, 'EB_SEND'>('EB_SEND');
 
 type EbAction = ReturnType<typeof ebConnect | typeof ebDisconnect | typeof ebSend>;
 
-function isConnectAction(action: Action<EventBusAction>): action is ReturnType<typeof ebConnect> {
-  return action.type === 'EB_CONNECT';
-}
-
-function isDisconnectAction(action: Action<EventBusAction>): action is ReturnType<typeof ebDisconnect> {
-  return action.type === 'EB_DISCONNECT';
-}
-
-function isSendAction(action: Action<EventBusAction>): action is ReturnType<typeof ebSend> {
-  return action.type === 'EB_SEND';
-}
-
 const eventBusMiddleware: () => Middleware<{}, RootState, Dispatch<Action<EventBusAction>>> = () => {
   let eventBus: IEventBus | null = null;
   const handlers: EventBusHandler[] = [];
 
   function onOpen(dispatch: Dispatch): IEventBus['onopen'] {
-    return () => {
-      // eventBus?.registerHandler('in', {}, ((error, message) => {
-      //   if (error) {
-      //     console.error(`Handle error "${error.name}": ${error.message}\n${error.stack}`);
-      //   } else {
-      //     console.log(`Handle message: ${JSON.stringify(message)}`);
-      //   }
-      // }));
-      // TODO: handle specific messages:
-      // TODO: - protelis.web.exec.setup
-      // TODO: - protelis.web.exec.{id}.init
-      // TODO: - protelis.web.exec.{id}.step
-      // TODO: - protelis.web.exec.{id}.end
-      dispatch(ebConnected());
-    };
+    return () => dispatch(ebConnected());
   }
 
   function onClose(dispatch: Dispatch): IEventBus['onclose'] {
@@ -86,42 +61,57 @@ const eventBusMiddleware: () => Middleware<{}, RootState, Dispatch<Action<EventB
     };
   }
 
-  return <A extends EbAction, D extends Dispatch<A>>
-  (api: MiddlewareAPI<Dispatch<Action<EventBusAction>>, RootState>) => (next: D) => (action: A) => {
-    if (isConnectAction(action)) {
-      // TODO: connect
-      if (!eventBus) {
-        const { host, options } = action.payload;
-        eventBus = new EventBus(host, options);
-        eventBus.enableReconnect(false);
-        // eslint-disable-next-line @typescript-eslint/unbound-method
-        eventBus.onopen = onOpen(api.dispatch);
-        // eslint-disable-next-line @typescript-eslint/unbound-method
-        eventBus.onclose = onClose(api.dispatch);
-        // eslint-disable-next-line @typescript-eslint/unbound-method
-        eventBus.onerror = onError(api.dispatch);
-      } else {
-        throw new Error('EventBus is already initialized');
-      }
-    } else if (isDisconnectAction(action)) {
-      if (eventBus) {
-        handlers.forEach(
-          ({ address, headers, callback }) => {
-            eventBus?.unregisterHandler(address, headers, callback);
-          },
-        );
-        eventBus.close();
-        eventBus = null;
-      } else {
-        throw new Error('EventBus is already closed');
-      }
-    } else if (isSendAction(action)) {
-      if (eventBus) {
-        const { address, message, headers } = action.payload;
-        eventBus.send(address, message, headers); // TODO: add callback
-      } else {
-        throw new Error('EventBus is closed');
-      }
+  return (api: MiddlewareAPI<Dispatch, RootState>) => (next: Dispatch<EbAction>) => (action: EbAction) => {
+    switch (action.type) {
+      case 'EB_CONNECT':
+        if (!eventBus) {
+          const { host, options } = action.payload;
+          eventBus = new EventBus(host, options);
+          eventBus.enableReconnect(false);
+          eventBus.onopen = onOpen(api.dispatch);
+          eventBus.onclose = onClose(api.dispatch);
+          eventBus.onerror = onError(api.dispatch);
+        } else {
+          throw new Error('EventBus is already initialized');
+        }
+        break; // fixme
+      case 'EB_DISCONNECT':
+        if (eventBus) {
+          handlers.forEach(
+            ({ address, headers, callback }) => {
+                eventBus?.unregisterHandler(address, headers, callback);
+            },
+          );
+          eventBus.close();
+          eventBus = null;
+        } else {
+          throw new Error('EventBus is already closed');
+        }
+        break;
+      case 'EB_SEND':
+        if (eventBus) {
+          const { address, message, headers } = action.payload;
+          // TODO: handle specific messages:
+          // TODO: - protelis.web.exec.setup
+          // TODO: - protelis.web.exec.{id}.init
+          // TODO: - protelis.web.exec.{id}.step
+          // TODO: - protelis.web.exec.{id}.end
+          eventBus.send(address, message, headers, ((error: Error, answer: EventBusMessage<string | unknown>) => {
+            if (error) {
+              console.error('Unexpected error for answer of message %o to address %s: %o', message, address, error);
+            } else if (typeof answer.body !== 'string') {
+              console.error('Unexpected answer %o of type %s', answer, typeof answer.body);
+            } else {
+              // TODO
+              console.log(answer);
+            }
+          })); // TODO: add callback
+        } else {
+          throw new Error('EventBus is closed');
+        }
+        break;
+      default:
+        // do nothing
     }
     return next(action);
   };

@@ -18,3 +18,10 @@ interface VertxBusOptions {
 
 /** Possible options for Vert.x EventBus SockJS bridge connection. */
 export type EventBusOptions = VertxBusOptions & SockJsOptions;
+
+export interface EventBusMessage<T = unknown>{
+  type: string;
+  address: string;
+  headers: object;
+  body: T;
+}
