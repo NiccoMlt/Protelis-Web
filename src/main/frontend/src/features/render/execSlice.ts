@@ -1,6 +1,6 @@
-import { Action, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface NodePosition {
+export interface NodePosition {
   id: string;
   x: number;
   y: number;
@@ -10,7 +10,7 @@ export type EventBusStatus = 'open' | 'closed';
 type AlchemistStatus = 'INIT' | 'READY' | 'PAUSED' | 'RUNNING' | 'TERMINATED';
 export type ExecutionStatus = 'disconnected' | 'connecting' | AlchemistStatus;
 
-interface ExecState {
+export interface ExecState {
   connection: EventBusStatus;
   execution: {
     drawing: NodePosition[] | null;
@@ -38,10 +38,11 @@ const execSlice = createSlice({
     ebDisconnected(state): void {
       state.connection = 'closed';
     },
-    changeStatus(state, action: PayloadAction<EventBusStatus>): void {
-      state.connection = action.payload;
+    setId(state, action: PayloadAction<string>): void {
+      state.execution.id = action.payload
     },
     drawInit(state, action: PayloadAction<NodePosition[]>): void {
+      console.log("INIT");
       state.execution = {
         status: 'RUNNING',
         drawing: action.payload,
@@ -49,6 +50,7 @@ const execSlice = createSlice({
       };
     },
     drawStep(state, action: PayloadAction<NodePosition[]>): void {
+      console.log("STEP");
       state.execution = {
         status: state.execution.status,
         drawing: action.payload,
@@ -56,6 +58,7 @@ const execSlice = createSlice({
       };
     },
     drawEnd(state, action: PayloadAction<NodePosition[]>): void {
+      console.log("DONE");
       state.execution = {
         status: 'TERMINATED',
         drawing: action.payload,
@@ -66,12 +69,12 @@ const execSlice = createSlice({
 });
 
 export const {
-  changeStatus,
   drawEnd,
   drawInit,
   drawStep,
   ebConnected,
-  ebDisconnected
+  ebDisconnected,
+  setId,
 } = execSlice.actions;
 
 export default execSlice.reducer;

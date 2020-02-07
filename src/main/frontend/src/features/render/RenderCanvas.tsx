@@ -3,22 +3,20 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@material-ui/core';
 import { RootState } from '../../app/rootReducer';
-import { EventBusStatus } from './execSlice';
+import {EventBusStatus, ExecState, ExecutionStatus, NodePosition} from './execSlice';
 import { ebConnect, ebSend } from '../../utils/EventBusMiddleware';
 
 /** Konva canvas wrapper. */
 const RenderCanvas: React.FC = () => {
   const connectionStatus = useSelector<RootState, EventBusStatus>((state) => state.exec.connection);
+  const { drawing, id, status } = useSelector<RootState, ExecState['execution']>((state => state.exec.execution));
   const dispatch = useDispatch();
 
   return (
     <>
       {/* TODO: remove big testing text */}
-      <h1>
-        Connection status:
-        {' '}
-        {connectionStatus}
-      </h1>
+      <h1>Connection status: {connectionStatus}</h1>
+      <h2>Simulation "{id}" with status {status} draws: {JSON.stringify(drawing)}</h2>
       {/* TODO: remove big testing button */}
       <Button onClick={() => dispatch(ebConnect({ host: 'http://localhost:8080/eventbus' }))}>Connect</Button>
       {/* TODO: remove big testing button */}
