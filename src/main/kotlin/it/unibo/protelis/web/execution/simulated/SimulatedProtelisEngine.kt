@@ -49,7 +49,7 @@ class SimulatedProtelisEngine() : CoroutineProtelisEngine() {
   override suspend fun startAwait() {
     checkNotNull(alchemistEngine.get())
     alchemistEngine.get()?.play()
-    alchemistEngine.get()?.awaitFor(Status.READY) // TODO: should I wait RUNNING instead?
+    alchemistEngine.get()?.awaitFor(Status.RUNNING) // TODO: should I wait RUNNING instead?
     logger.debug("Simulation started")
   }
 
@@ -61,9 +61,7 @@ class SimulatedProtelisEngine() : CoroutineProtelisEngine() {
     logger.debug("Simulation stopped and deleted")
   }
 
-  /**
-   * Asynchronously build a new simulation from a loader of YAML files.
-   */
+  /** Asynchronously build a new simulation from a loader of YAML files. */
   private fun setupSimulationAsync(): Deferred<Engine<Any /* TODO */, Euclidean2DPosition>> = GlobalScope.async {
     val loader = YamlLoader(this.javaClass.classLoader.getResourceAsStream("simulation.yml"))
     loader.getDefault<Any /* TODO */, Euclidean2DPosition>()
