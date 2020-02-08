@@ -121,6 +121,12 @@ object Libs {
   const val junit_jupiter_engine: String = "org.junit.jupiter:junit-jupiter-engine:" +
       Versions.org_junit_jupiter
 
+  /**
+   * https://junit.org/junit5/
+   */
+  const val junit_jupiter_params: String = "org.junit.jupiter:junit-jupiter-params:" +
+      Versions.org_junit_jupiter
+
   const val vertx_core: String = "io.vertx:vertx-core:" + Versions.io_vertx
 
   const val vertx_junit5: String = "io.vertx:vertx-junit5:" + Versions.io_vertx

@@ -60,6 +60,7 @@ dependencies {
   testImplementation(kotlin("test-junit"))
   testRuntimeOnly(Libs.junit_platform_launcher)
   testImplementation(Libs.junit_jupiter_api)
+  testImplementation(Libs.junit_jupiter_params)
   testRuntimeOnly(Libs.junit_jupiter_engine)
   testRuntimeOnly(Libs.jul_to_slf4j)
 
@@ -133,8 +134,10 @@ tasks {
 
   test {
     // maxParallelForks = (Runtime.getRuntime().availableProcessors() / 2).takeIf { it > 0 } ?: 1
-    maxParallelForks = 1
-    useJUnitPlatform()
+    // maxParallelForks = 1
+    useJUnitPlatform {
+      includeEngines("junit-jupiter")
+    }
     testLogging {
       events.addAll(listOf(TestLogEvent.PASSED, TestLogEvent.FAILED, TestLogEvent.SKIPPED))
       exceptionFormat = TestExceptionFormat.FULL
