@@ -13,6 +13,6 @@ class TestBackendVerticle {
   @Test
   @DisplayName("Test BackendVerticle deploy")
   fun `deploy BackendVerticle`(vertx: Vertx, testContext: VertxTestContext) {
-    vertx.deployVerticle(BackendVerticle(), testContext.succeeding<String> { testContext.completeNow() })
+    vertx.deployVerticle(BackendVerticle(), testContext.succeeding { testContext.completeNow() })
   }
 }

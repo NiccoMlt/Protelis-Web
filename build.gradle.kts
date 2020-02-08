@@ -91,7 +91,7 @@ vertx {
 tasks {
   withType(KotlinCompile::class).all {
     kotlinOptions {
-      allWarningsAsErrors = false // TODO
+      allWarningsAsErrors = true
       jvmTarget = Versions.jdk_version
     }
   }
