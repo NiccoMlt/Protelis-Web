@@ -39,10 +39,9 @@ const execSlice = createSlice({
       state.connection = 'closed';
     },
     setId(state, action: PayloadAction<string>): void {
-      state.execution.id = action.payload
+      state.execution.id = action.payload;
     },
     drawInit(state, action: PayloadAction<NodePosition[]>): void {
-      console.log("INIT");
       state.execution = {
         status: 'RUNNING',
         drawing: action.payload,
@@ -50,7 +49,6 @@ const execSlice = createSlice({
       };
     },
     drawStep(state, action: PayloadAction<NodePosition[]>): void {
-      console.log("STEP");
       state.execution = {
         status: state.execution.status,
         drawing: action.payload,
@@ -58,7 +56,6 @@ const execSlice = createSlice({
       };
     },
     drawEnd(state, action: PayloadAction<NodePosition[]>): void {
-      console.log("DONE");
       state.execution = {
         status: 'TERMINATED',
         drawing: action.payload,
