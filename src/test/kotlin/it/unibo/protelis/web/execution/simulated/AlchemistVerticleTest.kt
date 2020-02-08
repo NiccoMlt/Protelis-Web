@@ -1,6 +1,5 @@
 package it.unibo.protelis.web.execution.simulated
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import io.vertx.core.Vertx
 import io.vertx.core.json.JsonObject
@@ -17,11 +16,11 @@ import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.ini
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.setupAddress
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.stepDoneAddress
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.stopAddress
+import java.util.concurrent.TimeUnit
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import java.util.concurrent.TimeUnit
 
 @DisplayName("AlchemistVerticle tests with Vert.x TestContext")
 @ExtendWith(VertxExtension::class)
@@ -62,8 +61,6 @@ class AlchemistVerticleTest {
           aFunction() * self.nextRandomDouble()
         """
           .trimIndent()
-
-      val mapper = ObjectMapper().registerKotlinModule()
 
       eb.request<String>(setupAddress(), sourceCode) {
         if (it.succeeded()) {

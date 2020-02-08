@@ -9,6 +9,8 @@ import it.unibo.alchemist.model.implementations.times.DoubleTime
 import it.unibo.alchemist.model.interfaces.Position
 import it.unibo.protelis.web.execution.CoroutineProtelisEngine
 import it.unibo.protelis.web.execution.ProtelisObserver
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicReference
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -16,8 +18,6 @@ import kotlinx.coroutines.future.asCompletableFuture
 import kotlinx.coroutines.launch
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.util.concurrent.TimeUnit
-import java.util.concurrent.atomic.AtomicReference
 
 class SimulatedProtelisEngine() : CoroutineProtelisEngine() {
   private val logger: Logger = LoggerFactory.getLogger(this::class.java)

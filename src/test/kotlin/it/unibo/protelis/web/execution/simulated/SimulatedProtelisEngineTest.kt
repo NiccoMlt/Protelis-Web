@@ -2,9 +2,9 @@ package it.unibo.protelis.web.execution.simulated
 
 import it.unibo.protelis.web.execution.ProtelisObserver
 import it.unibo.protelis.web.execution.ProtelisUpdateMessage
+import kotlin.test.assertTrue
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import kotlin.test.assertTrue
 
 @DisplayName("Test simulated Protelis engine with Alchemist")
 class SimulatedProtelisEngineTest {

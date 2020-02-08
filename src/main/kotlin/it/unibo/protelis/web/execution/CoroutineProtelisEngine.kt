@@ -1,9 +1,9 @@
 package it.unibo.protelis.web.execution
 
+import java.util.concurrent.CompletableFuture
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.future.asCompletableFuture
 import kotlinx.coroutines.launch
-import java.util.concurrent.CompletableFuture
 
 abstract class CoroutineProtelisEngine : ProtelisEngine {
 
