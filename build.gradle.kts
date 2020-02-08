@@ -89,7 +89,7 @@ vertx {
 }
 
 tasks {
-  withType(KotlinCompile::class).all {
+  withType<KotlinCompile>().all {
     kotlinOptions {
       allWarningsAsErrors = true
       jvmTarget = Versions.jdk_version
@@ -128,7 +128,9 @@ tasks {
     dependsOn("yarn")
   }
 
-  test {
+  withType<Test> {
+    // maxParallelForks = (Runtime.getRuntime().availableProcessors() / 2).takeIf { it > 0 } ?: 1
+    maxParallelForks = 1
     useJUnitPlatform()
     testLogging {
       events.addAll(listOf(TestLogEvent.PASSED, TestLogEvent.FAILED, TestLogEvent.SKIPPED))
@@ -173,5 +175,14 @@ tasks {
 
   shadowJar {
     isZip64 = true
+  }
+}
+
+buildScan {
+  tag(if (System.getenv("CI").isNullOrEmpty()) "Local" else "CI")
+  link("VCS", "https://github.com/NiccoMlt/Protelis-Web/tree/${System.getProperty("vcs.branch")}")
+  tag(System.getProperty("os.name"))
+  if (!System.getenv("CI").isNullOrEmpty()) {
+    publishOnFailure()
   }
 }
