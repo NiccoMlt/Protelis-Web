@@ -129,7 +129,7 @@ tasks {
     dependsOn("yarn")
   }
 
-  withType<Test> {
+  test {
     // maxParallelForks = (Runtime.getRuntime().availableProcessors() / 2).takeIf { it > 0 } ?: 1
     maxParallelForks = 1
     useJUnitPlatform()
