@@ -36,7 +36,7 @@ jobs:
         - ./gradlew assemble
       script:
         - ./gradlew ktlintCheck
-        - ./gradlew check --info
+        - ./gradlew check
       after_script:
         - bash <(curl -s https://codecov.io/bash)
     - name: "Frontend build"
@@ -53,7 +53,7 @@ jobs:
         - yarn lint
         - yarn build
         - yarn test:ci
-      after_success:
+      after_script:
         - yarn codecov:upload
     - name: "Deploy OpenAPI Redoc"
       stage: deploy
