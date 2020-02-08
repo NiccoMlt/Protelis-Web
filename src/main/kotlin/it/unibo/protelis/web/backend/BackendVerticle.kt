@@ -19,6 +19,7 @@ import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.fin
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.initializedAddressRegex
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.setupAddress
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.stepDoneAddressRegex
+import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.stopAddressRegex
 
 /**
  * This verticle serves the React.JS application and implement OpenAPI contract for REST APIs.
@@ -56,6 +57,7 @@ class BackendVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle(
       .addOutboundPermitted(PermittedOptions().setAddressRegex(initializedAddressRegex.pattern))
       .addOutboundPermitted(PermittedOptions().setAddressRegex(stepDoneAddressRegex.pattern))
       .addOutboundPermitted(PermittedOptions().setAddressRegex(finishedAddressRegex.pattern))
+      .addOutboundPermitted(PermittedOptions().setAddressRegex(stopAddressRegex.pattern))
     val sockJsBridge = sockJSHandler.bridge(sockBridgeOptions)
     router.mountSubRouter("/eventbus", sockJsBridge)
 

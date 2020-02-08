@@ -28,6 +28,7 @@ class AlchemistVerticle : CoroutineVerticle() {
       val sim = SimulatedProtelisEngine()
       engines += id to sim
       msg.reply(id)
+      eb.consumer<Unit>(stopAddress(id)) { engines[id]?.stop() }
       sim
         .setup(source, EventBusProtelisObserver(eb, id))
         .thenCompose { sim.start() }
@@ -46,10 +47,14 @@ class AlchemistVerticle : CoroutineVerticle() {
     private const val STEP_DONE_SUFFIX = "step"
     fun stepDoneAddress(addressId: String): String = "$BASE_ADDRESS.$addressId.$STEP_DONE_SUFFIX"
     @JvmField val stepDoneAddressRegex: Regex = stepDoneAddress(ID_REGEX).replace(".", """\.""").toRegex()
-    private const val FINISHED_SUFFIX = "end"
 
+    private const val FINISHED_SUFFIX = "end"
     fun finishedAddress(addressId: String): String = "$BASE_ADDRESS.$addressId.$FINISHED_SUFFIX"
     @JvmField val finishedAddressRegex: Regex = finishedAddress(ID_REGEX).replace(".", """\.""").toRegex()
+
+    private const val STOP_SUFFIX = "stop"
+    fun stopAddress(addressId: String): String = "$BASE_ADDRESS.$addressId.$STOP_SUFFIX"
+    @JvmField val stopAddressRegex: Regex = stopAddress(ID_REGEX).replace(".", """\.""").toRegex()
 
     private const val SETUP_SUFFIX = "setup"
     fun setupAddress(): String = "$BASE_ADDRESS.$SETUP_SUFFIX"

@@ -1,6 +1,10 @@
 package it.unibo.protelis.web.execution.simulated
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import io.vertx.core.Vertx
+import io.vertx.core.json.JsonObject
+import io.vertx.core.json.jackson.DatabindCodec
 import io.vertx.core.logging.Logger
 import io.vertx.core.logging.LoggerFactory
 import io.vertx.junit5.Checkpoint
@@ -12,6 +16,7 @@ import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.fin
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.initializedAddress
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.setupAddress
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.stepDoneAddress
+import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.stopAddress
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -22,6 +27,10 @@ import java.util.concurrent.TimeUnit
 @ExtendWith(VertxExtension::class)
 class AlchemistVerticleTest {
   private val logger: Logger = LoggerFactory.getLogger(AlchemistVerticleTest::class.java)
+
+  init {
+    DatabindCodec.mapper().registerKotlinModule()
+  }
 
   /*
    * Note: The Vertx instance is not clustered and has the default configuration.
@@ -54,20 +63,23 @@ class AlchemistVerticleTest {
         """
           .trimIndent()
 
+      val mapper = ObjectMapper().registerKotlinModule()
+
       eb.request<String>(setupAddress(), sourceCode) {
         if (it.succeeded()) {
           val id = it.result().body()
           logger.info("Received simulation ID: $id")
           createSimulation.flag()
-          eb.consumer<ProtelisUpdateMessage>(initializedAddress(id)) { msg ->
-            logger.info("Received initialization message ${msg.body()}")
+          eb.consumer<JsonObject>(initializedAddress(id)) { msg ->
+            logger.trace("Received initialization message ${msg.body().mapTo(ProtelisUpdateMessage::class.java)}")
             createSimulation.flag()
+            vertx.setTimer(1000) { eb.send(stopAddress(id), JsonObject()) }
           }
-          eb.consumer<ProtelisUpdateMessage>(stepDoneAddress(id)) { msg ->
-            logger.info("Received step message ${msg.body()}")
+          eb.consumer<JsonObject>(stepDoneAddress(id)) { msg ->
+            logger.trace("Received step message ${msg.body().mapTo(ProtelisUpdateMessage::class.java)}")
           }
-          eb.consumer<ProtelisUpdateMessage>(finishedAddress(id)) { msg ->
-            logger.info("Received ending message ${msg.body()}")
+          eb.consumer<JsonObject>(finishedAddress(id)) { msg ->
+            logger.trace("Received ending message ${msg.body().mapTo(ProtelisUpdateMessage::class.java)}")
             createSimulation.flag()
           }
         } else {
