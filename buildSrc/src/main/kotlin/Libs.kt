@@ -174,6 +174,12 @@ object Libs {
       "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:" + Versions.jackson_dataformat_yaml
 
   /**
+   * https://junit.org/junit5/
+   */
+  const val junit_platform_launcher: String = "org.junit.platform:junit-platform-launcher:" +
+      Versions.junit_platform_launcher
+
+  /**
    * https://github.com/Kotlin/kotlinx.coroutines
    */
   const val kotlinx_coroutines_core: String = "org.jetbrains.kotlinx:kotlinx-coroutines-core:" +
@@ -196,6 +202,12 @@ object Libs {
    */
   const val kotlinx_coroutines_io: String = "org.jetbrains.kotlinx:kotlinx-coroutines-io:" +
       Versions.kotlinx_coroutines_io
+
+  /**
+   * https://junit.org/junit5/
+   */
+  const val junit_vintage_engine: String = "org.junit.vintage:junit-vintage-engine:" +
+      Versions.junit_vintage_engine
 
   /**
    * http://logback.qos.ch
