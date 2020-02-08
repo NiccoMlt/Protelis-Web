@@ -139,6 +139,17 @@ object Libs {
 
   const val vertx_web_api_contract: String = "io.vertx:vertx-web-api-contract:" + Versions.io_vertx
 
+  /**
+   * http://logback.qos.ch
+   */
+  const val ch_qos_logback_logback_classic: String = "ch.qos.logback:logback-classic:" +
+      Versions.ch_qos_logback_logback_classic
+
+  /**
+   * http://www.slf4j.org
+   */
+  const val org_slf4j_slf4j_api: String = "org.slf4j:slf4j-api:" + Versions.org_slf4j_slf4j_api
+
   const val com_github_johnrengelman_shadow_gradle_plugin: String =
       "com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:" +
       Versions.com_github_johnrengelman_shadow_gradle_plugin
@@ -204,20 +215,9 @@ object Libs {
       Versions.kotlinx_coroutines_io
 
   /**
-   * https://junit.org/junit5/
-   */
-  const val junit_vintage_engine: String = "org.junit.vintage:junit-vintage-engine:" +
-      Versions.junit_vintage_engine
-
-  /**
-   * http://logback.qos.ch
-   */
-  const val logback_classic: String = "ch.qos.logback:logback-classic:" + Versions.logback_classic
-
-  /**
    * http://www.slf4j.org
    */
-  const val slf4j_api: String = "org.slf4j:slf4j-api:" + Versions.slf4j_api
+  const val jul_to_slf4j: String = "org.slf4j:jul-to-slf4j:" + Versions.jul_to_slf4j
 
   /**
    * https://github.com/pinterest/ktlint

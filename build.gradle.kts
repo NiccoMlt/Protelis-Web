@@ -33,8 +33,8 @@ dependencies {
   implementation(Libs.kotlinx_io_jvm)
   implementation(Libs.kotlinx_coroutines_io)
 
-  implementation(Libs.slf4j_api)
-  implementation(Libs.logback_classic)
+  implementation(Libs.org_slf4j_slf4j_api)
+  implementation(Libs.ch_qos_logback_logback_classic)
 
   implementation(Libs.jackson_core) // also included by vertx, enforce common version
   implementation(Libs.jackson_databind) // also included by vertx, enforce common version
@@ -58,8 +58,10 @@ dependencies {
   testImplementation(Libs.vertx_junit5_web_client)
   testImplementation(kotlin("test"))
   testImplementation(kotlin("test-junit"))
-  testRuntimeOnly(Libs.junit_jupiter_engine)
+  testRuntimeOnly(Libs.junit_platform_launcher)
   testImplementation(Libs.junit_jupiter_api)
+  testRuntimeOnly(Libs.junit_jupiter_engine)
+  testRuntimeOnly(Libs.jul_to_slf4j)
 
   dokkaRuntime(Libs.dokka_fatjar)
 }
