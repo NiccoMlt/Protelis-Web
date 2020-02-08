@@ -1,6 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 import com.moowork.gradle.node.yarn.YarnTask
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -134,6 +135,7 @@ tasks {
     useJUnitPlatform()
     testLogging {
       events.addAll(listOf(TestLogEvent.PASSED, TestLogEvent.FAILED, TestLogEvent.SKIPPED))
+      exceptionFormat = TestExceptionFormat.FULL
     }
   }
 
