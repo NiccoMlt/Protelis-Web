@@ -1,10 +1,16 @@
 import { Button } from '@material-ui/core';
 import React from 'react';
 import {
-  Layer, Stage, Star, Text,
+  Layer,
+  Stage,
+  Star,
+  Text,
 } from 'react-konva';
 import {
-  Provider, ReactReduxContext, useDispatch, useSelector,
+  Provider,
+  ReactReduxContext,
+  useDispatch,
+  useSelector,
 } from 'react-redux';
 import { RootState } from '../../app/rootReducer';
 import { NodePosition, drawStep } from './execSlice';

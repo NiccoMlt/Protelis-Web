@@ -62,6 +62,7 @@ const EditorContainer: React.FC = () => {
               startIcon={<LibraryAddRounded />}
               variant="contained"
               color="primary"
+              className={classes.button}
               validator={(name: string) => !getFileAtPath(files, name)}
             />
           </div>

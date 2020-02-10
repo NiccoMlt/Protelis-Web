@@ -1,13 +1,26 @@
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { Save, Send } from '@material-ui/icons';
+import { ControlledEditor } from '@monaco-editor/react';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { ControlledEditor } from '@monaco-editor/react';
-import Button from '@material-ui/core/Button';
 import { Dispatch } from 'redux';
 import { RootState } from '../app/rootReducer';
-import { ProtelisSourceFile } from '../model/File';
 import { editFile } from '../features/editor/editorSlice';
+import { ProtelisSourceFile } from '../model/File';
 import { getSourceFileAtPath } from '../utils/fileUtils';
+
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  root: {
+    padding: theme.spacing(3, 2),
+    flexGrow: 1,
+    height: '85vh',
+  },
+  button: {
+    margin: theme.spacing(1),
+  },
+}));
 
 /** VS Code / Monaco Editor wrapper component. */
 export const PtMonacoEditor: React.FC = () => {
@@ -19,6 +32,7 @@ export const PtMonacoEditor: React.FC = () => {
       : null
     ),
   );
+  const canSend: boolean = useSelector<RootState, boolean>((state) => state.editor.files.length > 0);
 
   const dispatch: Dispatch = useDispatch();
 
@@ -30,6 +44,8 @@ export const PtMonacoEditor: React.FC = () => {
   function handleShowValue(): void {
     if (path && value) dispatch(editFile({ path, content: value }));
   }
+
+  const classes = useStyles();
 
   return (
     <>
@@ -52,10 +68,22 @@ export const PtMonacoEditor: React.FC = () => {
           variant="contained"
           component="span"
           color="primary"
+          className={classes.button}
           onClick={handleShowValue}
+          startIcon={<Save />}
           disabled={!open}
         >
           Save
+        </Button>
+        <Button
+          variant="contained"
+          component="span"
+          color="primary"
+          className={classes.button}
+          startIcon={<Send />}
+          disabled={!canSend}
+        >
+          Run code
         </Button>
       </div>
     </>
