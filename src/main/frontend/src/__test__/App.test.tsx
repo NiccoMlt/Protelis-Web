@@ -5,8 +5,11 @@ import { shallow } from 'enzyme';
 import Konva from 'konva';
 import { Provider } from 'react-redux';
 import App from '../app/App';
+import { RootState } from '../app/rootReducer';
+import { initialState as editor } from '../features/editor/editorSlice';
+import { initialState as exec } from '../features/render/execSlice';
 
-const mockStore = configureMockStore();
+const mockStore = configureMockStore<RootState>();
 
 describe('App component', () => {
   it('renders without crashing inside shallow', () => {
@@ -21,7 +24,10 @@ describe('App component', () => {
     // https://github.com/konvajs/react-konva/issues/270#issuecomment-431114761
 
     const div = document.createElement('div');
-    const store = mockStore({ editor: { files: [], open: null } });
+    const store = mockStore({
+      editor,
+      exec,
+    });
 
     ReactDOM.render(
       <Provider store={store}>

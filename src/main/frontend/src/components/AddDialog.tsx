@@ -27,7 +27,7 @@ export const AddDialog: React.FC<AddDialogProps> = (props: AddDialogProps) => {
       <DialogTitle id="form-dialog-title">Create new file</DialogTitle>
       <DialogContent>
         <DialogContentText>
-                    Add file name with extension:
+          Add file name with extension:
         </DialogContentText>
         <TextField
           autoFocus
@@ -49,7 +49,7 @@ export const AddDialog: React.FC<AddDialogProps> = (props: AddDialogProps) => {
           color="primary"
           disabled={!validState()}
         >
-                    Create
+          Create
         </Button>
       </DialogActions>
     </Dialog>

@@ -15,7 +15,7 @@ interface EditorState {
 /** State type of the Protelis editor block. */
 type EditorBlockState = FileTreeState & EditorState;
 
-const initialState: EditorBlockState = { files: [], open: null };
+export const initialState: EditorBlockState = { files: [], open: null };
 
 const editorSlice = createSlice({
   name: 'editor',

@@ -19,7 +19,7 @@ export interface ExecState {
   };
 }
 
-const initialState: ExecState = {
+export const initialState: ExecState = {
   connection: 'closed',
   execution: {
     drawing: null,
