@@ -1,10 +1,10 @@
 package it.unibo.alchemist.core.interfaces
 
 import it.unibo.alchemist.model.interfaces.Position
+import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import java.util.concurrent.TimeUnit
 
 /**
  * Wait for the simulation to reach the selected [Status] and check if it actually reached it.
