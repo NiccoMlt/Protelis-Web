@@ -3,14 +3,12 @@ package it.unibo.protelis.web.execution.simulated
 import it.unibo.alchemist.core.implementations.Engine
 import it.unibo.alchemist.core.interfaces.Simulation
 import it.unibo.alchemist.core.interfaces.Status
+import it.unibo.alchemist.core.interfaces.awaitFor
 import it.unibo.alchemist.loader.YamlLoader
 import it.unibo.alchemist.model.implementations.positions.Euclidean2DPosition
 import it.unibo.alchemist.model.implementations.times.DoubleTime
-import it.unibo.alchemist.model.interfaces.Position
 import it.unibo.protelis.web.execution.CoroutineProtelisEngine
 import it.unibo.protelis.web.execution.ProtelisObserver
-import java.util.concurrent.TimeUnit
-import java.util.concurrent.atomic.AtomicReference
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -18,6 +16,7 @@ import kotlinx.coroutines.future.asCompletableFuture
 import kotlinx.coroutines.launch
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.util.concurrent.atomic.AtomicReference
 
 class SimulatedProtelisEngine() : CoroutineProtelisEngine() {
   private val logger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -89,61 +88,3 @@ class SimulatedProtelisEngine() : CoroutineProtelisEngine() {
       ?: throw IllegalStateException("Can't set code to non-existent simulation")
   }
 }
-
-/**
- * Wait for the simulation to reach the selected [Status] and check if it actually reached it.
- *
- * @param s The [Status] the simulation must reach before returning from this method
- * @param timeout The maximum lapse of time the caller wants to wait before being resumed
- * @param timeUnit The [TimeUnit] used to define "timeout"
- *
- * @return the [Status] of the Simulation at the end of the wait
- *
- * @throws InterruptedException if the wait somehow crashes
- * @throws IllegalStateException if the actual status at the end of the wait does not match with the expected status
- */
-fun <T, P : Position<out P>> Simulation<T, P>.waitForAndCheck(
-  s: Status,
-  timeout: Long = 10,
-  timeUnit: TimeUnit = TimeUnit.DAYS
-): Status {
-  val actual = waitFor(s, timeout, timeUnit)
-  check(actual == s) { "Status is $actual instead of expected $s" }
-  return actual
-}
-
-/**
- * Asynchronous wait for the simulation to reach the selected [Status].
- *
- * @param s The [Status] the simulation must reach before returning from this method
- * @param timeout The maximum lapse of time the caller wants to wait before being resumed
- * @param timeUnit The [TimeUnit] used to define "timeout"
- *
- * @return the [Deferred] [Status] of the Simulation at the end of the wait
- *
- * @throws InterruptedException if the wait somehow crashes
- * @throws IllegalStateException if the actual status at the end of the wait does not match with the expected status
- */
-fun <T, P : Position<out P>> Simulation<T, P>.waitForAsync(
-  s: Status,
-  timeout: Long = 10,
-  timeUnit: TimeUnit = TimeUnit.DAYS
-): Deferred<Status> = GlobalScope.async { waitForAndCheck(s, timeout, timeUnit) }
-
-/**
- * Suspended function that waits for the simulation to reach the selected [Status].
- *
- * @param s The [Status] the simulation must reach before returning from this method
- * @param timeout The maximum lapse of time the caller wants to wait before being resumed
- * @param timeUnit The [TimeUnit] used to define "timeout"
- *
- * @return the [Status] of the Simulation at the end of the wait
- *
- * @throws InterruptedException if the wait somehow crashes
- * @throws IllegalStateException if the actual status at the end of the wait does not match with the expected status
- */
-suspend fun <T, P : Position<out P>> Simulation<T, P>.awaitFor(
-  s: Status,
-  timeout: Long = 10,
-  timeUnit: TimeUnit = TimeUnit.DAYS
-): Status = waitForAsync(s, timeout, timeUnit).await()

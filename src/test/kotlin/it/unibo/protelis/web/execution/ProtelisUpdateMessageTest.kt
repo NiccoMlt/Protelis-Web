@@ -2,8 +2,8 @@ package it.unibo.protelis.web.execution
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.vertx.core.json.Json
-import kotlin.test.assertEquals
-import kotlin.test.assertNotEquals
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
