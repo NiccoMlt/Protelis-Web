@@ -30,13 +30,11 @@ object Versions {
 
   const val com_github_johnrengelman_shadow_gradle_plugin: String = "5.2.0"
 
-  const val org_jlleitschuh_gradle_ktlint_gradle_plugin: String = "9.1.1"
+  const val org_jlleitschuh_gradle_ktlint_gradle_plugin: String = "9.2.0"
 
   const val com_github_node_gradle_node_gradle_plugin: String = "2.2.1"
 
   const val de_fayard_refreshversions_gradle_plugin: String = "0.7.0" // available: "0.8.6"
-
-  const val org_jetbrains_kotlin_kapt_gradle_plugin: String = "1.3.61"
 
   const val org_jetbrains_kotlin_jvm_gradle_plugin: String = "1.3.61"
 
@@ -59,7 +57,7 @@ object Versions {
   const val ktlint: String = "0.36.0"
 
   /**
-   * Current version: "6.0.1"
+   * Current version: "6.1.1"
    * See issue 19: How to update Gradle itself?
    * https://github.com/jmfayard/buildSrcVersions/issues/19
    */

@@ -8,7 +8,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
   kotlin("jvm") version Versions.org_jetbrains_kotlin_jvm_gradle_plugin
-  kotlin("kapt") version Versions.org_jetbrains_kotlin_jvm_gradle_plugin
+  // kotlin("kapt") version Versions.org_jetbrains_kotlin_jvm_gradle_plugin
   application
   id("org.jlleitschuh.gradle.ktlint") version Versions.org_jlleitschuh_gradle_ktlint_gradle_plugin
   id("com.github.node-gradle.node") version Versions.com_github_node_gradle_node_gradle_plugin
@@ -17,6 +17,7 @@ plugins {
   id("com.github.johnrengelman.shadow") version Versions.com_github_johnrengelman_shadow_gradle_plugin
   id("io.vertx.vertx-plugin") version Versions.io_vertx_vertx_plugin_gradle_plugin
   id("org.jetbrains.dokka") version Versions.org_jetbrains_dokka
+  idea
 }
 
 repositories {
@@ -58,7 +59,9 @@ dependencies {
   testImplementation(Libs.vertx_junit5_web_client)
   testImplementation(kotlin("test"))
   testImplementation(kotlin("test-junit"))
-  testRuntimeOnly(Libs.junit_platform_launcher)
+  testRuntimeOnly(Libs.junit_platform_launcher) {
+    because("Needed to run tests IDEs that bundle an older version")
+  }
   testImplementation(Libs.junit_jupiter_api)
   testImplementation(Libs.junit_jupiter_params)
   testRuntimeOnly(Libs.junit_jupiter_engine)
@@ -93,10 +96,11 @@ vertx {
 }
 
 tasks {
-  withType<KotlinCompile>().all {
+  withType<KotlinCompile>().configureEach {
     kotlinOptions {
       allWarningsAsErrors = true
       jvmTarget = Versions.jdk_version
+      javaParameters = true
     }
   }
 
@@ -133,14 +137,14 @@ tasks {
   }
 
   test {
-    // maxParallelForks = (Runtime.getRuntime().availableProcessors() / 2).takeIf { it > 0 } ?: 1
-    // maxParallelForks = 1
-    useJUnitPlatform {
-      includeEngines("junit-jupiter")
-    }
+    useJUnitPlatform()
     testLogging {
-      events.addAll(listOf(TestLogEvent.PASSED, TestLogEvent.FAILED, TestLogEvent.SKIPPED))
+      events(TestLogEvent.PASSED, TestLogEvent.FAILED, TestLogEvent.SKIPPED)
       exceptionFormat = TestExceptionFormat.FULL
+      showExceptions = true
+      showCauses = true
+      showStackTraces = true
+      showStandardStreams = true
     }
   }
 
@@ -182,6 +186,13 @@ tasks {
 
   shadowJar {
     isZip64 = true
+  }
+}
+
+idea {
+  module {
+    isDownloadJavadoc = true
+    isDownloadSources = true
   }
 }
 
