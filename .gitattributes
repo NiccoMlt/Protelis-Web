@@ -137,4 +137,6 @@
 #*.vcxitems  merge=binary
 
 ## Linguist Protelis specification ##
-*.pt  text linguist-language=Protelis linguist-detectable=true
+.czrc     text  linguist-language=JSON
+.jabbarc  text  linguist-language=YAML
+*.pt      text  linguist-language=Protelis
