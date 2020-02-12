@@ -1,5 +1,6 @@
 import {
   isFolder,
+  isSourceFile,
   ProtelisFile,
   ProtelisFolder,
   ProtelisSourceFile,
@@ -42,7 +43,7 @@ describe('File utils', () => {
     expect(newSet
       .find((value) => value.name === newName
         && isFolder(value)
-        && (value as ProtelisFolder).content.length === dummyFolder.content.length))
+        && value.content.length === dummyFolder.content.length))
       .toBeDefined();
   });
 
@@ -81,7 +82,7 @@ describe('File utils', () => {
       .find((value) => value.name === folderName && isFolder(value)) as ProtelisFolder | undefined;
     expect(newFolder).toBeDefined();
     expect((newFolder as ProtelisFolder).content
-      .find((value) => value.name === newName))
+      .find((value) => value.name === newName && isSourceFile(value)))
       .toBeDefined();
   });
 
@@ -100,7 +101,7 @@ describe('File utils', () => {
       .find((value) => value.name === folderName && isFolder(value)) as ProtelisFolder | undefined;
     expect(newFolder).toBeDefined();
     expect((newFolder as ProtelisFolder).content
-      .find((value) => value.name === newName))
+      .find((value) => value.name === newName && isFolder(value)))
       .toBeDefined();
   });
 
