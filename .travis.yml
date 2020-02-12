@@ -36,7 +36,7 @@ jobs:
         - ./gradlew assemble
       script:
         - ./gradlew ktlintCheck
-        - ./gradlew check --debug --stacktrace
+        - ./gradlew check --debug --stacktrace --scan
       after_script:
         - bash <(curl -s https://codecov.io/bash)
     - name: "Frontend build"
