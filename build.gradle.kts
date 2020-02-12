@@ -156,10 +156,6 @@ tasks {
     }
   }
 
-  check {
-    dependsOn(jacocoTestReport)
-  }
-
   jacocoTestCoverageVerification {
     violationRules {
       rule {
