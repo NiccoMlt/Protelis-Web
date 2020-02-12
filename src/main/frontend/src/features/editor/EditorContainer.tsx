@@ -30,9 +30,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 const EditorContainer: React.FC = () => {
   const classes = useStyles();
 
-  const files: ProtelisFile[] = useSelector<RootState, ProtelisFile[]>(
-    (state) => state.editor.files,
-  );
+  const files: ProtelisFile[] = useSelector<RootState, ProtelisFile[]>((state) => state.editor.files);
 
   return (
     <Paper className={classes.root}>
@@ -46,14 +44,14 @@ const EditorContainer: React.FC = () => {
                 className={classes.input}
                 id="contained-button-file"
                 type="file"
-                disabled
+                disabled // TODO
               />
               <Button
                 variant="contained"
                 color="primary"
                 className={classes.button}
                 startIcon={<CloudUpload />}
-                disabled
+                disabled // TODO
               >
                 Upload
               </Button>

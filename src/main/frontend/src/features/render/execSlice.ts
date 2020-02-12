@@ -32,30 +32,30 @@ const execSlice = createSlice({
   name: 'exec',
   initialState,
   reducers: {
-    ebConnected(state): void {
+    ebConnected(state) {
       state.connection = 'open';
     },
-    ebDisconnected(state): void {
+    ebDisconnected(state) {
       state.connection = 'closed';
     },
-    setId(state, action: PayloadAction<string>): void {
+    setId(state, action: PayloadAction<string>) {
       state.execution.id = action.payload;
     },
-    drawInit(state, action: PayloadAction<NodePosition[]>): void {
+    drawInit(state, action: PayloadAction<NodePosition[]>) {
       state.execution = {
         status: 'RUNNING',
         drawing: action.payload,
         id: state.execution.id,
       };
     },
-    drawStep(state, action: PayloadAction<NodePosition[]>): void {
+    drawStep(state, action: PayloadAction<NodePosition[]>) {
       state.execution = {
         status: state.execution.status,
         drawing: action.payload,
         id: state.execution.id,
       };
     },
-    drawEnd(state, action: PayloadAction<NodePosition[]>): void {
+    drawEnd(state, action: PayloadAction<NodePosition[]>) {
       state.execution = {
         status: 'TERMINATED',
         drawing: action.payload,

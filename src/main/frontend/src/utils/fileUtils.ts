@@ -184,7 +184,7 @@ export function getSourceFileAtPath(
 ): ProtelisSourceFile | never {
   const file = getFileAtPath(fileSet, filePath);
   if (file && isSourceFile(file)) {
-    return file as ProtelisSourceFile;
+    return file;
   }
   throw new Error('Not a source file');
 }
@@ -203,7 +203,7 @@ export function getFolderAtPath(
 ): ProtelisFolder {
   const file = getFileAtPath(fileSet, filePath);
   if (file && isFolder(file)) {
-    return file as ProtelisFolder;
+    return file;
   }
   throw new Error('Not a folder');
 }

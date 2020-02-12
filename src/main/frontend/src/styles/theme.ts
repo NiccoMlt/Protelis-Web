@@ -10,7 +10,7 @@ export const protelisMain: PaletteColor = {
 };
 
 /** Theme options for Protelis color palette */
-export const protelisTheme: ThemeOptions & { palette: { primary: PaletteColor } } = {
+export const protelisTheme: ThemeOptions = {
   palette: {
     primary: protelisMain,
   },

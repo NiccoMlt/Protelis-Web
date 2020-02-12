@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import {
   Button,
   Dialog,
@@ -36,7 +36,7 @@ export const AddDialog: React.FC<AddDialogProps> = (props: AddDialogProps) => {
           label="File name"
           type="text"
           variant="outlined"
-          onChange={(event) => setFileName(event.target.value.trim())}
+          onChange={(event: ChangeEvent<HTMLTextAreaElement>) => setFileName(event.target.value.trim())}
           fullWidth
           error={!!error}
           helperText={error}

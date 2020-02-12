@@ -1,26 +1,30 @@
 /* eslint-disable @typescript-eslint/unbound-method */ // needed to use on*() EventBus methods
 import {
-  Action, Dispatch, Middleware, MiddlewareAPI,
+  Dispatch,
+  Middleware,
+  MiddlewareAPI,
 } from 'redux';
 import EventBus, { EventBus as IEventBus } from 'vertx3-eventbus-client';
 import { createAction } from '@reduxjs/toolkit';
 import { RootState } from '../app/rootReducer';
+import { isSourceFile } from '../model/File';
 import {
   EventBusHandler,
   EventBusMessage,
   eventBusMsgHandleBuilder,
   EventBusMsgHandler,
-  EventBusOptions, mapUpdate, ProtelisUpdateMessage,
-} from './EventBusOptions';
+  EventBusOptions,
+  mapUpdate,
+  ProtelisUpdateMessage,
+} from './eventBusUtils';
 import {
-  ebConnected, ebDisconnected, drawInit, drawStep, drawEnd, setId,
+  ebConnected,
+  ebDisconnected,
+  drawInit,
+  drawStep,
+  drawEnd,
+  setId,
 } from '../features/render/execSlice';
-
-/** Action types that will be handled by the EventBus middleware. */
-type EventBusAction = ReturnType<typeof ebConnected | typeof ebDisconnected>
-| 'EB_SEND'
-| 'EB_CONNECT'
-| 'EB_DISCONNECT';
 
 /** Object that wraps arguments of send method of EventBus. */
 interface EventBusPayload {
@@ -29,6 +33,7 @@ interface EventBusPayload {
   headers: Parameters<IEventBus['send']>[2];
 }
 
+/** Object that wraps arguments of EventBus object constructor. */
 interface EventBusSetup {
   host: string;
   options?: EventBusOptions;
@@ -36,11 +41,14 @@ interface EventBusSetup {
 
 const ebConnect = createAction<EventBusSetup, 'EB_CONNECT'>('EB_CONNECT');
 const ebDisconnect = createAction<void, 'EB_DISCONNECT'>('EB_DISCONNECT');
+const ebUpload = createAction<void, 'EB_UPLOAD'>('EB_UPLOAD');
 const ebSend = createAction<EventBusPayload, 'EB_SEND'>('EB_SEND');
 
-type EbAction = ReturnType<typeof ebConnect | typeof ebDisconnect | typeof ebSend>;
+/** Action types that will be handled by the EventBus middleware. */
+type EbAction = ReturnType<typeof ebConnect | typeof ebDisconnect | typeof ebSend | typeof ebUpload>;
 
-const eventBusMiddleware: () => Middleware<{}, RootState, Dispatch<Action<EventBusAction>>> = () => {
+/** Middleware creator function that builds a middleware to let Redux handle a Vert.x EventBus connection. */
+function eventBusMiddleware(): Middleware<{}, RootState> {
   let eventBus: IEventBus | null = null;
   const handlers: EventBusHandler[] = [];
 
@@ -61,7 +69,7 @@ const eventBusMiddleware: () => Middleware<{}, RootState, Dispatch<Action<EventB
 
   return (api: MiddlewareAPI<Dispatch, RootState>) => (next: Dispatch<EbAction>) => (action: EbAction) => {
     switch (action.type) {
-      case 'EB_CONNECT':
+      case ebConnect.type:
         if (!eventBus) {
           const { host, options } = action.payload;
           eventBus = new EventBus(host, options);
@@ -69,11 +77,9 @@ const eventBusMiddleware: () => Middleware<{}, RootState, Dispatch<Action<EventB
           eventBus.onopen = onOpen(api.dispatch);
           eventBus.onclose = onClose(api.dispatch);
           eventBus.onerror = onError(api.dispatch);
-        } else {
-          throw new Error('EventBus is already initialized');
         }
-        break; // fixme
-      case 'EB_DISCONNECT':
+        break;
+      case ebDisconnect.type:
         if (eventBus) {
           handlers.forEach(
             ({ address, headers, callback }) => {
@@ -87,7 +93,16 @@ const eventBusMiddleware: () => Middleware<{}, RootState, Dispatch<Action<EventB
           throw new Error('EventBus is already closed');
         }
         break;
-      case 'EB_SEND':
+      case ebUpload.type: {
+        if (!eventBus) {
+          api.dispatch(ebConnect({ host: '/eventbus/' }));
+        }
+        const { files } = api.getState().editor;
+        const source: string = files.filter(isSourceFile)[0].content; // fixme: merge all source files
+        api.dispatch(ebSend({ address: 'protelis.web.exec.setup', message: source, headers: {} }));
+        break;
+      }
+      case ebSend.type:
         if (eventBus) {
           const { address, message, headers } = action.payload;
           eventBus.send(address, message, headers, ((error: Error, answer: EventBusMessage<string | unknown>) => {
@@ -101,26 +116,23 @@ const eventBusMiddleware: () => Middleware<{}, RootState, Dispatch<Action<EventB
               const simInitHandler: EventBusMsgHandler<ProtelisUpdateMessage> = {
                 address: `protelis.web.exec.${simId}.init`,
                 headers: {},
-                callback: eventBusMsgHandleBuilder<ProtelisUpdateMessage>((msg) => {
-                  // TODO: other ?
-                  api.dispatch(drawInit(mapUpdate(msg)));
-                }),
+                callback: eventBusMsgHandleBuilder<ProtelisUpdateMessage>(
+                  (msg) => api.dispatch(drawInit(mapUpdate(msg))),
+                ),
               };
               const simStepHandler: EventBusMsgHandler<ProtelisUpdateMessage> = {
                 address: `protelis.web.exec.${simId}.step`,
                 headers: {},
-                callback: eventBusMsgHandleBuilder<ProtelisUpdateMessage>((msg) => {
-                  // TODO: other ?
-                  api.dispatch(drawStep(mapUpdate(msg)));
-                }),
+                callback: eventBusMsgHandleBuilder<ProtelisUpdateMessage>(
+                  (msg) => api.dispatch(drawStep(mapUpdate(msg))),
+                ),
               };
               const simEndHandler: EventBusMsgHandler<ProtelisUpdateMessage> = {
                 address: `protelis.web.exec.${simId}.end`,
                 headers: {},
-                callback: eventBusMsgHandleBuilder<ProtelisUpdateMessage>((msg) => {
-                  // TODO: other ?
-                  api.dispatch(drawEnd(mapUpdate(msg)));
-                }),
+                callback: eventBusMsgHandleBuilder<ProtelisUpdateMessage>(
+                  (msg) => api.dispatch(drawEnd(mapUpdate(msg))),
+                ),
               };
               eventBus?.registerHandler(simInitHandler.address, simInitHandler.headers, simInitHandler.callback);
               handlers.push(simInitHandler);
@@ -139,12 +151,13 @@ const eventBusMiddleware: () => Middleware<{}, RootState, Dispatch<Action<EventB
     }
     return next(action);
   };
-};
+}
 
 export {
   ebConnect,
   ebDisconnect,
   ebSend,
+  ebUpload,
 };
 
 export default eventBusMiddleware;

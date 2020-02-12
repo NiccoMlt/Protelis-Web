@@ -26,7 +26,7 @@ export const AddDialogButton: React.FC<AddDialogButtonProps> = (props: AddDialog
     if (name) {
       if (validator(name)) {
         setOpen(false);
-        dispatch(addFile({ name, content: 'hello world' }));
+        dispatch(addFile({ name, content: 'def aFunction() = 1\naFunction() * self.nextRandomDouble()' }));
       } else {
         setError(`The file ${name} already exists`);
       }

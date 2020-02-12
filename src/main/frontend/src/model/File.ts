@@ -24,7 +24,7 @@ export type ProtelisFile = ProtelisFolder | ProtelisSourceFile;
  *
  * @returns true if it's a folder, false otherwise
  */
-export function isFolder(file: ProtelisFile): boolean {
+export function isFolder(file: ProtelisFile): file is ProtelisFolder {
   return Array.isArray(file.content);
 }
 
@@ -35,6 +35,6 @@ export function isFolder(file: ProtelisFile): boolean {
  *
  * @returns true if it's a text file, false otherwise
  */
-export function isSourceFile(file: ProtelisFile): boolean {
+export function isSourceFile(file: ProtelisFile): file is ProtelisSourceFile {
   return typeof file.content === 'string';
 }

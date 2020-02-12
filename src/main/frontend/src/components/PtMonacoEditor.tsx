@@ -9,6 +9,7 @@ import { Dispatch } from 'redux';
 import { RootState } from '../app/rootReducer';
 import { editFile } from '../features/editor/editorSlice';
 import { ProtelisSourceFile } from '../model/File';
+import { ebUpload } from '../utils/EventBusMiddleware';
 import { getSourceFileAtPath } from '../utils/fileUtils';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -52,7 +53,7 @@ export const PtMonacoEditor: React.FC = () => {
       <ControlledEditor
         height="77vh" // By default, it fully fits with its parent
         language="java"
-        loading={<CircularProgress color="primary" /> as unknown as React.FC} // TODO: wrong typings
+        loading={<CircularProgress color="primary" />}
         onChange={(_, newValue) => setValue(newValue)}
         options={{
           automaticLayout: true,
@@ -82,6 +83,7 @@ export const PtMonacoEditor: React.FC = () => {
           className={classes.button}
           startIcon={<Send />}
           disabled={!canSend}
+          onClick={() => dispatch(ebUpload())}
         >
           Run code
         </Button>
