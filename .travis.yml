@@ -36,7 +36,9 @@ jobs:
         - ./gradlew assemble
       script:
         - ./gradlew ktlintCheck
-        - ./gradlew check --debug --stacktrace --scan
+        - rm -rf $HOME/.gradle/caches
+        - rm -rf ./.gradle
+        - ./gradlew check --info --stacktrace
       after_script:
         - bash <(curl -s https://codecov.io/bash)
     - name: "Frontend build"
