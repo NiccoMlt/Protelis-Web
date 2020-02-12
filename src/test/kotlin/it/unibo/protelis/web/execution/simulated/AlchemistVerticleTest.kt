@@ -55,9 +55,7 @@ class AlchemistVerticleTest {
 
       val sourceCode =
         """
-          def aFunction() {
-            1
-          }
+          def aFunction() = 1
           aFunction() * self.nextRandomDouble()
         """
           .trimIndent()
