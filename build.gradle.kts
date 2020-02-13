@@ -10,7 +10,7 @@ plugins {
   id("com.github.johnrengelman.shadow") version Versions.com_github_johnrengelman_shadow_gradle_plugin
   id("io.vertx.vertx-plugin") version Versions.io_vertx_vertx_plugin_gradle_plugin
   kotlin("jvm") version Versions.org_jetbrains_kotlin_jvm_gradle_plugin
-  // kotlin("kapt") version Versions.org_jetbrains_kotlin_jvm_gradle_plugin
+  kotlin("kapt") version Versions.org_jetbrains_kotlin_jvm_gradle_plugin
   id("org.jlleitschuh.gradle.ktlint") version Versions.org_jlleitschuh_gradle_ktlint_gradle_plugin
   id("com.github.node-gradle.node") version Versions.com_github_node_gradle_node_gradle_plugin
   id("de.fayard.refreshVersions") version Versions.de_fayard_refreshversions_gradle_plugin
@@ -36,11 +36,18 @@ dependencies {
   implementation(Libs.slf4j_api)
   implementation(Libs.logback_classic)
 
-  implementation(Libs.jackson_core) // also included by vertx, enforce common version
-  implementation(Libs.jackson_databind) // also included by vertx, enforce common version
-  implementation(Libs.jackson_annotations) // also included by vertx, enforce common version
-  implementation(Libs.jackson_dataformat_yaml) // yaml helper
-  implementation(Libs.jackson_module_kotlin) // kotlin helper
+  implementation(Libs.jackson_core) {
+    because("Also included by Vert.x, enforce common version")
+  }
+  implementation(Libs.jackson_databind) {
+    because("Also included by Vert.x, enforce common version")
+  }
+  implementation(Libs.jackson_annotations) {
+    because("Also included by Vert.x, enforce common version")
+  }
+  implementation(Libs.jackson_module_kotlin) {
+    because("Not included by Vert.x, but useful for Kotlin classes serialization")
+  }
 
   implementation(Libs.vertx_core)
   implementation(Libs.vertx_lang_kotlin)
@@ -56,8 +63,8 @@ dependencies {
 
   testImplementation(Libs.vertx_junit5)
   testImplementation(Libs.vertx_junit5_web_client)
-  // testImplementation(kotlin("test"))
-  // testImplementation(kotlin("test-junit"))
+  testImplementation(kotlin("test"))
+  testImplementation(kotlin("test-junit"))
   testRuntimeOnly(Libs.junit_platform_launcher) {
     because("Needed to run tests in IDEs that bundle an older version of JUnit")
   }
