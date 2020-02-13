@@ -55,18 +55,6 @@ object Libs {
   const val kotlin_stdlib_jdk8: String = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:" +
       Versions.org_jetbrains_kotlin
 
-  /**
-   * https://kotlinlang.org/
-   */
-  const val kotlin_test: String = "org.jetbrains.kotlin:kotlin-test:" +
-      Versions.org_jetbrains_kotlin
-
-  /**
-   * https://kotlinlang.org/
-   */
-  const val kotlin_test_junit: String = "org.jetbrains.kotlin:kotlin-test-junit:" +
-      Versions.org_jetbrains_kotlin
-
   const val dokka_fatjar: String = "org.jetbrains.dokka:dokka-fatjar:" +
       Versions.org_jetbrains_dokka
 
@@ -139,17 +127,6 @@ object Libs {
 
   const val vertx_web_api_contract: String = "io.vertx:vertx-web-api-contract:" + Versions.io_vertx
 
-  /**
-   * http://logback.qos.ch
-   */
-  const val ch_qos_logback_logback_classic: String = "ch.qos.logback:logback-classic:" +
-      Versions.ch_qos_logback_logback_classic
-
-  /**
-   * http://www.slf4j.org
-   */
-  const val org_slf4j_slf4j_api: String = "org.slf4j:slf4j-api:" + Versions.org_slf4j_slf4j_api
-
   const val com_github_johnrengelman_shadow_gradle_plugin: String =
       "com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:" +
       Versions.com_github_johnrengelman_shadow_gradle_plugin
@@ -211,9 +188,19 @@ object Libs {
       Versions.kotlinx_coroutines_io
 
   /**
+   * http://logback.qos.ch
+   */
+  const val logback_classic: String = "ch.qos.logback:logback-classic:" + Versions.logback_classic
+
+  /**
    * http://www.slf4j.org
    */
   const val jul_to_slf4j: String = "org.slf4j:jul-to-slf4j:" + Versions.jul_to_slf4j
+
+  /**
+   * http://www.slf4j.org
+   */
+  const val slf4j_api: String = "org.slf4j:slf4j-api:" + Versions.slf4j_api
 
   /**
    * https://github.com/pinterest/ktlint

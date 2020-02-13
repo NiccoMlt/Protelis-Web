@@ -24,13 +24,9 @@ object Versions {
 
   const val io_vertx: String = "3.8.5"
 
-  const val ch_qos_logback_logback_classic: String = "1.2.3"
-
-  const val org_slf4j_slf4j_api: String = "1.7.30"
-
   const val com_github_johnrengelman_shadow_gradle_plugin: String = "5.2.0"
 
-  const val org_jlleitschuh_gradle_ktlint_gradle_plugin: String = "9.2.0"
+  const val org_jlleitschuh_gradle_ktlint_gradle_plugin: String = "9.2.1"
 
   const val com_github_node_gradle_node_gradle_plugin: String = "2.2.1"
 
@@ -52,7 +48,11 @@ object Versions {
 
   const val kotlinx_coroutines_io: String = "0.24.0"
 
+  const val logback_classic: String = "1.3.0-alpha4"
+
   const val jul_to_slf4j: String = "1.7.30"
+
+  const val slf4j_api: String = "1.8.0-beta2"
 
   const val ktlint: String = "0.36.0"
 

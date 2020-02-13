@@ -7,15 +7,14 @@ import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+  id("com.github.johnrengelman.shadow") version Versions.com_github_johnrengelman_shadow_gradle_plugin
+  id("io.vertx.vertx-plugin") version Versions.io_vertx_vertx_plugin_gradle_plugin
   kotlin("jvm") version Versions.org_jetbrains_kotlin_jvm_gradle_plugin
   // kotlin("kapt") version Versions.org_jetbrains_kotlin_jvm_gradle_plugin
-  application
   id("org.jlleitschuh.gradle.ktlint") version Versions.org_jlleitschuh_gradle_ktlint_gradle_plugin
   id("com.github.node-gradle.node") version Versions.com_github_node_gradle_node_gradle_plugin
   id("de.fayard.refreshVersions") version Versions.de_fayard_refreshversions_gradle_plugin
   jacoco
-  id("com.github.johnrengelman.shadow") version Versions.com_github_johnrengelman_shadow_gradle_plugin
-  id("io.vertx.vertx-plugin") version Versions.io_vertx_vertx_plugin_gradle_plugin
   id("org.jetbrains.dokka") version Versions.org_jetbrains_dokka
   idea
 }
@@ -34,8 +33,8 @@ dependencies {
   implementation(Libs.kotlinx_io_jvm)
   implementation(Libs.kotlinx_coroutines_io)
 
-  implementation(Libs.org_slf4j_slf4j_api)
-  implementation(Libs.ch_qos_logback_logback_classic)
+  implementation(Libs.slf4j_api)
+  implementation(Libs.logback_classic)
 
   implementation(Libs.jackson_core) // also included by vertx, enforce common version
   implementation(Libs.jackson_databind) // also included by vertx, enforce common version
@@ -106,17 +105,23 @@ tasks {
 
   val buildFrontend by creating(YarnTask::class) {
     args = listOf("build")
+
     inputs.files(
       "$frontend/package.json", // React package configuration
       "$frontend/yarn.lock", // dependencies lockfile
       "$frontend/tsconfig.json" // TypeScript config
-    )
-    inputs.dir("$frontend/src") // React sources
+    ).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.dir(
+      "$frontend/src" // React sources
+    ).withPathSensitivity(PathSensitivity.RELATIVE)
     inputs.dir(
       fileTree("$frontend/node_modules") // Node modules ...
         .exclude(".cache") // ... ignoring cache
-    )
+    ).withPathSensitivity(PathSensitivity.RELATIVE)
+
     outputs.dir(frontendOut)
+    outputs.cacheIf { true }
+
     dependsOn("yarn")
   }
 
