@@ -46,7 +46,9 @@ class AlchemistVerticleTest {
   @Timeout(value = Int.MAX_VALUE, timeUnit = TimeUnit.SECONDS) // Yeah, it's very slow to start
   fun `AlchemistVerticle should create a simulation for each request`(vertx: Vertx, testContext: VertxTestContext) {
     val deploy: Checkpoint = testContext.checkpoint()
-    val createSimulation: Checkpoint = testContext.checkpoint(3)
+    val createSimulation: Checkpoint = testContext.checkpoint(2)
+    val steps: Checkpoint = testContext.laxCheckpoint()
+    val terminateSimulation: Checkpoint = testContext.checkpoint()
 
     val verticle = AlchemistVerticle()
     val eb = vertx.eventBus()
@@ -72,10 +74,12 @@ class AlchemistVerticleTest {
           }
           eb.consumer<JsonObject>(stepDoneAddress(id)) { msg ->
             logger.trace("Received step message ${msg.body().mapTo(ProtelisUpdateMessage::class.java)}")
+            steps.flag()
           }
           eb.consumer<JsonObject>(finishedAddress(id)) { msg ->
             logger.trace("Received ending message ${msg.body().mapTo(ProtelisUpdateMessage::class.java)}")
-            createSimulation.flag()
+            terminateSimulation.flag()
+            testContext.verify { testContext.completed() }
           }
         } else {
           Assertions.fail(it.cause())
