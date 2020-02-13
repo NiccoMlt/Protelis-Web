@@ -40,6 +40,9 @@ const execSlice = createSlice({
     },
     setId(state, action: PayloadAction<string>) {
       state.execution.id = action.payload;
+      if (state.execution.status === 'disconnected') {
+        state.execution.status = 'connecting';
+      }
     },
     drawInit(state, action: PayloadAction<NodePosition[]>) {
       state.execution = {
