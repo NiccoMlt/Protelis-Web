@@ -25,7 +25,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 @DisplayName("AlchemistVerticle tests with Vert.x TestContext")
 @ExtendWith(VertxExtension::class)
 class AlchemistVerticleTest {
-  private val logger: Logger = LoggerFactory.getLogger(AlchemistVerticleTest::class.java)
+  private val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
   init {
     DatabindCodec.mapper().registerKotlinModule()
