@@ -4,11 +4,10 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Promise
 import io.vertx.core.json.jackson.DatabindCodec
-import io.vertx.core.logging.Logger
+import io.vertx.core.logging.LoggerFactory
+import io.vertx.core.logging.LoggerFactory.LOGGER_DELEGATE_FACTORY_CLASS_NAME
 import io.vertx.core.logging.SLF4JLogDelegateFactory
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle
-import io.vertx.core.logging.LoggerFactory.LOGGER_DELEGATE_FACTORY_CLASS_NAME
-import io.vertx.core.logging.LoggerFactory
 
 /**
  * Entrypoint Verticle, launched by [Vert.x Launcher][io.vertx.core.Launcher];
