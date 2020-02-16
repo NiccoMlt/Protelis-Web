@@ -21,11 +21,8 @@ import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.set
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.stepDoneAddressRegex
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.stopAddressRegex
 
-/**
- * This verticle serves the React.JS application and implement OpenAPI contract for REST APIs.
- */
-class BridgeVerticle(private val port: Int = DEFAULT_PORT
-) : CoroutineVerticle() {
+/** This verticle bridges EventBus via SockJS. */
+class BridgeVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle() {
   private val logger = LoggerFactory.getLogger(this::class.java)
   private lateinit var eb: EventBus
 
