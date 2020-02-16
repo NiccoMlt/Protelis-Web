@@ -1,5 +1,6 @@
-package it.unibo.protelis.web.backend
+package it.unibo.protelis.web
 
+import io.netty.handler.codec.http.HttpResponseStatus.MOVED_PERMANENTLY
 import io.vertx.core.Context
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.EventBus
@@ -8,7 +9,6 @@ import io.vertx.ext.bridge.PermittedOptions
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.handler.LoggerFormat
 import io.vertx.ext.web.handler.LoggerHandler
-import io.vertx.ext.web.handler.StaticHandler
 import io.vertx.ext.web.handler.sockjs.BridgeOptions
 import io.vertx.ext.web.handler.sockjs.SockJSHandler
 import io.vertx.ext.web.handler.sockjs.SockJSHandlerOptions
@@ -24,7 +24,8 @@ import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.sto
 /**
  * This verticle serves the React.JS application and implement OpenAPI contract for REST APIs.
  */
-class BackendVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle() {
+class BridgeVerticle(private val port: Int = DEFAULT_PORT
+) : CoroutineVerticle() {
   private val logger = LoggerFactory.getLogger(this::class.java)
   private lateinit var eb: EventBus
 
@@ -41,13 +42,15 @@ class BackendVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle(
     val router: Router = Router.router(vertx)
 
     router.route().handler(LoggerHandler.create(LoggerFormat.TINY))
-
-    // val apiRouter: Router = OpenAPI3RouterFactory
-    //   .createAwait(vertx, "/openapi.yaml")
-    //   // TODO
-    //   .router
-    // router.mountSubRouter("/api/", apiRouter)
-    router.get().handler(StaticHandler.create())
+    router
+      .get()
+      .handler { routingContext ->
+        routingContext
+          .response()
+          .putHeader("location", "https://protelis-web-frontend.now.sh/")
+          .setStatusCode(MOVED_PERMANENTLY.code())
+          .end()
+      }
 
     val sockJSOptions: SockJSHandlerOptions = sockJSHandlerOptionsOf(heartbeatInterval = 2000)
     val sockJSHandler: SockJSHandler = SockJSHandler.create(vertx, sockJSOptions)

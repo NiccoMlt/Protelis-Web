@@ -5,7 +5,6 @@ import io.vertx.core.AbstractVerticle
 import io.vertx.core.Promise
 import io.vertx.core.json.jackson.DatabindCodec
 import io.vertx.core.logging.SLF4JLogDelegateFactory
-import it.unibo.protelis.web.backend.BackendVerticle
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle
 
 /**
@@ -33,7 +32,8 @@ class MainVerticle : AbstractVerticle() {
 
     val port: Int? = System.getenv()["PORT"]?.toIntOrNull()
 
-    vertx.deployVerticle(if (port !== null) BackendVerticle(port) else BackendVerticle()) { backendResult ->
+    vertx.deployVerticle(if (port !== null) BridgeVerticle(port) else BridgeVerticle()
+    ) { backendResult ->
       if (backendResult.succeeded()) {
         vertx.deployVerticle(AlchemistVerticle()) { alchemistResult ->
           if (alchemistResult.succeeded()) {

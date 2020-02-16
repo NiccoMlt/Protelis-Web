@@ -1,8 +1,0 @@
-{
-  "recommendations": [
-    "dbaeumer.vscode-eslint",
-    "EditorConfig.EditorConfig",
-    "msjsdiag.debugger-for-chrome",
-    "Orta.vscode-jest"
-  ]
-}

@@ -18,12 +18,9 @@ The repository is a standard Gradle project importable in Intellij IDEA.
 
 The backend is built with Vert.x framework and Kotlin language.
 
-REST APIs are documented with OpenAPI standard v3.1.
-
 ### Frontend
 
-Even if the [frontend sourceSet](./src/main/frontend) of root (backend) project is automatically built and linked by Gradle,
-it is a full-fledged Typescript project built with Yarn and `create-react-app` scripts and can be opened separately as a VS Code or WebStorm project.
+The frontend, originally integrated as a resource in this project, was migrated to [NiccoMlt/protelis-web-frontend](https://github.com/NiccoMlt/protelis-web-frontend).
 
 ## Deploy
 
@@ -33,8 +30,6 @@ In particular, CI pipeline does the following deployments:
 
 - Master branch code is deployed on Heroku at <https://protelis-web.herokuapp.com>
 - Develop branch code is deployed on Heroku at <https://protelis-web-develop.herokuapp.com>
-- Master branch Redoc OpenAPI 3 documentation is deployed on Surge.sh at <https://protelis-web-api.surge.sh>
-- Develop branch Redoc OpenAPI 3 documentation is deployed on Surge.sh at <https://protelis-web-api-develop.surge.sh>
 
 ## License and credits [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 

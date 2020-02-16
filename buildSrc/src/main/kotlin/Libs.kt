@@ -26,16 +26,10 @@ object Libs {
       Versions.com_fasterxml_jackson_core
 
   /**
-   * https://github.com/Kotlin/kotlinx-io
+   * https://kotlinlang.org/
    */
-  const val kotlinx_io: String = "org.jetbrains.kotlinx:kotlinx-io:" +
-      Versions.org_jetbrains_kotlinx
-
-  /**
-   * https://github.com/Kotlin/kotlinx-io
-   */
-  const val kotlinx_io_jvm: String = "org.jetbrains.kotlinx:kotlinx-io-jvm:" +
-      Versions.org_jetbrains_kotlinx
+  const val kotlin_annotation_processing_gradle: String =
+      "org.jetbrains.kotlin:kotlin-annotation-processing-gradle:" + Versions.org_jetbrains_kotlin
 
   /**
    * https://kotlinlang.org/
@@ -53,6 +47,18 @@ object Libs {
    * https://kotlinlang.org/
    */
   const val kotlin_stdlib_jdk8: String = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:" +
+      Versions.org_jetbrains_kotlin
+
+  /**
+   * https://kotlinlang.org/
+   */
+  const val kotlin_test: String = "org.jetbrains.kotlin:kotlin-test:" +
+      Versions.org_jetbrains_kotlin
+
+  /**
+   * https://kotlinlang.org/
+   */
+  const val kotlin_test_junit: String = "org.jetbrains.kotlin:kotlin-test-junit:" +
       Versions.org_jetbrains_kotlin
 
   const val dokka_fatjar: String = "org.jetbrains.dokka:dokka-fatjar:" +
@@ -125,8 +131,6 @@ object Libs {
 
   const val vertx_web: String = "io.vertx:vertx-web:" + Versions.io_vertx
 
-  const val vertx_web_api_contract: String = "io.vertx:vertx-web-api-contract:" + Versions.io_vertx
-
   const val com_github_johnrengelman_shadow_gradle_plugin: String =
       "com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:" +
       Versions.com_github_johnrengelman_shadow_gradle_plugin
@@ -135,13 +139,13 @@ object Libs {
       "org.jlleitschuh.gradle.ktlint:org.jlleitschuh.gradle.ktlint.gradle.plugin:" +
       Versions.org_jlleitschuh_gradle_ktlint_gradle_plugin
 
-  const val com_github_node_gradle_node_gradle_plugin: String =
-      "com.github.node-gradle.node:com.github.node-gradle.node.gradle.plugin:" +
-      Versions.com_github_node_gradle_node_gradle_plugin
-
   const val de_fayard_refreshversions_gradle_plugin: String =
       "de.fayard.refreshVersions:de.fayard.refreshVersions.gradle.plugin:" +
       Versions.de_fayard_refreshversions_gradle_plugin
+
+  const val org_jetbrains_kotlin_kapt_gradle_plugin: String =
+      "org.jetbrains.kotlin.kapt:org.jetbrains.kotlin.kapt.gradle.plugin:" +
+      Versions.org_jetbrains_kotlin_kapt_gradle_plugin
 
   const val org_jetbrains_kotlin_jvm_gradle_plugin: String =
       "org.jetbrains.kotlin.jvm:org.jetbrains.kotlin.jvm.gradle.plugin:" +
@@ -152,10 +156,11 @@ object Libs {
       Versions.io_vertx_vertx_plugin_gradle_plugin
 
   /**
-   * https://github.com/FasterXML/jackson-dataformats-text
+   * 0.3
    */
-  const val jackson_dataformat_yaml: String =
-      "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:" + Versions.jackson_dataformat_yaml
+  const val kotlinx_collections_immutable_jvm: String =
+      "org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:" +
+      Versions.kotlinx_collections_immutable_jvm
 
   /**
    * https://junit.org/junit5/
@@ -191,6 +196,12 @@ object Libs {
    * http://logback.qos.ch
    */
   const val logback_classic: String = "ch.qos.logback:logback-classic:" + Versions.logback_classic
+
+  /**
+   * https://github.com/Kotlin/kotlinx-io
+   */
+  const val kotlinx_io_jvm: String = "org.jetbrains.kotlinx:kotlinx-io-jvm:" +
+      Versions.kotlinx_io_jvm
 
   /**
    * http://www.slf4j.org
