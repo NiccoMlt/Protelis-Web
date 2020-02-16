@@ -1,6 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-import com.moowork.gradle.node.yarn.YarnTask
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.dokka.gradle.DokkaTask
@@ -12,7 +11,6 @@ plugins {
   kotlin("jvm") version Versions.org_jetbrains_kotlin_jvm_gradle_plugin
   kotlin("kapt") version Versions.org_jetbrains_kotlin_jvm_gradle_plugin
   id("org.jlleitschuh.gradle.ktlint") version Versions.org_jlleitschuh_gradle_ktlint_gradle_plugin
-  id("com.github.node-gradle.node") version Versions.com_github_node_gradle_node_gradle_plugin
   id("de.fayard.refreshVersions") version Versions.de_fayard_refreshversions_gradle_plugin
   jacoco
   id("org.jetbrains.dokka") version Versions.org_jetbrains_dokka
@@ -29,21 +27,23 @@ dependencies {
   implementation(kotlin("reflect"))
   implementation(Libs.kotlinx_coroutines_core)
   implementation(Libs.kotlinx_coroutines_jdk8)
-  implementation(Libs.kotlinx_io)
   implementation(Libs.kotlinx_io_jvm)
+  implementation(Libs.kotlinx_collections_immutable_jvm)
   implementation(Libs.kotlinx_coroutines_io)
 
   implementation(Libs.slf4j_api)
   implementation(Libs.logback_classic)
 
+  val vertxReason = "Also included by Vert.x, enforce common version"
+
   implementation(Libs.jackson_core) {
-    because("Also included by Vert.x, enforce common version")
+    because(vertxReason)
   }
   implementation(Libs.jackson_databind) {
-    because("Also included by Vert.x, enforce common version")
+    because(vertxReason)
   }
   implementation(Libs.jackson_annotations) {
-    because("Also included by Vert.x, enforce common version")
+    because(vertxReason)
   }
   implementation(Libs.jackson_module_kotlin) {
     because("Not included by Vert.x, but useful for Kotlin classes serialization")
@@ -53,7 +53,6 @@ dependencies {
   implementation(Libs.vertx_lang_kotlin)
   implementation(Libs.vertx_lang_kotlin_coroutines)
   implementation(Libs.vertx_web)
-  implementation(Libs.vertx_web_api_contract)
 
   implementation(Libs.alchemist_interfaces)
   implementation(Libs.alchemist_engine)
@@ -85,17 +84,6 @@ application {
   mainClassName = "io.vertx.core.Launcher"
 }
 
-val frontend: String = "src/main/frontend/"
-val frontendOut: String = "$frontend/build"
-
-node {
-  version = Versions.node_version
-  npmVersion = Versions.npm_version
-  yarnVersion = Versions.yarn_version
-  download = true
-  nodeModulesDir = File(frontend)
-}
-
 vertx {
   mainVerticle = "it.unibo.protelis.web.MainVerticle"
   vertxVersion = Versions.io_vertx
@@ -108,44 +96,6 @@ tasks {
       jvmTarget = Versions.jdk_version
       javaParameters = true
     }
-  }
-
-  val buildFrontend by creating(YarnTask::class) {
-    args = listOf("build")
-
-    inputs.files(
-      "$frontend/package.json", // React package configuration
-      "$frontend/yarn.lock", // dependencies lockfile
-      "$frontend/tsconfig.json" // TypeScript config
-    ).withPathSensitivity(PathSensitivity.RELATIVE)
-    inputs.dir(
-      "$frontend/src" // React sources
-    ).withPathSensitivity(PathSensitivity.RELATIVE)
-    inputs.dir(
-      fileTree("$frontend/node_modules") // Node modules ...
-        .exclude(".cache") // ... ignoring cache
-    ).withPathSensitivity(PathSensitivity.RELATIVE)
-
-    outputs.dir(frontendOut)
-    outputs.cacheIf { true }
-
-    dependsOn("yarn")
-  }
-
-  val copyToWebRoot by creating(Copy::class) {
-    from(frontendOut)
-    destinationDir = File("$buildDir/classes/kotlin/main/webroot")
-    dependsOn(buildFrontend)
-  }
-
-  "processResources"(ProcessResources::class) {
-    dependsOn(copyToWebRoot)
-  }
-
-  create<YarnTask>("jest") {
-    setEnvironment(mapOf("CI" to "true"))
-    args = listOf("test")
-    dependsOn("yarn")
   }
 
   test {
