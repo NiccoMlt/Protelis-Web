@@ -38,7 +38,7 @@ install:
   - ./gradlew assemble
 script:
   - ./gradlew ktlintCheck
-  - ./gradlew clean check jacocoTestReport --info --stacktrace
+  - ./gradlew test
 
 jobs:
   include:
@@ -47,6 +47,8 @@ jobs:
       language: shell
       os: *reference_os
       env: *reference_jdk
+      script:
+        - ./gradlew check jacocoTestReport
       after_script:
         - bash <(curl -s https://codecov.io/bash)
     - name: "Deploy on Heroku"
