@@ -4,11 +4,12 @@ import io.netty.handler.codec.http.HttpResponseStatus.MOVED_PERMANENTLY
 import io.vertx.core.Context
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.EventBus
+import io.vertx.core.http.HttpMethod
 import io.vertx.core.logging.Logger
 import io.vertx.core.logging.LoggerFactory
-import io.vertx.core.logging.SLF4JLogDelegateFactory
 import io.vertx.ext.bridge.PermittedOptions
 import io.vertx.ext.web.Router
+import io.vertx.ext.web.handler.CorsHandler
 import io.vertx.ext.web.handler.LoggerFormat
 import io.vertx.ext.web.handler.LoggerHandler
 import io.vertx.ext.web.handler.sockjs.BridgeOptions
@@ -45,7 +46,25 @@ class BridgeVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle()
       .handler(LoggerHandler.create(LoggerFormat.TINY))
 
     router
-      .get()
+      .route()
+      .handler(
+        CorsHandler
+          .create("https://protelis-web-frontend.now.sh")
+          .allowCredentials(true)
+          .allowedMethods(HttpMethod.values().toSet())
+      )
+
+    router
+      .route()
+      .handler(
+        CorsHandler
+          .create("http://localhost:3000")
+          .allowCredentials(true)
+          .allowedMethods(HttpMethod.values().toSet())
+      )
+
+    router
+      .get("/")
       .handler { routingContext ->
         routingContext
           .response()
@@ -63,7 +82,8 @@ class BridgeVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle()
       .addOutboundPermitted(PermittedOptions().setAddressRegex(stepDoneAddressRegex.pattern))
       .addOutboundPermitted(PermittedOptions().setAddressRegex(finishedAddressRegex.pattern))
       .addOutboundPermitted(PermittedOptions().setAddressRegex(stopAddressRegex.pattern))
-    router.mountSubRouter("/eventbus", sockJSHandler.bridge(sockBridgeOptions))
+    val sockJsBridge: Router = sockJSHandler.bridge(sockBridgeOptions)
+    router.mountSubRouter("/eventbus", sockJsBridge)
 
     vertx
       .createHttpServer()
