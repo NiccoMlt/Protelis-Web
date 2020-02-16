@@ -24,10 +24,15 @@ stages:
   - deploy
 
 jobs:
+  exclude:
+    - os: *reference_os
+      env: *reference_jdk
   include:
-    - name: "Build & test"
+    - name: "Reference build"
       stage: test
       language: shell
+      os: *reference_os
+      env: *reference_jdk
       before_cache:
         - $GRAVIS/clean-gradle-cache
       cache:
@@ -50,6 +55,9 @@ jobs:
       stage: deploy
       language: shell
       script: skip
+      os: *reference_os
+      env: *reference_jdk
+      if: type != pull_request
       deploy:
         provider: heroku
         api_key:
@@ -59,6 +67,4 @@ jobs:
           develop: protelis-web-develop
         strategy: api
         on:
-          os: *reference_os
-          condition: *reference_jdk
           repo: *official_repo
