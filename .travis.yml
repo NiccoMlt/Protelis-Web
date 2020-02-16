@@ -41,9 +41,6 @@ script:
   - ./gradlew clean check jacocoTestReport --info --stacktrace
 
 jobs:
-  exclude:
-    - os: *reference_os
-      env: *reference_jdk
   include:
     - name: "Reference build"
       stage: test
