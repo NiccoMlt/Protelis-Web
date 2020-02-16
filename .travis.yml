@@ -23,6 +23,23 @@ stages:
   - test
   - deploy
 
+before_cache:
+  - $GRAVIS/clean-gradle-cache
+cache:
+  yarn: true
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+before_install:
+  - travis_retry git clone --depth 1 $GRAVIS_REPO $GRAVIS
+  - source $GRAVIS/install-jdk
+  - chmod +x gradlew
+install:
+  - ./gradlew assemble
+script:
+  - ./gradlew ktlintCheck
+  - ./gradlew clean check jacocoTestReport --info --stacktrace
+
 jobs:
   exclude:
     - os: *reference_os
@@ -33,22 +50,6 @@ jobs:
       language: shell
       os: *reference_os
       env: *reference_jdk
-      before_cache:
-        - $GRAVIS/clean-gradle-cache
-      cache:
-        yarn: true
-        directories:
-          - $HOME/.gradle/caches/
-          - $HOME/.gradle/wrapper/
-      before_install:
-        - travis_retry git clone --depth 1 $GRAVIS_REPO $GRAVIS
-        - source $GRAVIS/install-jdk
-        - chmod +x gradlew
-      install:
-        - ./gradlew assemble
-      script:
-        - ./gradlew ktlintCheck
-        - ./gradlew clean check jacocoTestReport --info --stacktrace
       after_script:
         - bash <(curl -s https://codecov.io/bash)
     - name: "Deploy on Heroku"
