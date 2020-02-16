@@ -1,12 +1,23 @@
 version: ~> 1.0
-os: linux
+
+_reference_jdk: &reference_jdk 'JDK="adopt@1.11"'
+_reference_os: &reference_os linux
+_official_repo: &official_repo 'NiccoMlt/Protelis-Web'
+
+os:
+  - osx
+  - windows
+  - *reference_os
 dist: bionic
 language: shell
 
 env:
   global:
-    - JDK="adopt@1.11"
-    - GRAVIS="https://raw.githubusercontent.com/DanySK/Gravis-CI/master/"
+    - GRAVIS_REPO="https://github.com/DanySK/Gravis-CI.git"
+    - GRAVIS="$HOME/gravis"
+  matrix:
+    - *reference_jdk
+    - JDK="adopt-openj9@1.11"
 
 stages:
   - test
@@ -14,20 +25,19 @@ stages:
 
 jobs:
   include:
-    - name: "Backend build"
+    - name: "Build & test"
       stage: test
       language: shell
       before_cache:
-        - curl "${GRAVIS}.clean_gradle_cache.sh" --output .clean_gradle_cache.sh
-        - bash .clean_gradle_cache.sh
+        - $GRAVIS/clean-gradle-cache
       cache:
         yarn: true
         directories:
           - $HOME/.gradle/caches/
           - $HOME/.gradle/wrapper/
       before_install:
-        - curl "${GRAVIS}.install-jdk-travis.sh" --output ~/.install-jdk-travis.sh
-        - source ~/.install-jdk-travis.sh
+        - travis_retry git clone --depth 1 $GRAVIS_REPO $GRAVIS
+        - source $GRAVIS/install-jdk
         - chmod +x gradlew
       install:
         - ./gradlew assemble
@@ -48,3 +58,7 @@ jobs:
           master: protelis-web
           develop: protelis-web-develop
         strategy: api
+        on:
+          os: *reference_os
+          condition: *reference_jdk
+          repo: *official_repo
