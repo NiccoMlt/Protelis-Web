@@ -84,9 +84,14 @@ application {
   mainClassName = "io.vertx.core.Launcher"
 }
 
+val slf4j = "io.vertx.core.logging.SLF4JLogDelegateFactory"
+val vertxLoggerDelegateProp = "vertx.logger-delegate-factory-class-name"
+val jvmArgLogger = "-D$vertxLoggerDelegateProp=$slf4j"
+
 vertx {
   mainVerticle = "it.unibo.protelis.web.MainVerticle"
   vertxVersion = Versions.io_vertx
+  jvmArgs = listOf("jvmArgLogger")
 }
 
 tasks {
@@ -108,6 +113,8 @@ tasks {
       showStackTraces = true
       showStandardStreams = true
     }
+    @Suppress("UNNECESSARY_NOT_NULL_ASSERTION") // Required by Intellij IDEA
+    jvmArgs!!.add(jvmArgLogger)
   }
 
   jacocoTestReport {

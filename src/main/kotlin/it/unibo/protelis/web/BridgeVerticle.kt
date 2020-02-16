@@ -4,7 +4,9 @@ import io.netty.handler.codec.http.HttpResponseStatus.MOVED_PERMANENTLY
 import io.vertx.core.Context
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.EventBus
+import io.vertx.core.logging.Logger
 import io.vertx.core.logging.LoggerFactory
+import io.vertx.core.logging.SLF4JLogDelegateFactory
 import io.vertx.ext.bridge.PermittedOptions
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.handler.LoggerFormat
@@ -23,11 +25,11 @@ import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.sto
 
 /** This verticle bridges EventBus via SockJS. */
 class BridgeVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle() {
-  private val logger = LoggerFactory.getLogger(this::class.java)
   private lateinit var eb: EventBus
 
   companion object {
     private const val DEFAULT_PORT: Int = 8080
+    private val logger: Logger = LoggerFactory.getLogger(BridgeVerticle::class.java)
   }
 
   override fun init(vertx: Vertx, context: Context) {
@@ -38,7 +40,10 @@ class BridgeVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle()
   override suspend fun start() {
     val router: Router = Router.router(vertx)
 
-    router.route().handler(LoggerHandler.create(LoggerFormat.TINY))
+    router
+      .route()
+      .handler(LoggerHandler.create(LoggerFormat.TINY))
+
     router
       .get()
       .handler { routingContext ->
@@ -58,8 +63,7 @@ class BridgeVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle()
       .addOutboundPermitted(PermittedOptions().setAddressRegex(stepDoneAddressRegex.pattern))
       .addOutboundPermitted(PermittedOptions().setAddressRegex(finishedAddressRegex.pattern))
       .addOutboundPermitted(PermittedOptions().setAddressRegex(stopAddressRegex.pattern))
-    val sockJsBridge = sockJSHandler.bridge(sockBridgeOptions)
-    router.mountSubRouter("/eventbus", sockJsBridge)
+    router.mountSubRouter("/eventbus", sockJSHandler.bridge(sockBridgeOptions))
 
     vertx
       .createHttpServer()
