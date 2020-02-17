@@ -142,7 +142,7 @@ tasks {
 
   /** task used by Heroku to build executable Jar */
   register("stage") {
-    dependsOn(listOf(clean, build, shadowJar))
+    dependsOn(listOf(clean, shadowJar))
   }
 
   build {

@@ -63,16 +63,6 @@ class BridgeVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle()
           .allowedMethods(HttpMethod.values().toSet())
       )
 
-    router
-      .get("/")
-      .handler { routingContext ->
-        routingContext
-          .response()
-          .putHeader("location", "https://protelis-web-frontend.now.sh/")
-          .setStatusCode(MOVED_PERMANENTLY.code())
-          .end()
-      }
-
     val sockJSOptions: SockJSHandlerOptions = sockJSHandlerOptionsOf(heartbeatInterval = 2000)
     val sockJSHandler: SockJSHandler = SockJSHandler.create(vertx, sockJSOptions)
     val sockBridgeOptions = BridgeOptions()
@@ -84,6 +74,16 @@ class BridgeVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle()
       .addOutboundPermitted(PermittedOptions().setAddressRegex(stopAddressRegex.pattern))
     val sockJsBridge: Router = sockJSHandler.bridge(sockBridgeOptions)
     router.mountSubRouter("/eventbus", sockJsBridge)
+
+    router
+      .get("/")
+      .handler { routingContext ->
+        routingContext
+          .response()
+          .putHeader("location", "https://protelis-web-frontend.now.sh/")
+          .setStatusCode(MOVED_PERMANENTLY.code())
+          .end()
+      }
 
     vertx
       .createHttpServer()
