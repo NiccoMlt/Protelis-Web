@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory
 
 class SimulatedProtelisEngine() : CoroutineProtelisEngine() {
   private val logger: Logger = LoggerFactory.getLogger(this::class.java)
-  private var alchemistEngine: AtomicReference<Simulation<Any /* TODO */, Euclidean2DPosition>?> = AtomicReference(null)
+  private var alchemistEngine: AtomicReference<Simulation<Any, Euclidean2DPosition>?> = AtomicReference(null)
 
   init {
     logger.debug("Simulation container created")
@@ -48,7 +48,7 @@ class SimulatedProtelisEngine() : CoroutineProtelisEngine() {
   override suspend fun startAwait() {
     checkNotNull(alchemistEngine.get())
     alchemistEngine.get()?.play()
-    alchemistEngine.get()?.awaitFor(Status.RUNNING) // TODO: should I wait RUNNING instead?
+    alchemistEngine.get()?.awaitFor(Status.RUNNING)
     logger.debug("Simulation started")
   }
 
@@ -61,10 +61,10 @@ class SimulatedProtelisEngine() : CoroutineProtelisEngine() {
   }
 
   /** Asynchronously build a new simulation from a loader of YAML files. */
-  private fun setupSimulationAsync(): Deferred<Engine<Any /* TODO */, Euclidean2DPosition>> = GlobalScope.async {
+  private fun setupSimulationAsync(): Deferred<Engine<Any, Euclidean2DPosition>> = GlobalScope.async {
     val loader = YamlLoader(this.javaClass.classLoader.getResourceAsStream("simulation.yml"))
-    loader.getDefault<Any /* TODO */, Euclidean2DPosition>()
-    Engine<Any /* TODO */, Euclidean2DPosition>(
+    loader.getDefault<Any, Euclidean2DPosition>()
+    Engine<Any, Euclidean2DPosition>(
       loader.getDefault(),
       Long.MAX_VALUE,
       DoubleTime(Double.POSITIVE_INFINITY)
