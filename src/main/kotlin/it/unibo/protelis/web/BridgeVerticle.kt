@@ -49,19 +49,19 @@ class BridgeVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle()
       .route()
       .handler(
         CorsHandler
-          .create("https://protelis-web-frontend.now.sh")
+          .create(".*.")
           .allowCredentials(true)
           .allowedMethods(HttpMethod.values().toSet())
       )
 
-    router
-      .route()
-      .handler(
-        CorsHandler
-          .create("http://localhost:3000")
-          .allowCredentials(true)
-          .allowedMethods(HttpMethod.values().toSet())
-      )
+    // router
+    //   .route()
+    //   .handler(
+    //     CorsHandler
+    //       .create("protelis-web-frontend.now.sh")
+    //       .allowCredentials(true)
+    //       .allowedMethods(HttpMethod.values().toSet())
+    //   )
 
     val sockJSOptions: SockJSHandlerOptions = sockJSHandlerOptionsOf(heartbeatInterval = 2000)
     val sockJSHandler: SockJSHandler = SockJSHandler.create(vertx, sockJSOptions)
