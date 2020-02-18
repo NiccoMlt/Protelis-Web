@@ -1,0 +1,2 @@
+def aFunction() = 1
+aFunction() * self.nextRandomDouble()

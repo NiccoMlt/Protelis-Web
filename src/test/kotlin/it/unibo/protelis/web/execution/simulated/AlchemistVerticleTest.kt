@@ -16,6 +16,7 @@ import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.ini
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.setupAddress
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.stepDoneAddress
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.stopAddress
+import kotlinx.io.errors.IOException
 import java.util.concurrent.TimeUnit
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
@@ -43,7 +44,7 @@ class AlchemistVerticleTest {
 
   @Test
   @DisplayName("AlchemistVerticle should create a simulation for each request")
-  @Timeout(value = Int.MAX_VALUE, timeUnit = TimeUnit.SECONDS) // Yeah, it's very slow to start
+  @Timeout(value = 10, timeUnit = TimeUnit.MINUTES) // Yeah, it's very slow to start
   fun `AlchemistVerticle should create a simulation for each request`(vertx: Vertx, testContext: VertxTestContext) {
     val deploy: Checkpoint = testContext.checkpoint()
     val createSimulation: Checkpoint = testContext.checkpoint(2)
@@ -55,12 +56,11 @@ class AlchemistVerticleTest {
     vertx.deployVerticle(verticle, testContext.succeeding {
       deploy.flag()
 
-      val sourceCode =
-        """
-          def aFunction() = 1
-          aFunction() * self.nextRandomDouble()
-        """
-          .trimIndent()
+      val sourceCode = this::class.java.classLoader.getResource("code.pt")
+        ?.readText()
+        ?: throw IOException("Code file not found")
+
+      var oneTime = true
 
       eb.request<String>(setupAddress(), sourceCode) {
         if (it.succeeded()) {
@@ -70,11 +70,14 @@ class AlchemistVerticleTest {
           eb.consumer<JsonObject>(initializedAddress(id)) { msg ->
             logger.trace("Received initialization message ${msg.body().mapTo(ProtelisUpdateMessage::class.java)}")
             createSimulation.flag()
-            vertx.setTimer(1000) { eb.send(stopAddress(id), JsonObject()) }
           }
           eb.consumer<JsonObject>(stepDoneAddress(id)) { msg ->
             logger.trace("Received step message ${msg.body().mapTo(ProtelisUpdateMessage::class.java)}")
             steps.flag()
+            if (oneTime) {
+              oneTime = false
+              eb.send(stopAddress(id), JsonObject())
+            }
           }
           eb.consumer<JsonObject>(finishedAddress(id)) { msg ->
             logger.trace("Received ending message ${msg.body().mapTo(ProtelisUpdateMessage::class.java)}")
