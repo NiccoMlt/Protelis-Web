@@ -13,7 +13,6 @@ import java.util.concurrent.atomic.AtomicReference
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.future.asCompletableFuture
 import kotlinx.coroutines.launch
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -24,10 +23,6 @@ class SimulatedProtelisEngine() : CoroutineProtelisEngine() {
 
   init {
     logger.debug("Simulation container created")
-  }
-
-  constructor(sourceCode: String, monitor: ProtelisObserver) : this() {
-    GlobalScope.launch { setupAwait(sourceCode, monitor) }.asCompletableFuture().join()
   }
 
   override suspend fun setupAwait(sourceCode: String, monitor: ProtelisObserver) {
@@ -62,14 +57,20 @@ class SimulatedProtelisEngine() : CoroutineProtelisEngine() {
 
   /** Asynchronously build a new simulation from a loader of YAML files. */
   private fun setupSimulationAsync(): Deferred<Engine<Any, Euclidean2DPosition>> = GlobalScope.async {
-    val loader = YamlLoader(this.javaClass.classLoader.getResourceAsStream("simulation.yml"))
-    loader.getDefault<Any, Euclidean2DPosition>()
     Engine<Any, Euclidean2DPosition>(
-      loader.getDefault(),
+      YamlLoader(this.javaClass.classLoader.getResourceAsStream("simulation.yml")).getDefault(),
       Long.MAX_VALUE,
       DoubleTime(Double.POSITIVE_INFINITY)
     )
   }
+
+  /** Build a new simulation from a loader of YAML files. */
+  private fun setupSimulation(): Engine<Any, Euclidean2DPosition> =
+    Engine<Any, Euclidean2DPosition>(
+      YamlLoader(this.javaClass.classLoader.getResourceAsStream("simulation.yml")).getDefault(),
+      Long.MAX_VALUE,
+      DoubleTime(Double.POSITIVE_INFINITY)
+    )
 
   private fun setCode(sourceCode: String) {
     alchemistEngine
