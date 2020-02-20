@@ -50,7 +50,7 @@ class SimulatedProtelisEngineTest {
       .thenCompose { simulation.start() }
       .thenCompose { step }
       .thenCompose { simulation.stop() }
-      .join()
+      .get()
 
     Assertions.assertTrue(init, "Simulation should have been initialized")
     Assertions.assertNotNull(step.getNow(null), "Simulation should have run at least one step")
