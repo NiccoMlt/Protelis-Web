@@ -16,8 +16,8 @@ import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.ini
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.setupAddress
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.stepDoneAddress
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.stopAddress
-import kotlinx.io.errors.IOException
 import java.util.concurrent.TimeUnit
+import kotlinx.io.errors.IOException
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
