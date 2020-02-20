@@ -4,11 +4,11 @@ import io.vertx.core.logging.Logger
 import io.vertx.core.logging.LoggerFactory
 import it.unibo.protelis.web.execution.ProtelisObserver
 import it.unibo.protelis.web.execution.ProtelisUpdateMessage
+import java.util.concurrent.CompletableFuture
 import kotlinx.io.errors.IOException
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import java.util.concurrent.CompletableFuture
 
 @DisplayName("Test simulated Protelis engine with Alchemist")
 class SimulatedProtelisEngineTest {

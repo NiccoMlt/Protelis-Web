@@ -15,12 +15,10 @@ import io.vertx.ext.web.handler.LoggerHandler
 import io.vertx.ext.web.handler.sockjs.BridgeOptions
 import io.vertx.ext.web.handler.sockjs.SockJSHandler
 import io.vertx.ext.web.handler.sockjs.SockJSHandlerOptions
-import io.vertx.kotlin.core.cli.optionOf
 import io.vertx.kotlin.core.http.httpServerOptionsOf
 import io.vertx.kotlin.core.http.listenAwait
 import io.vertx.kotlin.core.net.pemKeyCertOptionsOf
 import io.vertx.kotlin.coroutines.CoroutineVerticle
-import io.vertx.kotlin.ext.web.client.webClientOptionsOf
 import io.vertx.kotlin.ext.web.handler.sockjs.sockJSHandlerOptionsOf
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.finishedAddressRegex
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.initializedAddressRegex
@@ -99,6 +97,6 @@ class BridgeVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle()
       .requestHandler(router)
       .listenAwait(httpsPort)
 
-    logger.info("HTTP server started on port $httpsPort")
+    logger.info("HTTPS server started on port $httpsPort")
   }
 }
