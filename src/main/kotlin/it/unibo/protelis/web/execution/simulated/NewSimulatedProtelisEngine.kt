@@ -1,66 +1,61 @@
-/*
 package it.unibo.protelis.web.execution.simulated
 
 import it.unibo.alchemist.core.implementations.Engine
 import it.unibo.alchemist.core.interfaces.Simulation
 import it.unibo.alchemist.core.interfaces.Status
-import it.unibo.alchemist.core.interfaces.awaitFor
+import it.unibo.alchemist.core.interfaces.waitForAndCheck
 import it.unibo.alchemist.loader.YamlLoader
 import it.unibo.alchemist.model.implementations.positions.Euclidean2DPosition
 import it.unibo.alchemist.model.implementations.times.DoubleTime
-import it.unibo.protelis.web.execution.CoroutineProtelisEngine
 import it.unibo.protelis.web.execution.ProtelisObserver
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class SimulatedProtelisEngine : CoroutineProtelisEngine() {
+class NewSimulatedProtelisEngine {
   private val logger: Logger = LoggerFactory.getLogger(this::class.java)
   private var alchemistEngine: Simulation<Any, Euclidean2DPosition>? = null
 
-  override suspend fun setupAwait(sourceCode: String, monitor: ProtelisObserver) {
+  fun setup(sourceCode: String, monitor: ProtelisObserver) {
     if (alchemistEngine != null) {
-      stopAwait()
+      stop()
     }
-    val sim = setupSimulation()
-    alchemistEngine = sim
+
+    alchemistEngine = setupSimulation()
     setCode(sourceCode)
     alchemistEngine
       ?.addOutputMonitor(ProtelisUpdateAdapter(monitor))
       ?: throw IllegalStateException("Simulation was not set up correctly")
     alchemistEngine
-      ?.awaitFor(Status.INIT)
+      ?.waitForAndCheck(Status.INIT)
       ?: throw IllegalStateException("Simulation was not set up correctly")
-    GlobalScope.launch { alchemistEngine?.run() ?: throw IllegalStateException() }
+    GlobalScope.launch() { alchemistEngine?.run() ?: throw IllegalStateException() }
     logger.debug("Simulation Engine set up correctly")
   }
 
-  override suspend fun startAwait() {
+  fun start() {
     checkNotNull(alchemistEngine)
     alchemistEngine
       ?.play()
       ?: throw IllegalStateException()
     alchemistEngine
-      ?.awaitFor(Status.RUNNING)
+      ?.waitForAndCheck(Status.RUNNING)
       ?: throw IllegalStateException()
     logger.debug("Simulation started")
   }
 
-  override suspend fun stopAwait() {
+  fun stop() {
     checkNotNull(alchemistEngine)
     alchemistEngine
       ?.terminate()
       ?: throw IllegalStateException()
     alchemistEngine
-      ?.awaitFor(Status.TERMINATED)
+      ?.waitForAndCheck(Status.TERMINATED)
       ?: throw IllegalStateException()
     alchemistEngine = null
     logger.debug("Simulation stopped and deleted")
   }
-
-  */
-/** Build a new simulation from a loader of YAML files. *//*
 
   private fun setupSimulation(): Engine<Any, Euclidean2DPosition> =
     Engine<Any, Euclidean2DPosition>(
@@ -85,4 +80,3 @@ class SimulatedProtelisEngine : CoroutineProtelisEngine() {
       ?: throw IllegalStateException("Can't set code to non-existent simulation")
   }
 }
-*/

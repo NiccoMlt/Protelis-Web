@@ -1,3 +1,4 @@
+/*
 package it.unibo.protelis.web.execution.simulated
 
 import io.vertx.core.logging.Logger
@@ -57,3 +58,4 @@ class SimulatedProtelisEngineTest {
     Assertions.assertTrue(done, "Simulation should have been terminated")
   }
 }
+*/
