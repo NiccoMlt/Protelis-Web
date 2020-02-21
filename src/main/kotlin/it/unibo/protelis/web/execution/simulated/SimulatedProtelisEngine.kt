@@ -59,7 +59,6 @@ class SimulatedProtelisEngine : ProtelisEngine {
     logger.debug("Simulation stopped and deleted")
   }
 
-  /** Asynchronously build a new simulation from a loader of YAML files. */
   private fun setupSimulation(): Engine<Any, Euclidean2DPosition> =
     Engine<Any, Euclidean2DPosition>(
       YamlLoader(this.javaClass.classLoader.getResourceAsStream("simulation.yml")).getDefault(),
@@ -67,7 +66,6 @@ class SimulatedProtelisEngine : ProtelisEngine {
       DoubleTime(Double.POSITIVE_INFINITY)
     )
 
-  /** Update code in nodes. */
   private fun setCode(sourceCode: String) {
     alchemistEngine
       ?.environment
