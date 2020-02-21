@@ -7,17 +7,19 @@ import it.unibo.alchemist.core.interfaces.waitForAndCheck
 import it.unibo.alchemist.loader.YamlLoader
 import it.unibo.alchemist.model.implementations.positions.Euclidean2DPosition
 import it.unibo.alchemist.model.implementations.times.DoubleTime
+import it.unibo.protelis.web.execution.ProtelisEngine
 import it.unibo.protelis.web.execution.ProtelisObserver
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class SimulatedProtelisEngine {
+/** ProtelisEngine implementation that simulates a network of devices. */
+class SimulatedProtelisEngine : ProtelisEngine {
   private val logger: Logger = LoggerFactory.getLogger(this::class.java)
   private var alchemistEngine: Simulation<Any, Euclidean2DPosition>? = null
 
-  fun setup(sourceCode: String, monitor: ProtelisObserver) {
+  override fun setup(sourceCode: String, monitor: ProtelisObserver) {
     if (alchemistEngine != null) {
       stop()
     }
@@ -34,7 +36,7 @@ class SimulatedProtelisEngine {
     logger.debug("Simulation Engine set up correctly")
   }
 
-  fun start() {
+  override fun start() {
     checkNotNull(alchemistEngine)
     alchemistEngine
       ?.play()
@@ -45,7 +47,7 @@ class SimulatedProtelisEngine {
     logger.debug("Simulation started")
   }
 
-  fun stop() {
+  override fun stop() {
     checkNotNull(alchemistEngine)
     alchemistEngine
       ?.terminate()
@@ -57,6 +59,7 @@ class SimulatedProtelisEngine {
     logger.debug("Simulation stopped and deleted")
   }
 
+  /** Asynchronously build a new simulation from a loader of YAML files. */
   private fun setupSimulation(): Engine<Any, Euclidean2DPosition> =
     Engine<Any, Euclidean2DPosition>(
       YamlLoader(this.javaClass.classLoader.getResourceAsStream("simulation.yml")).getDefault(),
@@ -64,6 +67,7 @@ class SimulatedProtelisEngine {
       DoubleTime(Double.POSITIVE_INFINITY)
     )
 
+  /** Update code in nodes. */
   private fun setCode(sourceCode: String) {
     alchemistEngine
       ?.environment
