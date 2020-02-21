@@ -7,9 +7,11 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
+/** Test the MainVerticle. */
 @ExtendWith(VertxExtension::class)
 class TestMainVerticle {
 
+  /** Test BridgeVerticle deployment. */
   @Test
   @DisplayName("Test MainVerticle deploy")
   fun `deploy MainVerticle`(vertx: Vertx, testContext: VertxTestContext) {
