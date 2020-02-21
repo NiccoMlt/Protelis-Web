@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter
 
 class AlchemistVerticle : CoroutineVerticle() {
   private val logger: Logger = LoggerFactory.getLogger(this::class.java)
-  private val engines: MutableMap<String, NewSimulatedProtelisEngine> = mutableMapOf()
+  private val engines: MutableMap<String, SimulatedProtelisEngine> = mutableMapOf()
   private lateinit var eb: EventBus
 
   override fun init(vertx: Vertx, context: Context) {
@@ -24,7 +24,7 @@ class AlchemistVerticle : CoroutineVerticle() {
     eb.consumer<String>(setupAddress()) { msg ->
       val id = addressIdGen()
       val source = msg.body()
-      val sim = NewSimulatedProtelisEngine()
+      val sim = SimulatedProtelisEngine()
       engines += id to sim
       msg.reply(id)
       eb.consumer<Unit>(stopAddress(id)) { engines[id]?.stop() }
