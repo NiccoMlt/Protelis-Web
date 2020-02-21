@@ -62,8 +62,8 @@ dependencies {
 
   testImplementation(Libs.vertx_junit5)
   testImplementation(Libs.vertx_junit5_web_client)
-  testImplementation(kotlin("test"))
-  testImplementation(kotlin("test-junit"))
+  // testImplementation(kotlin("test"))
+  // testImplementation(kotlin("test-junit"))
   testRuntimeOnly(Libs.junit_platform_launcher) {
     because("Needed to run tests in IDEs that bundle an older version of JUnit")
   }

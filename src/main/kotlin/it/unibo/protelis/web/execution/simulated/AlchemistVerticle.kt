@@ -6,14 +6,13 @@ import io.vertx.core.eventbus.EventBus
 import io.vertx.core.logging.Logger
 import io.vertx.core.logging.LoggerFactory
 import io.vertx.kotlin.coroutines.CoroutineVerticle
-import it.unibo.protelis.web.execution.CoroutineProtelisEngine
 import it.unibo.protelis.web.execution.EventBusProtelisObserver
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class AlchemistVerticle : CoroutineVerticle() {
   private val logger: Logger = LoggerFactory.getLogger(this::class.java)
-  private val engines: MutableMap<String, CoroutineProtelisEngine> = mutableMapOf()
+  private val engines: MutableMap<String, NewSimulatedProtelisEngine> = mutableMapOf()
   private lateinit var eb: EventBus
 
   override fun init(vertx: Vertx, context: Context) {
@@ -25,14 +24,33 @@ class AlchemistVerticle : CoroutineVerticle() {
     eb.consumer<String>(setupAddress()) { msg ->
       val id = addressIdGen()
       val source = msg.body()
-      val sim = SimulatedProtelisEngine()
+      val sim = NewSimulatedProtelisEngine()
       engines += id to sim
       msg.reply(id)
       eb.consumer<Unit>(stopAddress(id)) { engines[id]?.stop() }
-      sim
-        .setup(source, EventBusProtelisObserver(eb, id))
-        .thenCompose { sim.start() }
-        .thenRun { logger.info("Simulation $id started") }
+      // GlobalScope.launch {
+      //   sim.setup(source, EventBusProtelisObserver(eb, id))
+      //   sim.start()
+      // }
+      vertx.executeBlocking<Unit>({ promise ->
+        sim.setup(source, EventBusProtelisObserver(eb, id))
+        promise.complete()
+      }, { result ->
+        vertx.executeBlocking<Unit>({ promise ->
+          if (result.succeeded()) {
+            sim.start()
+            promise.complete()
+          } else {
+            promise.fail(result.cause())
+          }
+        }, {
+          if (it.succeeded()) {
+            logger.info("Simulation $id started successfully")
+          } else {
+            logger.error("Simulation $id failed with message ${it.cause()}")
+          }
+        })
+      })
     }
   }
 
