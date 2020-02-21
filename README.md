@@ -31,6 +31,30 @@ In particular, CI pipeline does the following deployments:
 - Master branch code is deployed on Heroku at <https://protelis-web.herokuapp.com>
 - Develop branch code is deployed on Heroku at <https://protelis-web-develop.herokuapp.com>
 
+### Docker
+
+The software can be easily deployed as a Docker container.
+
+To build your own (in this example we will call it simply `protelis-web`) you have to build it:
+
+```bash
+# Build the shadow JAR file, which should be located in ./build/libs/protelis-on-web-all.jar
+./gradlew clean shadowJar
+
+# Build the Docker image
+docker build -t protelis-web .
+```
+
+Then, run it with:
+
+```bash
+# Run the container:
+# - as a deamon,
+# - binding internal 8080 to actual 80 port and 8443 to 443
+# - naming the container protelis-web to easily recognize it
+docker run -d -p80:8080 -p 443:8443 --name protelis-web protelis-web
+```
+
 ## License and credits [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 As stated in [`LICENSE` file](./LICENSE), this code is provided under GPLv3 license.
