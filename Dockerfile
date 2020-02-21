@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11-openj9:alpine
+FROM adoptopenjdk:11-jre-openj9
 
 ENV VERTICLE_FILE protelis-on-web-all.jar
 ENV VERTICLE_HOME /usr/verticles
