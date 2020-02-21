@@ -7,14 +7,14 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
-/** Test the MainVerticle. */
+/** Test the BridgeVerticle. */
 @ExtendWith(VertxExtension::class)
-class TestMainVerticle {
+class TestBridgeVerticle {
 
   /** Test BridgeVerticle deployment. */
   @Test
-  @DisplayName("Test MainVerticle deploy")
-  fun `deploy MainVerticle`(vertx: Vertx, testContext: VertxTestContext) {
-    vertx.deployVerticle(MainVerticle(), testContext.succeeding<String> { testContext.completeNow() })
+  @DisplayName("Test BridgeVerticle deploy")
+  fun `deploy BridgeVerticle`(vertx: Vertx, testContext: VertxTestContext) {
+    vertx.deployVerticle(BridgeVerticle(), testContext.succeeding { testContext.completeNow() })
   }
 }

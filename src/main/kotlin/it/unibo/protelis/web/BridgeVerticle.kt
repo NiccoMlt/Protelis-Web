@@ -1,18 +1,23 @@
-package it.unibo.protelis.web.backend
+package it.unibo.protelis.web
 
+import io.netty.handler.codec.http.HttpResponseStatus.MOVED_PERMANENTLY
 import io.vertx.core.Context
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.EventBus
+import io.vertx.core.http.HttpMethod
+import io.vertx.core.logging.Logger
 import io.vertx.core.logging.LoggerFactory
 import io.vertx.ext.bridge.PermittedOptions
 import io.vertx.ext.web.Router
+import io.vertx.ext.web.handler.CorsHandler
 import io.vertx.ext.web.handler.LoggerFormat
 import io.vertx.ext.web.handler.LoggerHandler
-import io.vertx.ext.web.handler.StaticHandler
 import io.vertx.ext.web.handler.sockjs.BridgeOptions
 import io.vertx.ext.web.handler.sockjs.SockJSHandler
 import io.vertx.ext.web.handler.sockjs.SockJSHandlerOptions
+import io.vertx.kotlin.core.http.httpServerOptionsOf
 import io.vertx.kotlin.core.http.listenAwait
+import io.vertx.kotlin.core.net.pemKeyCertOptionsOf
 import io.vertx.kotlin.coroutines.CoroutineVerticle
 import io.vertx.kotlin.ext.web.handler.sockjs.sockJSHandlerOptionsOf
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.finishedAddressRegex
@@ -21,15 +26,13 @@ import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.set
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.stepDoneAddressRegex
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.stopAddressRegex
 
-/**
- * This verticle serves the React.JS application and implement OpenAPI contract for REST APIs.
- */
-class BackendVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle() {
-  private val logger = LoggerFactory.getLogger(this::class.java)
+/** This verticle bridges EventBus via SockJS. */
+class BridgeVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle() {
   private lateinit var eb: EventBus
 
   companion object {
     private const val DEFAULT_PORT: Int = 8080
+    private val logger: Logger = LoggerFactory.getLogger(BridgeVerticle::class.java)
   }
 
   override fun init(vertx: Vertx, context: Context) {
@@ -40,14 +43,18 @@ class BackendVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle(
   override suspend fun start() {
     val router: Router = Router.router(vertx)
 
-    router.route().handler(LoggerHandler.create(LoggerFormat.TINY))
+    router
+      .route()
+      .handler(LoggerHandler.create(LoggerFormat.TINY))
 
-    // val apiRouter: Router = OpenAPI3RouterFactory
-    //   .createAwait(vertx, "/openapi.yaml")
-    //   // TODO
-    //   .router
-    // router.mountSubRouter("/api/", apiRouter)
-    router.get().handler(StaticHandler.create())
+    router
+      .route()
+      .handler(
+        CorsHandler
+          .create(".*.") // fixme: unsafe and probably not needed at all
+          .allowCredentials(true)
+          .allowedMethods(HttpMethod.values().toSet())
+      )
 
     val sockJSOptions: SockJSHandlerOptions = sockJSHandlerOptionsOf(heartbeatInterval = 2000)
     val sockJSHandler: SockJSHandler = SockJSHandler.create(vertx, sockJSOptions)
@@ -58,8 +65,18 @@ class BackendVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle(
       .addOutboundPermitted(PermittedOptions().setAddressRegex(stepDoneAddressRegex.pattern))
       .addOutboundPermitted(PermittedOptions().setAddressRegex(finishedAddressRegex.pattern))
       .addOutboundPermitted(PermittedOptions().setAddressRegex(stopAddressRegex.pattern))
-    val sockJsBridge = sockJSHandler.bridge(sockBridgeOptions)
+    val sockJsBridge: Router = sockJSHandler.bridge(sockBridgeOptions)
     router.mountSubRouter("/eventbus", sockJsBridge)
+
+    router
+      .get("/")
+      .handler { routingContext ->
+        routingContext
+          .response()
+          .putHeader("location", "https://protelis-web-frontend.now.sh/")
+          .setStatusCode(MOVED_PERMANENTLY.code())
+          .end()
+      }
 
     vertx
       .createHttpServer()
@@ -67,5 +84,19 @@ class BackendVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle(
       .listenAwait(port)
 
     logger.info("HTTP server started on port $port")
+
+    val httpsPort = 8443
+    vertx
+      .createHttpServer(
+        httpServerOptionsOf(
+          ssl = true,
+          pemKeyCertOptions = pemKeyCertOptionsOf(
+            keyPath = "key.pem",
+            certPath = "certificate.pem"
+          )))
+      .requestHandler(router)
+      .listenAwait(httpsPort)
+
+    logger.info("HTTPS server started on port $httpsPort")
   }
 }

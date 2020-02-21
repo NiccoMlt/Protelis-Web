@@ -18,12 +18,9 @@ The repository is a standard Gradle project importable in Intellij IDEA.
 
 The backend is built with Vert.x framework and Kotlin language.
 
-REST APIs are documented with OpenAPI standard v3.1.
-
 ### Frontend
 
-Even if the [frontend sourceSet](./src/main/frontend) of root (backend) project is automatically built and linked by Gradle,
-it is a full-fledged Typescript project built with Yarn and `create-react-app` scripts and can be opened separately as a VS Code or WebStorm project.
+The frontend, originally integrated as a resource in this project, was migrated to [NiccoMlt/protelis-web-frontend](https://github.com/NiccoMlt/protelis-web-frontend).
 
 ## Deploy
 
@@ -33,8 +30,30 @@ In particular, CI pipeline does the following deployments:
 
 - Master branch code is deployed on Heroku at <https://protelis-web.herokuapp.com>
 - Develop branch code is deployed on Heroku at <https://protelis-web-develop.herokuapp.com>
-- Master branch Redoc OpenAPI 3 documentation is deployed on Surge.sh at <https://protelis-web-api.surge.sh>
-- Develop branch Redoc OpenAPI 3 documentation is deployed on Surge.sh at <https://protelis-web-api-develop.surge.sh>
+
+### Docker
+
+The software can be easily deployed as a Docker container.
+
+To build your own (in this example we will call it simply `protelis-web`) you have to build it:
+
+```bash
+# Build the shadow JAR file, which should be located in ./build/libs/protelis-on-web-all.jar
+./gradlew clean shadowJar
+
+# Build the Docker image
+docker build -t protelis-web .
+```
+
+Then, run it with:
+
+```bash
+# Run the container:
+# - as a deamon,
+# - binding internal 8080 to actual 80 port and 8443 to 443
+# - naming the container protelis-web to easily recognize it
+docker run -d -p80:8080 -p 443:8443 --name protelis-web protelis-web
+```
 
 ## License and credits [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 

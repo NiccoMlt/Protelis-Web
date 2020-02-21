@@ -35,13 +35,14 @@ class ProtelisUpdateAdapter<T, P : Position<out P>>(
      *
      * @return a Protelis update message
      */
-    fun <T, P : Position<out P>> envToUpdateMsg(env: Environment<T, P>): ProtelisUpdateMessage = ProtelisUpdateMessage(
-      env
-        .nodes
-        .map { it.id.toString() to env.getPosition(it) }
-        .map { it.first to (it.second.cartesianCoordinates[0] to it.second.cartesianCoordinates[1]) }
-        .map { ProtelisNode(it.first, it.second) }
-        .toList()
-    )
+    internal fun <T, P : Position<out P>> envToUpdateMsg(env: Environment<T, P>): ProtelisUpdateMessage =
+      ProtelisUpdateMessage(
+        env
+          .nodes
+          .map { it.id.toString() to env.getPosition(it) }
+          .map { it.first to (it.second.cartesianCoordinates[0] to it.second.cartesianCoordinates[1]) }
+          .map { ProtelisNode(it.first, it.second) }
+          .toList()
+      )
   }
 }

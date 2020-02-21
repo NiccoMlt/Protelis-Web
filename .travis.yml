@@ -1,90 +1,62 @@
 version: ~> 1.0
-os: linux
+
+_reference_jdk: &reference_jdk 'JDK="adopt@1.11"'
+_reference_os: &reference_os linux
+_official_repo: &official_repo 'NiccoMlt/Protelis-Web'
+
+os:
+  - osx
+  - windows
+  - *reference_os
 dist: bionic
 language: shell
 
 env:
   global:
-    - JDK="adopt@1.11"
-    - BACKEND_BUILD_DIR=$TRAVIS_BUILD_DIR
-    - FRONTEND_BUILD_DIR=$TRAVIS_BUILD_DIR/src/main/frontend
-    - GRAVIS="https://raw.githubusercontent.com/DanySK/Gravis-CI/master/"
+    - GRAVIS_REPO="https://github.com/DanySK/Gravis-CI.git"
+    - GRAVIS="$HOME/gravis"
+  matrix:
+    - *reference_jdk
+    - JDK="adopt-openj9@1.11"
 
 stages:
   - test
   - deploy
 
+before_cache:
+  - $GRAVIS/clean-gradle-cache
+cache:
+  yarn: true
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+before_install:
+  - travis_retry git clone --depth 1 $GRAVIS_REPO $GRAVIS
+  - source $GRAVIS/install-jdk
+  - chmod +x gradlew
+install:
+  - ./gradlew assemble
+script:
+  - ./gradlew test
+
 jobs:
   include:
-    - name: "Backend build"
+    - name: "Reference build"
       stage: test
       language: shell
-      before_cache:
-        - curl "${GRAVIS}.clean_gradle_cache.sh" --output .clean_gradle_cache.sh
-        - bash .clean_gradle_cache.sh
-      cache:
-        yarn: true
-        directories:
-          - $HOME/.gradle/caches/
-          - $HOME/.gradle/wrapper/
-      before_install:
-        - curl "${GRAVIS}.install-jdk-travis.sh" --output ~/.install-jdk-travis.sh
-        - source ~/.install-jdk-travis.sh
-        - cd $BACKEND_BUILD_DIR
-        - chmod +x gradlew
-      install:
-        - ./gradlew assemble
+      os: *reference_os
+      env: *reference_jdk
       script:
-        - ./gradlew ktlintCheck
-        - ./gradlew clean check jacocoTestReport --info --stacktrace
+        - ./gradlew check jacocoTestReport
       after_script:
         - bash <(curl -s https://codecov.io/bash)
-    - name: "Frontend build"
-      stage: test
-      language: node_js
-      node_js: lts/*
-      cache:
-        yarn: true
-      before_install:
-        - cd $FRONTEND_BUILD_DIR
-      install:
-        - yarn
-      script:
-        - yarn lint
-        - yarn build
-        - yarn test:ci
-      after_script:
-        - yarn codecov:upload
-    - name: "Deploy OpenAPI Redoc"
-      stage: deploy
-      language: node_js
-      node_js: node
-      install: skip
-      script: npx redoc-cli bundle ./src/main/resources/openapi.yaml
-      before_deploy:
-        - mkdir openapi
-        - mv ./redoc-static.html ./openapi/index.html
-        - pwd
-        - ls -al
-      deploy:
-        - provider: surge
-          project: ./openapi
-          domain: protelis-web-api.surge.sh
-          edge: true
-          cleanup: false
-          on:
-            branch: master
-        - provider: surge
-          project: ./openapi
-          domain: protelis-web-api-develop.surge.sh
-          edge: true
-          cleanup: false
-          on:
-            branch: develop
     - name: "Deploy on Heroku"
       stage: deploy
       language: shell
       script: skip
+      os: *reference_os
+      env: *reference_jdk
+      if: type != pull_request
       deploy:
         provider: heroku
         api_key:
@@ -93,3 +65,5 @@ jobs:
           master: protelis-web
           develop: protelis-web-develop
         strategy: api
+        on:
+          repo: *official_repo

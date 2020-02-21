@@ -4,8 +4,9 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Promise
 import io.vertx.core.json.jackson.DatabindCodec
+import io.vertx.core.logging.LoggerFactory
+import io.vertx.core.logging.LoggerFactory.LOGGER_DELEGATE_FACTORY_CLASS_NAME
 import io.vertx.core.logging.SLF4JLogDelegateFactory
-import it.unibo.protelis.web.backend.BackendVerticle
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle
 
 /**
@@ -15,25 +16,23 @@ import it.unibo.protelis.web.execution.simulated.AlchemistVerticle
  * It also automatically sets logger delegate for [SLF4J][io.vertx.core.logging.SLF4JLogDelegate].
  */
 class MainVerticle : AbstractVerticle() {
-  companion object {
-    private const val LOGGER_DELEGATE_FACTORY_PROPERTY = "vertx.logger-delegate-factory-class-name"
-  }
 
   init {
     DatabindCodec.mapper().registerKotlinModule()
+    // Force the usage of SLF4J if no preference is found
+    if (System.getProperty(LOGGER_DELEGATE_FACTORY_CLASS_NAME) == null) {
+      System.setProperty(LOGGER_DELEGATE_FACTORY_CLASS_NAME, SLF4JLogDelegateFactory::class.java.name)
+    }
+    LoggerFactory.initialise()
+    LoggerFactory
+      .getLogger(LoggerFactory::class.java)
+      .trace("Using logger: ${System.getProperty(LOGGER_DELEGATE_FACTORY_CLASS_NAME)}")
   }
 
   override fun start(startPromise: Promise<Void>) {
-    if (System.getProperty(LOGGER_DELEGATE_FACTORY_PROPERTY) == null) {
-      System.setProperty(
-        LOGGER_DELEGATE_FACTORY_PROPERTY,
-        SLF4JLogDelegateFactory::class.qualifiedName ?: throw ClassNotFoundException()
-      )
-    }
-
     val port: Int? = System.getenv()["PORT"]?.toIntOrNull()
 
-    vertx.deployVerticle(if (port !== null) BackendVerticle(port) else BackendVerticle()) { backendResult ->
+    vertx.deployVerticle(if (port !== null) BridgeVerticle(port) else BridgeVerticle()) { backendResult ->
       if (backendResult.succeeded()) {
         vertx.deployVerticle(AlchemistVerticle()) { alchemistResult ->
           if (alchemistResult.succeeded()) {
