@@ -23,6 +23,9 @@ stages:
   - test
   - deploy
 
+services:
+  - docker
+
 before_cache:
   - $GRAVIS/clean-gradle-cache
 cache:
@@ -68,3 +71,16 @@ jobs:
         strategy: api
         on:
           repo: *official_repo
+    - name: "Deploy Docker image"
+      stage: deploy
+      language: shell
+      script: skip
+      before_deploy:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker build -t niccomlt/protelis-web
+      deploy:
+        provider: script
+        script: docker push niccomlt/protelis-web
+        on:
+          repo: *official_repo
+          branch: master
