@@ -32,7 +32,7 @@ class SimulatedProtelisEngine : ProtelisEngine {
     alchemistEngine
       ?.waitForAndCheck(Status.INIT)
       ?: throw IllegalStateException("Simulation was not set up correctly")
-    GlobalScope.launch() { alchemistEngine?.run() ?: throw IllegalStateException() }
+    GlobalScope.launch { alchemistEngine?.run() ?: throw IllegalStateException() }
     logger.debug("Simulation Engine set up correctly")
   }
 

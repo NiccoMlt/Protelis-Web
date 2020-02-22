@@ -4,12 +4,10 @@ import io.netty.handler.codec.http.HttpResponseStatus.MOVED_PERMANENTLY
 import io.vertx.core.Context
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.EventBus
-import io.vertx.core.http.HttpMethod
 import io.vertx.core.logging.Logger
 import io.vertx.core.logging.LoggerFactory
 import io.vertx.ext.bridge.PermittedOptions
 import io.vertx.ext.web.Router
-import io.vertx.ext.web.handler.CorsHandler
 import io.vertx.ext.web.handler.LoggerFormat
 import io.vertx.ext.web.handler.LoggerHandler
 import io.vertx.ext.web.handler.sockjs.BridgeOptions
@@ -27,11 +25,12 @@ import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.ste
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.stopAddressRegex
 
 /** This verticle bridges EventBus via SockJS. */
-class BridgeVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle() {
+class BridgeVerticle(private val httpPort: Int = DEFAULT_PORT) : CoroutineVerticle() {
   private lateinit var eb: EventBus
 
   companion object {
     private const val DEFAULT_PORT: Int = 8080
+    private const val DEFAULT_SSL_PORT: Int = 8443
     private val logger: Logger = LoggerFactory.getLogger(BridgeVerticle::class.java)
   }
 
@@ -46,15 +45,6 @@ class BridgeVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle()
     router
       .route()
       .handler(LoggerHandler.create(LoggerFormat.TINY))
-
-    router
-      .route()
-      .handler(
-        CorsHandler
-          .create(".*.") // fixme: unsafe and probably not needed at all
-          .allowCredentials(true)
-          .allowedMethods(HttpMethod.values().toSet())
-      )
 
     val sockJSOptions: SockJSHandlerOptions = sockJSHandlerOptionsOf(heartbeatInterval = 2000)
     val sockJSHandler: SockJSHandler = SockJSHandler.create(vertx, sockJSOptions)
@@ -81,11 +71,11 @@ class BridgeVerticle(private val port: Int = DEFAULT_PORT) : CoroutineVerticle()
     vertx
       .createHttpServer()
       .requestHandler(router)
-      .listenAwait(port)
+      .listenAwait(httpPort)
 
-    logger.info("HTTP server started on port $port")
+    logger.info("HTTP server started on port $httpPort")
 
-    val httpsPort = 8443
+    val httpsPort = DEFAULT_SSL_PORT
     vertx
       .createHttpServer(
         httpServerOptionsOf(

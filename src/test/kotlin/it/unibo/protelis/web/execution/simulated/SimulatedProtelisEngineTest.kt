@@ -10,10 +10,12 @@ import org.junit.jupiter.api.Test
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+/** Test simulated Protelis engine with Alchemist. */
 @DisplayName("Test simulated Protelis engine with Alchemist")
 class SimulatedProtelisEngineTest {
   private val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
+  /** Test that injected code works. */
   @Test
   @DisplayName("Test that injected code works")
   fun testCodeInject() {

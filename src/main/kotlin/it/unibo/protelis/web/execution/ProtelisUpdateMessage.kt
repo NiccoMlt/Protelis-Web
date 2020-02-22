@@ -6,5 +6,7 @@ package it.unibo.protelis.web.execution
  */
 data class ProtelisUpdateMessage(
   /** A list of all the Nodes in the Protelis environment. */
-  val nodes: List<ProtelisNode>
+  val nodes: List<ProtelisNode>,
+  /** Dimensions of the environment of execution. */
+  val envSize: Pair<Number, Number>
 )
