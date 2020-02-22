@@ -15,6 +15,9 @@
 # Generated files
 .idea/**/contentModel.xml
 
+# Version control
+vcs.xml
+
 # Sensitive or high-churn files
 .idea/**/dataSources/
 .idea/**/dataSources.ids
@@ -27,16 +30,19 @@
 # Gradle
 .idea/**/gradle.xml
 .idea/**/libraries
+buildProfile/
 
 # Gradle and Maven with auto-import
-# When using Gradle or Maven with auto-import, you should exclude module files,
-# since they will be recreated, and may cause churn.  Uncomment if using
-# auto-import.
-# .idea/modules.xml
-# .idea/*.iml
-# .idea/modules
-# *.iml
-# *.ipr
+.idea/artifacts
+.idea/compiler.xml
+.idea/scala_compiler.xml
+.idea/jarRepositories.xml
+.idea/modules.xml
+.idea/misc.xml
+.idea/*.iml
+.idea/modules
+*.iml
+*.ipr
 
 # CMake
 cmake-build-*/
