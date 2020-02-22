@@ -23,6 +23,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
+/** AlchemistVerticle tests with Vert.x TestContext. */
 @DisplayName("AlchemistVerticle tests with Vert.x TestContext")
 @ExtendWith(VertxExtension::class)
 class AlchemistVerticleTest {
@@ -32,19 +33,17 @@ class AlchemistVerticleTest {
     DatabindCodec.mapper().registerKotlinModule()
   }
 
-  /*
-   * Note: The Vertx instance is not clustered and has the default configuration.
-   * If you need something else then just don’t use injection on that parameter and prepare a Vertx object by yourself.
-   */
+  /** AlchemistVerticle should deploy correctly. */
   @Test
   @DisplayName("AlchemistVerticle should deploy correctly")
   fun `AlchemistVerticle should deploy correctly`(vertx: Vertx, testContext: VertxTestContext) {
     vertx.deployVerticle(AlchemistVerticle(), testContext.completing())
   }
 
+  /** AlchemistVerticle should create a simulation for each request. */
   @Test
   @DisplayName("AlchemistVerticle should create a simulation for each request")
-  @Timeout(value = 10, timeUnit = TimeUnit.MINUTES) // Yeah, it's very slow to start
+  @Timeout(value = 5, timeUnit = TimeUnit.MINUTES) // Yeah, it may be slow to start
   fun `AlchemistVerticle should create a simulation for each request`(vertx: Vertx, testContext: VertxTestContext) {
     val deploy: Checkpoint = testContext.checkpoint()
     val createSimulation: Checkpoint = testContext.checkpoint(2)

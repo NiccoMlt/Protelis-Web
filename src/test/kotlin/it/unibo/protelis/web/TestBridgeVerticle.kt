@@ -11,7 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(VertxExtension::class)
 class TestBridgeVerticle {
 
-  /** Test BridgeVerticle deployment. */
+  /** Check that the BridgeVerticle deploys correctly. */
   @Test
   @DisplayName("Test BridgeVerticle deploy")
   fun `deploy BridgeVerticle`(vertx: Vertx, testContext: VertxTestContext) {

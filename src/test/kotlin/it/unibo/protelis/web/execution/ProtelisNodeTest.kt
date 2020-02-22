@@ -8,8 +8,10 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
+/** Test the ProtelisNode data class. */
 class ProtelisNodeTest {
 
+  /** Test that objects are equal when they should be and different when they should not. */
   @Test
   @DisplayName("Test ProtelisNode comparisons")
   fun `test ProtelisNode`() {
@@ -23,6 +25,7 @@ class ProtelisNodeTest {
     assertEquals(ProtelisNode(id, coordinates).hashCode(), n.hashCode())
   }
 
+  /** Test that Jackson (and then Vert.x) serializes the object in JSON as expected. */
   @Test
   @DisplayName("Test ProtelisNode serialization with Jackson")
   fun `test JSON serialization`() {
