@@ -1,0 +1,69 @@
+version: ~> 1.0
+
+_reference_jdk: &reference_jdk 'JDK="adopt@1.11"'
+_reference_os: &reference_os linux
+_official_repo: &official_repo 'NiccoMlt/Protelis-Web'
+
+os:
+  - osx
+  - windows
+  - *reference_os
+dist: bionic
+language: shell
+
+env:
+  global:
+    - GRAVIS_REPO="https://github.com/DanySK/Gravis-CI.git"
+    - GRAVIS="$HOME/gravis"
+  matrix:
+    - *reference_jdk
+    - JDK="adopt-openj9@1.11"
+
+stages:
+  - test
+  - deploy
+
+before_cache:
+  - $GRAVIS/clean-gradle-cache
+cache:
+  yarn: true
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+before_install:
+  - travis_retry git clone --depth 1 $GRAVIS_REPO $GRAVIS
+  - source $GRAVIS/install-jdk
+  - chmod +x gradlew
+install:
+  - ./gradlew assemble
+script:
+  - ./gradlew test
+
+jobs:
+  include:
+    - name: "Reference build"
+      stage: test
+      language: shell
+      os: *reference_os
+      env: *reference_jdk
+      script:
+        - ./gradlew check jacocoTestReport
+      after_script:
+        - bash <(curl -s https://codecov.io/bash)
+    - name: "Deploy on Heroku"
+      stage: deploy
+      language: shell
+      script: skip
+      os: *reference_os
+      env: *reference_jdk
+      if: type != pull_request
+      deploy:
+        provider: heroku
+        api_key:
+          secure: eWBQpD5v1zVbPgwjF8z0YW/dWn44C+BPBGijow59thnjmUwSBrV1dVZU+GUp4VQeYYB8q+2iBtUyYyUKiNRfeuk4IcN+hf7hXuGhHgffW4eXLi6nuWNmy9/SDgOmMUiezFE2tOMX0nbHAv9X/n75s0wtECoGrWRMmur4A1q6jF5LE/v+DxvzWVvmzNwDuFy3Y170zGc4bi1L/OiN0L6Vs0Qq8EEblQIzf6l1TTh4qnl7GvAU4Y4xat4e4Nfa8edZ2tQGFJnCENIsbN6ZSlMyGVEEtxSGnB41S/vxrUlMvFD8RanSDkrcwBSiuL9+hsf339ScXYvkIpylmfT7RHqS5BceOBQmuwsDF0M0Jhd5FaHnWrZHsscJIOjSmz6BFGSzbXGn8bUAhMfuB8gtAhHrKRWacSyvfSwbrHbxoZ+poXjEFhMomJ2apiwmYVYxPA5j5rHVKpFEtMEn2VjVkOclTR5a4X6yci1M+4lDW1/Fov8k3dADo4fZLuwRUKqlWdkPcaNHg32K1txapZ5MpJZzZJ0gDIFXYhs6mdxFbsQiLyYbINPIRJQnXGuJeGijCLc/1fffEDjHesUPGxZ4+I9yPQMYV26E/udwIqdnfd8m/iKvobTJMZaVcrht5MvylKAwZaoAI6J1xBrDM7FWk3+U69Fw64NVJrf19Kyxi9SkPmg=
+        app:
+          master: protelis-web
+          develop: protelis-web-develop
+        strategy: api
+        on:
+          repo: *official_repo

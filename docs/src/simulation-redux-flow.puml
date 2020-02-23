@@ -1,0 +1,36 @@
+@startuml redux-eventbus
+
+actor Frontend as user
+database "Redux Store" as store
+participant "SockJS EventBus" as eb
+
+== Connection initialization ==
+
+user -> store: { url = /eventbus/ }
+store -> eb++: <i>React mounts EventBusConnector component</i>
+eb -->: <i>Send source code</i>
+eb -> store: { connection = "connected", execution.status = "connecting" }
+eb <--: <i>Receive simulation ID</i>
+eb -> store: { execution.status = "INIT" }
+' store -> user: <i>React updates view</i>
+
+== Execution lifecycle ==
+
+user -> store: { play = true }
+store -> eb: <i>Send start message on</i>: protelis.web.exec.{id}.init
+eb -->: <i>Send start message</i>
+eb <--: <i>Receive update message</i>
+eb -> store: <i>Receive update message on</i>: protelis.web.exec.{id}.init
+store -> user: <i>React renders update graphically</i>
+loop Code execution
+  eb <--: <i>Receive update message</i>
+  eb -> store: <i>Receive update message on</i>: protelis.web.exec.{id}.step
+  store -> user: <i>React renders update graphically</i>
+end
+eb <--: <i>Receive update message</i>
+eb -> store: <i>Receive update message on</i>: protelis.web.exec.{id}.end
+store -> user: <i>React renders update graphically</i>
+
+' TODO: fix outbound messages
+' TODO: fix EventBus -> Redux updates
+@enduml

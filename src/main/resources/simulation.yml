@@ -1,0 +1,20 @@
+incarnation: protelis
+
+environment:
+  type: Continuous2DEnvironment
+  parameters: []
+
+network-model:
+  type: ConnectWithinDistance
+  parameters: [5]
+
+displacements:
+  - in:
+      type: Grid
+      parameters: [-5, -5, 5, 5, 0.25, 0.25, 0.1, 0.1]
+    contents:
+      - molecule: _to_exec
+        concentration: ""
+    programs:
+      - - program: 'eval(env.get("_to_exec"))'
+        - program: send

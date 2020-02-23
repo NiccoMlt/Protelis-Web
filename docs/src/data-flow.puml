@@ -1,0 +1,51 @@
+@startuml "Simulation data flow"
+
+actor "Web GUI" as react
+
+== Protelis code development ==
+
+... Code development is done client-side on frontend ...
+
+== when Protelis code is ready ==
+
+' box "Backend server" {
+  ' participant "Backend Verticle" as openapi
+  participant "Vert.x EventBus" as eventbus
+  participant "Simulation Verticle" as alchemist
+  participant "OutputMonitor" as monitor
+' }
+
+' react --> openapi++: PUT Protelis code
+react -> eventbus++: SockJS: protelis.web.exec.setup
+eventbus -> alchemist++: protelis.web.exec.setup
+alchemist -> monitor**: attach OutputMonitor
+alchemist --> eventbus: answer with simulation ID
+eventbus --> react--: SockJS: answer with simulation ID
+
+react -> eventbus: register to simulation-specific addresses
+
+group Simulation
+  alchemist -> monitor++: simulation initialization
+  monitor -> eventbus--: protelis.web.exec.{id}.init
+  activate eventbus
+  eventbus -> react--: SockJS: protelis.web.exec.{id}.init
+
+  loop step execution
+    alchemist -> monitor++: simulation step
+    monitor -> eventbus--: protelis.web.exec.{id}.step
+    activate eventbus
+    eventbus -> react--: SockJS: protelis.web.exec.{id}.step
+    |||
+    react -> eventbus++: GUI interactions with simulation
+    eventbus -> alchemist--: GUI interactions with simulation
+    |||
+  end
+  alchemist -> monitor++: simulation termination
+  deactivate alchemist
+  monitor -> eventbus--: protelis.web.exec.{id}.end
+  activate eventbus
+  eventbus -> react--: SockJS: protelis.web.exec.{id}.end
+  |||
+end
+
+@enduml
