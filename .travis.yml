@@ -50,6 +50,7 @@ jobs:
         - ./gradlew check jacocoTestReport
       after_script:
         - bash <(curl -s https://codecov.io/bash)
+        - bash <(curl -Ls https://coverage.codacy.com/get.sh)
     - name: "Deploy on Heroku"
       stage: deploy
       language: shell
