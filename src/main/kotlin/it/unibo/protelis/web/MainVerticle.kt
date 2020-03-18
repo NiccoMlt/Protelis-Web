@@ -23,10 +23,7 @@ class MainVerticle : AbstractVerticle() {
     // Enable Kotlin ObjectMapper module to improve Kotlin support of Jackson serializer in Vert.x
     DatabindCodec.mapper().registerKotlinModule()
 
-    // Force the usage of SLF4J if no preference is found
-    if (System.getProperty(LOGGER_DELEGATE_FACTORY_CLASS_NAME) == null) {
-      System.setProperty(LOGGER_DELEGATE_FACTORY_CLASS_NAME, SLF4JLogDelegateFactory::class.java.name)
-    }
+    System.setProperty(LOGGER_DELEGATE_FACTORY_CLASS_NAME, SLF4JLogDelegateFactory::class.java.name)
     LoggerFactory.initialise()
     LoggerFactory
       .getLogger(LoggerFactory::class.java)

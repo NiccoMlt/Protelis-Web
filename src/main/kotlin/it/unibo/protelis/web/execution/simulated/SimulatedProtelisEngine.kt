@@ -26,45 +26,32 @@ class SimulatedProtelisEngine : ProtelisEngine {
 
     alchemistEngine = setupSimulation()
     setCode(sourceCode)
-    alchemistEngine
-      ?.addOutputMonitor(ProtelisUpdateAdapter(monitor))
-      ?: throw IllegalStateException("Simulation was not set up correctly")
-    alchemistEngine
-      ?.waitForAndCheck(Status.INIT)
-      ?: throw IllegalStateException("Simulation was not set up correctly")
-    GlobalScope.launch { alchemistEngine?.run() ?: throw IllegalStateException() }
+    alchemistEngine?.addOutputMonitor(ProtelisUpdateAdapter(monitor))
+    alchemistEngine?.waitForAndCheck(Status.INIT)
+    GlobalScope.launch { alchemistEngine?.run() }
     logger.debug("Simulation Engine set up correctly")
   }
 
   override fun start() {
     checkNotNull(alchemistEngine)
-    alchemistEngine
-      ?.play()
-      ?: throw IllegalStateException()
-    alchemistEngine
-      ?.waitForAndCheck(Status.RUNNING)
-      ?: throw IllegalStateException()
+    alchemistEngine?.play()
+    alchemistEngine?.waitForAndCheck(Status.RUNNING)
     logger.debug("Simulation started")
   }
 
   override fun stop() {
     checkNotNull(alchemistEngine)
-    alchemistEngine
-      ?.terminate()
-      ?: throw IllegalStateException()
-    alchemistEngine
-      ?.waitForAndCheck(Status.TERMINATED)
-      ?: throw IllegalStateException()
+    alchemistEngine?.terminate()
+    alchemistEngine?.waitForAndCheck(Status.TERMINATED)
     alchemistEngine = null
     logger.debug("Simulation stopped and deleted")
   }
 
-  private fun setupSimulation(): Engine<Any, Euclidean2DPosition> =
-    Engine<Any, Euclidean2DPosition>(
-      YamlLoader(this.javaClass.classLoader.getResourceAsStream("simulation.yml")).getDefault(),
-      Long.MAX_VALUE,
-      DoubleTime(Double.POSITIVE_INFINITY)
-    )
+  private fun setupSimulation(): Engine<Any, Euclidean2DPosition> = Engine(
+    YamlLoader(this.javaClass.classLoader.getResourceAsStream("simulation.yml")).getDefault(),
+    Long.MAX_VALUE,
+    DoubleTime(Double.POSITIVE_INFINITY)
+  )
 
   private fun setCode(sourceCode: String) {
     alchemistEngine
