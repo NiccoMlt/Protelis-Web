@@ -16,13 +16,14 @@ class ProtelisNodeTest {
   @DisplayName("Test ProtelisNode comparisons")
   fun `test ProtelisNode`() {
     val id = "Pippo"
+    val value = "foo"
     val coordinates = 0 to 1
-    val n = ProtelisNode(id, coordinates)
+    val n = ProtelisNode(id, coordinates, value)
     assertNotNull(n)
-    assertEquals(ProtelisNode(id, coordinates), n)
-    assertNotEquals(ProtelisNode("Pluto", coordinates), n)
-    assertNotEquals(ProtelisNode(id, 0 to 0), n)
-    assertEquals(ProtelisNode(id, coordinates).hashCode(), n.hashCode())
+    assertEquals(ProtelisNode(id, coordinates, value), n)
+    assertNotEquals(ProtelisNode("Pluto", coordinates, value), n)
+    assertNotEquals(ProtelisNode(id, 0 to 0, value), n)
+    assertEquals(ProtelisNode(id, coordinates, value).hashCode(), n.hashCode())
   }
 
   /** Test that Jackson (and then Vert.x) serializes the object in JSON as expected. */
@@ -30,15 +31,17 @@ class ProtelisNodeTest {
   @DisplayName("Test ProtelisNode serialization with Jackson")
   fun `test JSON serialization`() {
     val id = "Pippo"
+    val value = "foo"
     val coordinates = 0 to 0
-    val node = ProtelisNode(id, coordinates)
+    val node = ProtelisNode(id, coordinates, value)
     val jsonNode = """
       {
         "id": "$id",
         "coordinates": {
           "first": ${coordinates.first},
           "second": ${coordinates.second}
-        }
+        },
+        "value": "$value"
       }
     """.trimIndent()
     val mapper = jacksonObjectMapper()

@@ -16,11 +16,12 @@ class ProtelisUpdateMessageTest {
   fun `test ProtelisUpdateMessage`() {
     val id1 = "Pippo"
     val id2 = "Pluto"
+    val value = "foo"
     val coordinates1 = 0 to 1
     val coordinates2 = 1 to 0
     val env: Pair<Int, Int> = 2 to 2
-    val n1 = ProtelisNode(id1, coordinates1)
-    val n2 = ProtelisNode(id2, coordinates2)
+    val n1 = ProtelisNode(id1, coordinates1, value)
+    val n2 = ProtelisNode(id2, coordinates2, value)
     val ue = ProtelisUpdateMessage(listOf(), env)
     val u1 = ProtelisUpdateMessage(listOf(n1), env)
     val u2 = ProtelisUpdateMessage(listOf(n1, n2), env)
@@ -37,11 +38,12 @@ class ProtelisUpdateMessageTest {
   fun `test JSON serialization`() {
     val id1 = "Pippo"
     val id2 = "Pluto"
+    val value = "foo"
     val coordinates1 = 0 to 1
     val coordinates2 = 1 to 0
     val env: Pair<Int, Int> = 2 to 2
-    val node1 = ProtelisNode(id1, coordinates1)
-    val node2 = ProtelisNode(id2, coordinates2)
+    val node1 = ProtelisNode(id1, coordinates1, value)
+    val node2 = ProtelisNode(id2, coordinates2, value)
     val message = ProtelisUpdateMessage(listOf(node1, node2), env)
     val jsonNode = """
       {
@@ -51,14 +53,16 @@ class ProtelisUpdateMessageTest {
             "coordinates": {
               "first": ${coordinates1.first},
               "second": ${coordinates1.second}
-            }
+            },
+            "value": "$value"
           },
           {
             "id": "$id2",
             "coordinates": {
               "first": ${coordinates2.first},
               "second": ${coordinates2.second}
-            }
+            },
+            "value": "$value"
           }
         ],
         "envSize": {

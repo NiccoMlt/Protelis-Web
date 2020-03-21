@@ -6,5 +6,8 @@ data class ProtelisNode(
   val id: String,
 
   /** The 2D coordinates of the node */
-  val coordinates: Pair<Number, Number>
+  val coordinates: Pair<Number, Number>,
+
+  /** The last value of the program. */
+  val value: String
 )

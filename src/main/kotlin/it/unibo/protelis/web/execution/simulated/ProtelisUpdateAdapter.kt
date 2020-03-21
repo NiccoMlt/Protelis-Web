@@ -1,5 +1,7 @@
 package it.unibo.protelis.web.execution.simulated
 
+import io.vertx.core.logging.Logger
+import io.vertx.core.logging.LoggerFactory
 import it.unibo.alchemist.boundary.interfaces.OutputMonitor
 import it.unibo.alchemist.model.interfaces.Environment
 import it.unibo.alchemist.model.interfaces.Position
@@ -26,6 +28,8 @@ class ProtelisUpdateAdapter<T, P : Position<out P>>(
   override fun updateMessageGenerator(env: Environment<T, P>): ProtelisUpdateMessage = envToUpdateMsg(env)
 
   companion object {
+    private val logger: Logger = LoggerFactory.getLogger(ProtelisUpdateAdapter::class.java)
+
     /**
      * Transformer function that extracts from an [Alchemist Environment][Environment] the [ProtelisNode] infos.
      *
@@ -39,15 +43,25 @@ class ProtelisUpdateAdapter<T, P : Position<out P>>(
       ProtelisUpdateMessage(
         nodes = env
           .nodes
-          .map { it.id.toString() to env.getPosition(it) }
-          .map { it.first to (it.second.cartesianCoordinates[0] to it.second.cartesianCoordinates[1]) }
-          .map { ProtelisNode(it.first, it.second) }
+          .map {
+            val id = it.id.toString()
+            val pos = env.getPosition(it).cartesianCoordinates
+            val optVal = it
+              .contents
+              .filterKeys { molecule -> molecule.name == "default_module:default_program" }
+              .map { (molecule, _) -> it.getConcentration(molecule) }
+            val value = if (optVal.isNotEmpty()) optVal[0].toString() else ""
+            if (value != "") {
+              logger.info("Node $id: $value")
+            }
+            ProtelisNode(id, pos[0] to pos[1], value)
+          }
           .toList(),
         envSize = env
           .size
           .asSequence()
           .zipWithNext()
           .first()
-    )
+      )
   }
 }
