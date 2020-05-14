@@ -34,6 +34,14 @@ bootstrapRefreshVersionsAndDependencies(
     """
     |com.fasterxml.jackson.module:jackson-module-*
     |              ^^^^^^^
+    """.trimMargin(),
+    """
+    |ch.qos.logback:logback-*
+    |       ^^^^^^^
+    """.trimMargin(),
+    """
+    |ch.qos.logback.contrib:logback-*
+    |       ^^^^^^^.^^^^^^^
     """.trimMargin()
   )
 )
