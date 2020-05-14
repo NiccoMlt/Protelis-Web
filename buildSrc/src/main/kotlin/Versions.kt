@@ -12,17 +12,7 @@ import kotlin.String
  */
 object Versions {
 
-  const val org_jetbrains_dokka: String = "0.10.1"
-
   const val io_vertx: String = "3.8.5"
-
-  const val com_github_johnrengelman_shadow_gradle_plugin: String = "5.2.0"
-
-  const val org_jlleitschuh_gradle_ktlint_gradle_plugin: String = "9.2.1"
-
-  const val org_jetbrains_kotlin_jvm_gradle_plugin: String = "1.3.61"
-
-  const val io_vertx_vertx_plugin_gradle_plugin: String = "1.0.1"
 
   val java_version: JavaVersion = JavaVersion.VERSION_11
   val jdk_version: String = this.java_version.toString()

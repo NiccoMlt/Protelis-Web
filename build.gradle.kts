@@ -6,13 +6,13 @@ import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-  id("com.github.johnrengelman.shadow") version Versions.com_github_johnrengelman_shadow_gradle_plugin
-  id("io.vertx.vertx-plugin") version Versions.io_vertx_vertx_plugin_gradle_plugin
-  kotlin("jvm") version Versions.org_jetbrains_kotlin_jvm_gradle_plugin
-  kotlin("kapt") version Versions.org_jetbrains_kotlin_jvm_gradle_plugin
-  id("org.jlleitschuh.gradle.ktlint") version Versions.org_jlleitschuh_gradle_ktlint_gradle_plugin
+  id("com.github.johnrengelman.shadow")
+  id("io.vertx.vertx-plugin")
+  kotlin("jvm")
+  kotlin("kapt")
+  id("org.jlleitschuh.gradle.ktlint")
   jacoco
-  id("org.jetbrains.dokka") version Versions.org_jetbrains_dokka
+  id("org.jetbrains.dokka")
   idea
 }
 
