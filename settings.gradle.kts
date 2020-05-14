@@ -5,7 +5,9 @@ buildscript {
   dependencies.classpath("de.fayard:dependencies:0.5.7")
 }
 
-bootstrapRefreshVersionsAndDependencies()
+bootstrapRefreshVersionsAndDependencies(
+  listOf(file("vertx-alias-rules.txt").readText())
+)
 
 plugins {
   id("com.gradle.enterprise").version("3.1.1")

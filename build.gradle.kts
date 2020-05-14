@@ -1,5 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
+import de.fayard.versions.internal.InternalRefreshVersionsApi
+import de.fayard.versions.internal.getVersionProperties
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.dokka.gradle.DokkaTask
@@ -80,8 +82,8 @@ dependencies {
 }
 
 java {
-  sourceCompatibility = Versions.java_version
-  targetCompatibility = Versions.java_version
+  sourceCompatibility = JavaVersion.VERSION_11
+  targetCompatibility = JavaVersion.VERSION_11
 }
 
 application {
@@ -92,9 +94,12 @@ val slf4j = "io.vertx.core.logging.SLF4JLogDelegateFactory"
 val vertxLoggerDelegateProp = "vertx.logger-delegate-factory-class-name"
 val jvmArgLogger = "-D$vertxLoggerDelegateProp=$slf4j"
 
+@UseExperimental(InternalRefreshVersionsApi::class)
+val versionsMap = getVersionProperties()
+
 vertx {
   mainVerticle = "it.unibo.protelis.web.MainVerticle"
-  vertxVersion = Versions.io_vertx
+  vertxVersion = versionsMap["version.vertx"] as String
   jvmArgs = listOf("jvmArgLogger")
 }
 
@@ -102,7 +107,7 @@ tasks {
   withType<KotlinCompile>().configureEach {
     kotlinOptions {
       allWarningsAsErrors = true
-      jvmTarget = Versions.jdk_version
+      jvmTarget = java.sourceCompatibility.toString()
       javaParameters = true
     }
   }
