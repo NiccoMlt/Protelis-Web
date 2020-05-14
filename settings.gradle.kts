@@ -1,3 +1,12 @@
+import de.fayard.dependencies.bootstrapRefreshVersionsAndDependencies
+
+buildscript {
+  repositories { gradlePluginPortal() }
+  dependencies.classpath("de.fayard:dependencies:0.5.7")
+}
+
+bootstrapRefreshVersionsAndDependencies()
+
 plugins {
   id("com.gradle.enterprise").version("3.1.1")
 }

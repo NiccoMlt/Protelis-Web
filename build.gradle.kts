@@ -11,7 +11,6 @@ plugins {
   kotlin("jvm") version Versions.org_jetbrains_kotlin_jvm_gradle_plugin
   kotlin("kapt") version Versions.org_jetbrains_kotlin_jvm_gradle_plugin
   id("org.jlleitschuh.gradle.ktlint") version Versions.org_jlleitschuh_gradle_ktlint_gradle_plugin
-  id("de.fayard.refreshVersions") version Versions.de_fayard_refreshversions_gradle_plugin
   jacoco
   id("org.jetbrains.dokka") version Versions.org_jetbrains_dokka
   idea
