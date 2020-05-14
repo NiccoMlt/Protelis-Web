@@ -22,6 +22,10 @@ bootstrapRefreshVersionsAndDependencies(
     """
     |org.junit.platform:junit-platform-*
     |    ^^^^^.^^^^^^^^
+    """.trimMargin(),
+    """
+    |it.unibo.alchemist:alchemist-*
+    |         ^^^^^^^^^
     """.trimMargin()
   )
 )
