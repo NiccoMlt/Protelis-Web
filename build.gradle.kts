@@ -22,56 +22,57 @@ repositories {
 }
 
 dependencies {
-  implementation(kotlin("stdlib-jdk8"))
-  implementation(kotlin("reflect"))
-  implementation(Libs.kotlinx_coroutines_core)
-  implementation(Libs.kotlinx_coroutines_jdk8)
-  implementation(Libs.kotlinx_io_jvm)
-  implementation(Libs.kotlinx_collections_immutable_jvm)
-  implementation(Libs.kotlinx_coroutines_io)
+  implementation(Kotlin.stdlib.jdk8)
+  implementation("org.jetbrains.kotlin:kotlin-reflect:_")
+  implementation(KotlinX.coroutines.core)
+  implementation(KotlinX.coroutines.jdk8)
+  implementation("org.jetbrains.kotlinx:kotlinx-io-jvm:_")
+  implementation(KotlinX.collections.immutableJvmOnly)
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-io:_")
 
-  implementation(Libs.slf4j_api)
-  implementation(Libs.logback_classic)
+  implementation("org.slf4j:slf4j-api:_")
+  implementation("ch.qos.logback:logback-classic:_")
 
   val vertxReason = "Also included by Vert.x, enforce common version"
 
-  implementation(Libs.jackson_core) {
+  implementation("com.fasterxml.jackson.core:jackson-core:_") {
     because(vertxReason)
   }
-  implementation(Libs.jackson_databind) {
+  implementation("com.fasterxml.jackson.core:jackson-databind:_") {
     because(vertxReason)
   }
-  implementation(Libs.jackson_annotations) {
+  implementation("com.fasterxml.jackson.core:jackson-annotations:_") {
     because(vertxReason)
   }
-  implementation(Libs.jackson_module_kotlin) {
+  implementation("com.fasterxml.jackson.module:jackson-module-kotlin:_") {
     because("Not included by Vert.x, but useful for Kotlin classes serialization")
   }
 
-  implementation(Libs.vertx_core)
-  implementation(Libs.vertx_lang_kotlin)
-  implementation(Libs.vertx_lang_kotlin_coroutines)
-  implementation(Libs.vertx_web)
+  implementation("io.vertx:vertx-core:_")
+  implementation("io.vertx:vertx-lang-kotlin:_")
+  implementation("io.vertx:vertx-lang-kotlin-coroutines:_")
+  implementation("io.vertx:vertx-web:_")
 
-  implementation(Libs.alchemist_interfaces)
-  implementation(Libs.alchemist_engine)
-  implementation(Libs.alchemist_incarnation_protelis)
-  implementation(Libs.alchemist_time)
-  implementation(Libs.alchemist_loading)
+  implementation("it.unibo.alchemist:alchemist-interfaces:_")
+  implementation("it.unibo.alchemist:alchemist-engine:_")
+  implementation("it.unibo.alchemist:alchemist-incarnation-protelis:_")
+  implementation("it.unibo.alchemist:alchemist-time:_")
+  implementation("it.unibo.alchemist:alchemist-loading:_")
 
-  testImplementation(Libs.vertx_junit5)
-  testImplementation(Libs.vertx_junit5_web_client)
-  // testImplementation(kotlin("test"))
-  // testImplementation(kotlin("test-junit"))
-  testRuntimeOnly(Libs.junit_platform_launcher) {
+  testImplementation("io.vertx:vertx-junit5:_")
+  testImplementation("io.vertx:vertx-junit5-web-client:_")
+  // testImplementation(Kotlin.test.common)
+  // testImplementation(Kotlin.test.junit)
+  // testImplementation(Kotlin.test.junit5)
+  testRuntimeOnly("org.junit.platform:junit-platform-launcher:_") {
     because("Needed to run tests in IDEs that bundle an older version of JUnit")
   }
-  testImplementation(Libs.junit_jupiter_api)
-  testImplementation(Libs.junit_jupiter_params)
-  testRuntimeOnly(Libs.junit_jupiter_engine)
-  testRuntimeOnly(Libs.jul_to_slf4j)
+  testImplementation(Testing.junit.api)
+  testImplementation(Testing.junit.params)
+  testRuntimeOnly(Testing.junit.engine)
+  testRuntimeOnly("org.slf4j:jul-to-slf4j:_")
 
-  dokkaRuntime(Libs.dokka_fatjar)
+  dokkaRuntime("org.jetbrains.dokka:dokka-fatjar:_")
 }
 
 java {
