@@ -14,6 +14,14 @@ bootstrapRefreshVersionsAndDependencies(
     """
     |org.slf4j:*
     |    ^^^^^
+    """.trimMargin(),
+    """
+    |org.junit.jupiter:junit-jupiter-*
+    |    ^^^^^.^^^^^^^
+    """.trimMargin(),
+    """
+    |org.junit.platform:junit-platform-*
+    |    ^^^^^.^^^^^^^^
     """.trimMargin()
   )
 )
