@@ -6,7 +6,12 @@ buildscript {
 }
 
 bootstrapRefreshVersionsAndDependencies(
-  listOf(file("vertx-alias-rules.txt").readText())
+  listOf(
+    """
+    |io.vertx:*
+    |   ^^^^^
+    """.trimMargin()
+  )
 )
 
 plugins {
