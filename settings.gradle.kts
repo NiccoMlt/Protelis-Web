@@ -26,6 +26,14 @@ bootstrapRefreshVersionsAndDependencies(
     """
     |it.unibo.alchemist:alchemist-*
     |         ^^^^^^^^^
+    """.trimMargin(),
+    """
+    |com.fasterxml.jackson.core:jackson-*
+    |              ^^^^^^^
+    """.trimMargin(),
+    """
+    |com.fasterxml.jackson.module:jackson-module-*
+    |              ^^^^^^^
     """.trimMargin()
   )
 )
