@@ -10,6 +10,10 @@ bootstrapRefreshVersionsAndDependencies(
     """
     |io.vertx:*
     |   ^^^^^
+    """.trimMargin(),
+    """
+    |org.slf4j:*
+    |    ^^^^^
     """.trimMargin()
   )
 )
