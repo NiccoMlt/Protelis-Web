@@ -34,7 +34,6 @@ dependencies {
   implementation(KotlinX.coroutines.jdk8)
   implementation("org.jetbrains.kotlinx:kotlinx-io-jvm:_")
   implementation(KotlinX.collections.immutableJvmOnly)
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-io:_")
 
   implementation("org.slf4j:slf4j-api:_")
   implementation("ch.qos.logback:logback-classic:_")
@@ -94,7 +93,7 @@ val slf4j = "io.vertx.core.logging.SLF4JLogDelegateFactory"
 val vertxLoggerDelegateProp = "vertx.logger-delegate-factory-class-name"
 val jvmArgLogger = "-D$vertxLoggerDelegateProp=$slf4j"
 
-@UseExperimental(InternalRefreshVersionsApi::class)
+@OptIn(InternalRefreshVersionsApi::class)
 val versionsMap = getVersionProperties()
 
 vertx {
