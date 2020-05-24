@@ -10,7 +10,7 @@ import io.vertx.ext.bridge.PermittedOptions
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.handler.LoggerFormat
 import io.vertx.ext.web.handler.LoggerHandler
-import io.vertx.ext.web.handler.sockjs.BridgeOptions
+import io.vertx.ext.web.handler.sockjs.SockJSBridgeOptions
 import io.vertx.ext.web.handler.sockjs.SockJSHandler
 import io.vertx.ext.web.handler.sockjs.SockJSHandlerOptions
 import io.vertx.kotlin.core.http.httpServerOptionsOf
@@ -48,7 +48,7 @@ class BridgeVerticle(private val httpPort: Int = DEFAULT_PORT) : CoroutineVertic
 
     val sockJSOptions: SockJSHandlerOptions = sockJSHandlerOptionsOf(heartbeatInterval = 2000)
     val sockJSHandler: SockJSHandler = SockJSHandler.create(vertx, sockJSOptions)
-    val sockBridgeOptions = BridgeOptions()
+    val sockBridgeOptions = SockJSBridgeOptions()
       .addInboundPermitted(PermittedOptions().setAddress(setupAddress()))
       .addOutboundPermitted(PermittedOptions().setAddress(setupAddress()))
       .addOutboundPermitted(PermittedOptions().setAddressRegex(initializedAddressRegex.pattern))
