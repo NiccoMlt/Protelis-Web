@@ -27,6 +27,7 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
   implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.3")
 
+  implementation("io.github.microutils:kotlin-logging-jvm:2.0.2")
   implementation("org.slf4j:slf4j-api:1.7.30")
   implementation("ch.qos.logback:logback-classic:1.2.3")
 

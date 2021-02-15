@@ -2,18 +2,19 @@ package it.unibo.protelis.web.execution.simulated
 
 import it.unibo.protelis.web.execution.ProtelisObserver
 import it.unibo.protelis.web.execution.ProtelisUpdateMessage
-import java.util.concurrent.CompletableFuture
-import kotlinx.io.errors.IOException
+import mu.KotlinLogging
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import java.io.IOException
+import java.util.concurrent.CompletableFuture
 
 /** Test simulated Protelis engine with Alchemist. */
 @DisplayName("Test simulated Protelis engine with Alchemist")
 class SimulatedProtelisEngineTest {
-  private val logger: Logger = LoggerFactory.getLogger(this::class.java)
+  companion object {
+    private val logger = KotlinLogging.logger { }
+  }
 
   /** Test that injected code works. */
   @Test

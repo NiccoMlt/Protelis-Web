@@ -5,9 +5,6 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Promise
 import io.vertx.core.json.jackson.DatabindCodec
-import io.vertx.core.logging.LoggerFactory
-import io.vertx.core.logging.LoggerFactory.LOGGER_DELEGATE_FACTORY_CLASS_NAME
-import io.vertx.core.logging.SLF4JLogDelegateFactory
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle
 
 /**
@@ -23,14 +20,14 @@ class MainVerticle : AbstractVerticle() {
     // Enable Kotlin ObjectMapper module to improve Kotlin support of Jackson serializer in Vert.x
     DatabindCodec.mapper().registerKotlinModule()
 
-    // Force the usage of SLF4J if no preference is found
+    /*// Force the usage of SLF4J if no preference is found
     if (System.getProperty(LOGGER_DELEGATE_FACTORY_CLASS_NAME) == null) {
       System.setProperty(LOGGER_DELEGATE_FACTORY_CLASS_NAME, SLF4JLogDelegateFactory::class.java.name)
     }
     LoggerFactory.initialise()
     LoggerFactory
       .getLogger(LoggerFactory::class.java)
-      .trace("Using logger: ${System.getProperty(LOGGER_DELEGATE_FACTORY_CLASS_NAME)}")
+      .trace("Using logger: ${System.getProperty(LOGGER_DELEGATE_FACTORY_CLASS_NAME)}")*/
   }
 
   override fun start(startPromise: Promise<Void>) {

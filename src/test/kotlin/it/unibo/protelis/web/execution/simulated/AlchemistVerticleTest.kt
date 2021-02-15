@@ -4,8 +4,6 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import io.vertx.core.Vertx
 import io.vertx.core.json.JsonObject
 import io.vertx.core.json.jackson.DatabindCodec
-import io.vertx.core.logging.Logger
-import io.vertx.core.logging.LoggerFactory
 import io.vertx.junit5.Checkpoint
 import io.vertx.junit5.Timeout
 import io.vertx.junit5.VertxExtension
@@ -16,18 +14,22 @@ import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.ini
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.setupAddress
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.stepDoneAddress
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.stopAddress
-import java.util.concurrent.TimeUnit
-import kotlinx.io.errors.IOException
+import mu.KotlinLogging
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 /** AlchemistVerticle tests with Vert.x TestContext. */
 @DisplayName("AlchemistVerticle tests with Vert.x TestContext")
 @ExtendWith(VertxExtension::class)
 class AlchemistVerticleTest {
-  private val logger: Logger = LoggerFactory.getLogger(this::class.java)
+
+  companion object {
+    private val logger = KotlinLogging.logger { }
+  }
 
   init {
     DatabindCodec.mapper().registerKotlinModule()
@@ -37,7 +39,7 @@ class AlchemistVerticleTest {
   @Test
   @DisplayName("AlchemistVerticle should deploy correctly")
   fun `AlchemistVerticle should deploy correctly`(vertx: Vertx, testContext: VertxTestContext) {
-    vertx.deployVerticle(AlchemistVerticle(), testContext.completing())
+    vertx.deployVerticle(AlchemistVerticle(), testContext.succeedingThenComplete())
   }
 
   /** AlchemistVerticle should create a simulation for each request. */

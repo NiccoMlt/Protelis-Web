@@ -4,8 +4,6 @@ import io.netty.handler.codec.http.HttpResponseStatus.MOVED_PERMANENTLY
 import io.vertx.core.Context
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.EventBus
-import io.vertx.core.logging.Logger
-import io.vertx.core.logging.LoggerFactory
 import io.vertx.ext.bridge.PermittedOptions
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.handler.LoggerFormat
@@ -14,15 +12,16 @@ import io.vertx.ext.web.handler.sockjs.SockJSBridgeOptions
 import io.vertx.ext.web.handler.sockjs.SockJSHandler
 import io.vertx.ext.web.handler.sockjs.SockJSHandlerOptions
 import io.vertx.kotlin.core.http.httpServerOptionsOf
-import io.vertx.kotlin.core.http.listenAwait
 import io.vertx.kotlin.core.net.pemKeyCertOptionsOf
 import io.vertx.kotlin.coroutines.CoroutineVerticle
+import io.vertx.kotlin.coroutines.await
 import io.vertx.kotlin.ext.web.handler.sockjs.sockJSHandlerOptionsOf
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.finishedAddressRegex
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.initializedAddressRegex
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.setupAddress
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.stepDoneAddressRegex
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.stopAddressRegex
+import mu.KotlinLogging
 
 /** This verticle bridges EventBus via SockJS. */
 class BridgeVerticle(private val httpPort: Int = DEFAULT_PORT) : CoroutineVerticle() {
@@ -31,7 +30,7 @@ class BridgeVerticle(private val httpPort: Int = DEFAULT_PORT) : CoroutineVertic
   companion object {
     private const val DEFAULT_PORT: Int = 8080
     private const val DEFAULT_SSL_PORT: Int = 8443
-    private val logger: Logger = LoggerFactory.getLogger(BridgeVerticle::class.java)
+    private val logger = KotlinLogging.logger { }
   }
 
   override fun init(vertx: Vertx, context: Context) {
@@ -71,7 +70,8 @@ class BridgeVerticle(private val httpPort: Int = DEFAULT_PORT) : CoroutineVertic
     vertx
       .createHttpServer()
       .requestHandler(router)
-      .listenAwait(httpPort)
+      .listen(httpPort)
+      .await()
 
     logger.info("HTTP server started on port $httpPort")
 
@@ -85,7 +85,8 @@ class BridgeVerticle(private val httpPort: Int = DEFAULT_PORT) : CoroutineVertic
             certPath = "certificate.pem"
           )))
       .requestHandler(router)
-      .listenAwait(httpsPort)
+      .listen(httpsPort)
+      .await()
 
     logger.info("HTTPS server started on port $httpsPort")
   }

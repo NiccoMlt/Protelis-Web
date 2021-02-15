@@ -3,17 +3,15 @@ package it.unibo.protelis.web.execution.simulated
 import io.vertx.core.Context
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.EventBus
-import io.vertx.core.logging.Logger
-import io.vertx.core.logging.LoggerFactory
 import io.vertx.kotlin.coroutines.CoroutineVerticle
 import it.unibo.protelis.web.execution.EventBusProtelisObserver
 import it.unibo.protelis.web.execution.ProtelisEngine
+import mu.KotlinLogging
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 /** Vert.x Verticle that wraps a collection of [ProtelisEngine]s simulated with Alchemist. */
 class AlchemistVerticle : CoroutineVerticle() {
-  private val logger: Logger = LoggerFactory.getLogger(this::class.java)
   private val engines: MutableMap<String, SimulatedProtelisEngine> = mutableMapOf()
   private lateinit var eb: EventBus
 
@@ -59,6 +57,8 @@ class AlchemistVerticle : CoroutineVerticle() {
   }
 
   companion object {
+    private val logger = KotlinLogging.logger { }
+
     private const val BASE_ADDRESS = "protelis.web.exec"
     private const val ID_REGEX = """\S+"""
 
