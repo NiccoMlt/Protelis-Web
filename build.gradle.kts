@@ -33,16 +33,16 @@ dependencies {
 
   val vertxReason = "Also included by Vert.x, enforce common version"
 
-  implementation("com.fasterxml.jackson.core:jackson-core:2.11.0") {
+  implementation("com.fasterxml.jackson.core:jackson-core:2.12.1") {
     because(vertxReason)
   }
-  implementation("com.fasterxml.jackson.core:jackson-databind:2.11.0") {
+  implementation("com.fasterxml.jackson.core:jackson-databind:2.12.1") {
     because(vertxReason)
   }
-  implementation("com.fasterxml.jackson.core:jackson-annotations:2.11.0") {
+  implementation("com.fasterxml.jackson.core:jackson-annotations:2.12.1") {
     because(vertxReason)
   }
-  implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.11.0") {
+  implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.1") {
     because("Not included by Vert.x, but useful for Kotlin classes serialization")
   }
 
@@ -58,12 +58,12 @@ dependencies {
   implementation("it.unibo.alchemist:alchemist-loading:9.3.0")
 
   testImplementation("io.vertx:vertx-junit5:4.0.2")
-  testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.6.2") {
+  testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.7.1") {
     because("Needed to run tests in IDEs that bundle an older version of JUnit")
   }
-  testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
-  testImplementation("org.junit.jupiter:junit-jupiter-params:5.6.2")
-  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
+  testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
+  testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.1")
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
   testRuntimeOnly("org.slf4j:jul-to-slf4j:1.7.30")
 }
 
