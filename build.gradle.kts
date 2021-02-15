@@ -72,9 +72,9 @@ java {
   targetCompatibility = JavaVersion.VERSION_11
 }
 
-// application {
-//   mainClassName = "io.vertx.core.Launcher"
-// }
+application {
+  mainClass.set("io.vertx.core.Launcher")
+}
 
 val slf4j = "io.vertx.core.logging.SLF4JLogDelegateFactory"
 val vertxLoggerDelegateProp = "vertx.logger-delegate-factory-class-name"
