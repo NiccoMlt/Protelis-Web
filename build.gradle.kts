@@ -3,10 +3,10 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-  id("com.github.johnrengelman.shadow") version "5.2.0"
-  id("io.vertx.vertx-plugin") version "1.0.3"
-  kotlin("jvm") version "1.3.72"
-  kotlin("kapt") version "1.3.72"
+  kotlin("jvm") version "1.4.30"
+  kotlin("kapt") version "1.4.30"
+  id("com.github.johnrengelman.shadow") version "6.1.0"
+  id("io.vertx.vertx-plugin") version "1.2.0"
   id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
   jacoco
   idea
@@ -22,12 +22,10 @@ repositories {
 }
 
 dependencies {
-  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.72")
-  implementation("org.jetbrains.kotlin:kotlin-reflect:1.3.72")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.3.7")
-  implementation("org.jetbrains.kotlinx:kotlinx-io-jvm:0.1.16")
-  implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.2")
+  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.30")
+  implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.30")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
+  implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.3")
 
   implementation("org.slf4j:slf4j-api:1.7.30")
   implementation("ch.qos.logback:logback-classic:1.2.3")
@@ -47,10 +45,10 @@ dependencies {
     because("Not included by Vert.x, but useful for Kotlin classes serialization")
   }
 
-  implementation("io.vertx:vertx-core:3.9.1")
-  implementation("io.vertx:vertx-lang-kotlin:3.9.1")
-  implementation("io.vertx:vertx-lang-kotlin-coroutines:3.9.1")
-  implementation("io.vertx:vertx-web:3.9.1")
+  implementation("io.vertx:vertx-core:4.0.2")
+  implementation("io.vertx:vertx-lang-kotlin:4.0.2")
+  implementation("io.vertx:vertx-lang-kotlin-coroutines:4.0.2")
+  implementation("io.vertx:vertx-web:4.0.2")
 
   implementation("it.unibo.alchemist:alchemist-interfaces:9.3.0")
   implementation("it.unibo.alchemist:alchemist-engine:9.3.0")
@@ -58,8 +56,7 @@ dependencies {
   implementation("it.unibo.alchemist:alchemist-time:9.3.0")
   implementation("it.unibo.alchemist:alchemist-loading:9.3.0")
 
-  testImplementation("io.vertx:vertx-junit5:3.9.1")
-  testImplementation("io.vertx:vertx-junit5-web-client:3.9.1")
+  testImplementation("io.vertx:vertx-junit5:4.0.2")
   testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.6.2") {
     because("Needed to run tests in IDEs that bundle an older version of JUnit")
   }
@@ -84,7 +81,7 @@ val jvmArgLogger = "-D$vertxLoggerDelegateProp=$slf4j"
 
 vertx {
   mainVerticle = "it.unibo.protelis.web.MainVerticle"
-  vertxVersion = "3.9.1"
+  vertxVersion = "4.0.2"
   jvmArgs = listOf("jvmArgLogger")
 }
 
