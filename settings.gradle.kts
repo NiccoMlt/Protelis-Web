@@ -1,53 +1,18 @@
-import de.fayard.dependencies.bootstrapRefreshVersionsAndDependencies
+import de.fayard.refreshVersions.bootstrapRefreshVersions
 
 buildscript {
-  repositories { gradlePluginPortal() }
-  dependencies.classpath("de.fayard:dependencies:0.5.8")
+  repositories {
+    gradlePluginPortal()
+  }
+  dependencies {
+    classpath("de.fayard.refreshVersions:refreshVersions:0.9.7")
+  }
 }
 
-bootstrapRefreshVersionsAndDependencies(
-  listOf(
-    """
-    |io.vertx:*
-    |   ^^^^^
-    """.trimMargin(),
-    """
-    |org.slf4j:*
-    |    ^^^^^
-    """.trimMargin(),
-    """
-    |org.junit.jupiter:junit-jupiter-*
-    |    ^^^^^.^^^^^^^
-    """.trimMargin(),
-    """
-    |org.junit.platform:junit-platform-*
-    |    ^^^^^.^^^^^^^^
-    """.trimMargin(),
-    """
-    |it.unibo.alchemist:alchemist-*
-    |         ^^^^^^^^^
-    """.trimMargin(),
-    """
-    |com.fasterxml.jackson.core:jackson-*
-    |              ^^^^^^^
-    """.trimMargin(),
-    """
-    |com.fasterxml.jackson.module:jackson-module-*
-    |              ^^^^^^^
-    """.trimMargin(),
-    """
-    |ch.qos.logback:logback-*
-    |       ^^^^^^^
-    """.trimMargin(),
-    """
-    |ch.qos.logback.contrib:logback-*
-    |       ^^^^^^^.^^^^^^^
-    """.trimMargin()
-  )
-)
+bootstrapRefreshVersions()
 
 plugins {
-  id("com.gradle.enterprise").version("3.1.1")
+  id("com.gradle.enterprise").version("3.2")
 }
 
 gradleEnterprise {
