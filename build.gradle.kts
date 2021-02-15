@@ -51,11 +51,11 @@ dependencies {
   implementation("io.vertx:vertx-lang-kotlin-coroutines:4.0.2")
   implementation("io.vertx:vertx-web:4.0.2")
 
-  implementation("it.unibo.alchemist:alchemist-interfaces:9.3.0")
-  implementation("it.unibo.alchemist:alchemist-engine:9.3.0")
-  implementation("it.unibo.alchemist:alchemist-incarnation-protelis:9.3.0")
-  implementation("it.unibo.alchemist:alchemist-time:9.3.0")
-  implementation("it.unibo.alchemist:alchemist-loading:9.3.0")
+  implementation("it.unibo.alchemist:alchemist-interfaces:10.0.1")
+  implementation("it.unibo.alchemist:alchemist-engine:10.0.1")
+  implementation("it.unibo.alchemist:alchemist-incarnation-protelis:10.0.1")
+  implementation("it.unibo.alchemist:alchemist-loading:10.0.1")
+  implementation("it.unibo.alchemist:alchemist-euclidean-geometry:10.0.1")
 
   testImplementation("io.vertx:vertx-junit5:4.0.2")
   testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.7.1") {

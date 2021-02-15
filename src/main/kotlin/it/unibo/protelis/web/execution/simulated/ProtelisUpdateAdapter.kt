@@ -40,7 +40,7 @@ class ProtelisUpdateAdapter<T, P : Position<out P>>(
         nodes = env
           .nodes
           .map { it.id.toString() to env.getPosition(it) }
-          .map { it.first to (it.second.cartesianCoordinates[0] to it.second.cartesianCoordinates[1]) }
+          .map { it.first to (it.second.coordinates[0] to it.second.coordinates[1]) }
           .map { ProtelisNode(it.first, it.second) }
           .toList(),
         envSize = env

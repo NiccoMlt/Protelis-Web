@@ -5,8 +5,7 @@ import io.vertx.core.json.JsonObject.mapFrom
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.finishedAddress
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.initializedAddress
 import it.unibo.protelis.web.execution.simulated.AlchemistVerticle.Companion.stepDoneAddress
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import mu.KotlinLogging
 
 /**
  * This observer implementation adapts Protelis Events to publish on [Vert.x Event Bus][EventBus].
@@ -18,7 +17,9 @@ class EventBusProtelisObserver(
   private val eb: EventBus,
   private val addressId: String
 ) : ProtelisObserver {
-  private val logger: Logger = LoggerFactory.getLogger(this::class.java)
+  companion object {
+    private val logger = KotlinLogging.logger { }
+  }
 
   override fun initialized(update: ProtelisUpdateMessage) {
     logger.trace("Handle init update: $update")

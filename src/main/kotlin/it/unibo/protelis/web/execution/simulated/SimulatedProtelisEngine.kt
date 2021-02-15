@@ -11,12 +11,14 @@ import it.unibo.protelis.web.execution.ProtelisEngine
 import it.unibo.protelis.web.execution.ProtelisObserver
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import mu.KotlinLogging
 
 /** ProtelisEngine implementation that simulates a network of devices. */
 class SimulatedProtelisEngine : ProtelisEngine {
-  private val logger: Logger = LoggerFactory.getLogger(this::class.java)
+  companion object {
+    private val logger = KotlinLogging.logger { }
+  }
+
   private var alchemistEngine: Simulation<Any, Euclidean2DPosition>? = null
 
   override fun setup(sourceCode: String, monitor: ProtelisObserver) {
