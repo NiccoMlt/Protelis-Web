@@ -52,7 +52,7 @@ object Versions {
 
   const val jul_to_slf4j: String = "1.7.30"
 
-  const val slf4j_api: String = "1.8.0-beta2"
+  const val slf4j_api: String = "1.8.0-beta4"
 
   const val ktlint: String = "0.36.0"
 
