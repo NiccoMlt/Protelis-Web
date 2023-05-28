@@ -50,7 +50,7 @@ object Versions {
 
   const val kotlinx_io_jvm: String = "0.1.16"
 
-  const val jul_to_slf4j: String = "1.7.30"
+  const val jul_to_slf4j: String = "1.7.36"
 
   const val slf4j_api: String = "1.8.0-beta2"
 
