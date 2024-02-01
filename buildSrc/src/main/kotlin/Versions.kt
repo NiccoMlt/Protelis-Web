@@ -42,7 +42,7 @@ object Versions {
 
   const val kotlinx_coroutines_jdk8: String = "1.3.3"
 
-  const val jackson_module_kotlin: String = "2.10.2"
+  const val jackson_module_kotlin: String = "2.16.1"
 
   const val kotlinx_coroutines_io: String = "0.24.0"
 
