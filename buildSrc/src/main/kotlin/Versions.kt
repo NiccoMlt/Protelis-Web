@@ -54,7 +54,7 @@ object Versions {
 
   const val slf4j_api: String = "1.8.0-beta2"
 
-  const val ktlint: String = "0.36.0"
+  const val ktlint: String = "0.51.0-FINAL"
 
   /**
    * Current version: "6.1.1"
