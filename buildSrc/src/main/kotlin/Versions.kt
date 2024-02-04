@@ -24,7 +24,7 @@ object Versions {
 
   const val com_github_johnrengelman_shadow_gradle_plugin: String = "5.2.0"
 
-  const val org_jlleitschuh_gradle_ktlint_gradle_plugin: String = "9.2.1"
+  const val org_jlleitschuh_gradle_ktlint_gradle_plugin: String = "9.4.1"
 
   const val de_fayard_refreshversions_gradle_plugin: String = "0.7.0" // available: "0.8.6"
 
