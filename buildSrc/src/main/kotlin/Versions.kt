@@ -30,7 +30,7 @@ object Versions {
 
   const val org_jetbrains_kotlin_kapt_gradle_plugin: String = "1.3.61"
 
-  const val org_jetbrains_kotlin_jvm_gradle_plugin: String = "1.3.61"
+  const val org_jetbrains_kotlin_jvm_gradle_plugin: String = "1.9.22"
 
   const val io_vertx_vertx_plugin_gradle_plugin: String = "1.0.1"
 
