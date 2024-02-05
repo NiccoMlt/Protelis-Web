@@ -26,7 +26,7 @@ object Versions {
 
   const val org_jlleitschuh_gradle_ktlint_gradle_plugin: String = "9.2.1"
 
-  const val de_fayard_refreshversions_gradle_plugin: String = "0.7.0" // available: "0.8.6"
+  const val de_fayard_refreshversions_gradle_plugin: String = "0.60.5" // available: "0.8.6"
 
   const val org_jetbrains_kotlin_kapt_gradle_plugin: String = "1.3.61"
 
