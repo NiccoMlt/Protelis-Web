@@ -46,7 +46,7 @@ object Versions {
 
   const val kotlinx_coroutines_io: String = "0.24.0"
 
-  const val logback_classic: String = "1.3.0-alpha4"
+  const val logback_classic: String = "1.5.0"
 
   const val kotlinx_io_jvm: String = "0.1.16"
 
